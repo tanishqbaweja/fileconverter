@@ -30,8 +30,14 @@ and Word's missing-bookmark fallback are not reproduced. This increment passed a
 small headless Chrome158 production repeat/cancel/write-error/recovery control:
 four identical211,913-byte HTML outputs from a genuine Word package, independently
 validated links/bookmarks/text/emphasis,84.24MiB whole-tree peak and30.62MiB maximum
-cleanup delta. It remains private; large hyperlink scaling, other browsers and
-native-picker/external-drive qualification are open. Fonts, exact page/table
+cleanup delta. Current-model scaling also passed three repeats at both9.46MB and
+148.39MB input, plus one148.39MB repeat in a clean Chrome session. All148.68MB
+large outputs are identical and every paragraph/link was independently checked;
+whole-session peaks187.27/184.85MiB, max cleanup69.69MiB, unchanged250/96MiB gates.
+See [the measured scaling series](evidence/2026-11-20T11-46-04-089Z-docx-hyperlink-scaling-series.html).
+This is not a universal-flat-memory, leak-free or speedup claim. It remains
+private; other browsers and native-picker/external-drive qualification are open.
+Fonts, exact page/table
 layout, graphics and ancillary parts are not fully
 preserved; the UI discloses those limits. Paragraph outline/heading inheritance
 and supported document-default/paragraph/character-style emphasis are implemented

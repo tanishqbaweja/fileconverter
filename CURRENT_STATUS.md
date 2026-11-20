@@ -6,6 +6,26 @@ specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complet
 
 ## Current capability increment: private DOCX hyperlinks
 
+Current-model large hyperlink scaling gate CLOSED for the tested pattern:
+fixed1024relationships/64bookmarks,2048/32768 genuine stored-ZIP paragraphs,
+three repeats each plus one largest in a distinct clean browser. Inputs9,462,927/
+148,388,967B -> outputs9,295,737/148,682,577B. Every paragraph, both links, tooltip,
+emphasis and bookmark position independently verified; largest4outputs identical
+SHA98acd389…7231712. Whole controls187.2734375/184.8515625MiB over their respective
+original stable blanks; max per-run cleanup69.6875MiB over original loaded idle,
+250/96limits unchanged.1768native rows retained,1321valid/2unavailable active
+samples (not zero). Payload cancellation/write-error/exact recovery both sessions.
+Owned files/profiles/runtime/server gone, original pre/post fullSHA/size unchanged;
+first52observed owned PIDs reconciled by birth (one unrelated PID reuse left
+untouched), second numeric PID absence proved. No app/native source change,
+service disabling, public/full Word/native external destination/other-browser,
+universal flat-memory/leak-free or matched speedup claim. Actual combined JSON/
+CSV/HTML: `evidence/2026-11-20T11-46-04-089Z-docx-hyperlink-scaling-series.json`.
+30focused tests and affected lint PASS. Initial13/14 evidence tests had a numeric
+timestamp compared with an ISO string in a mutation fixture; corrected to select
+the real native window, no browser replay or changed gate. Final checkpoint:
+`evidence/2026-11-20-docx-hyperlink-scaling-checkpoint.json`.
+
 Implemented and small production-browser qualification PASS, still private.
 Explicit HTTP/HTTPS/mailto links, escaped tooltips and bookmark positions retain
 text/emphasis without fetching targets. Unsafe/relative/package links keep
@@ -39,10 +59,11 @@ as part of that earlier inventory snapshot. All32 browser source pins freshly
 reverified;402-entry public evidence audit PASS. Final checkpoint:
 [DOCX hyperlink verification](evidence/2026-11-20-docx-hyperlinks-checkpoint.json).
 
-Next distinct DOCX gate: scale repeated link IDs and bookmark references on the
-existing genuine large-document sizes with the current model, same real handle
-writer, repeat/cleanup/fresh-session and memory thresholds. Do not replay the
-unchanged no-link/emphasis controls as evidence of hyperlink scaling.
+Do not replay this passed scaling series unchanged. Broader Word font/theme,
+complex-script/layout and source-element preservation and cross-browser/native
+destination coverage remain open in N-08. Return to the retained M-09 CPU-fallback
+allocation controls for the next distinct low-memory implementation hypothesis;
+do not rerun the unchanged300.87MiB fallback or405.11MiB MKV failure.
 
 ## Current critical path
 

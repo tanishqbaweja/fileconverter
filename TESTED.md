@@ -14014,6 +14014,34 @@ Updated 2026-11-16 from the capability registry, retained successful Chrome stre
 - **2026-09-27 bounded archive/package source inspection:** ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB read only the 65,557-byte ZIP tail plus at most a 1 MiB central-directory prefix. TAR performs at most 256 isolated 512-byte header reads while skipping payloads; GZIP/BZIP2/XZ wrappers read at most 64 KiB plus an eight-byte GZIP trailer; 7Z reads its 32-byte start header plus one next-header marker. The panel reports bounded entry/size/compression/encryption/path-safety and package facts without decompressing payloads or displaying names. Eight ZIP-based families, TAR/TAR.GZ/TAR.BZ2/TAR.XZ/7Z, raw GZIP/BZIP2/XZ, unsafe ZIP/TAR, an in-memory 20,000-entry oversized ZIP directory, and a 1,024-entry TAR passed the focused production-Chromium gate 1/1. The ZIP stress stopped at exactly 1,114,133 bytes; TAR stopped at exactly 131,072 header bytes and both qualified incomplete counts. Exact scope and cleanup are in `evidence/package-source-inspection-2026-09-27.json`.
 <!-- BEGIN MANUAL TEST LOG -->
 
+2026-11-20 — Actual current-model hyperlink scaling3x2/fresh-largest1x PASS for
+fixed1024relationships/64bookmarks, not whole Word/public/browser qualification.
+Receipts11:39:33Z and11:43:44Z; aggregate11:46:04Z JSON/CSV/HTML. Real inputs
+9462927/148388967B, outputs9295737/148682577B, EVERY paragraph and2links checked;
+largest4identical98acd389…7231712. Whole Chrome187.2734375/184.8515625MiB over
+each SAME original blank; max ORIGINAL-loaded cleanup69.6875MiB. Full1768native
+rows,1321valid/2unavailable active samples retained, not zero-filled. Both actual
+hyperlink-payload cancel/write-error/golden small recovery pass.38/33static
+requests0forbidden. First52owned PIDs/births absent after exact-birth fallback,
+unrelated reused7108 untouched; second numeric absence. Owned source/output/
+profile/runtime/server gone; protected original pre/post fullSHA/size unchanged.
+Original250/96MiB gates and production app/native sources unchanged. No full
+Word/native picker/external drive/broader browser, universal-flat/leak-free or
+matched speedup claim. Initial13/14 new evidence units: mutation fixture compared
+parsed numeric timestamp to ISO string; fixed native-window selection, not data,
+metric or test gate. Final30focused tests and affected lint/402public audit PASS;
+not a new full portable/build run. Checkpoint:
+evidence/2026-11-20-docx-hyperlink-scaling-checkpoint.json. No unchanged replay.
+
+2026-11-20 — Current hyperlink scaling plan prepared, not yet measured. Fixed
+1024external relationships/64bookmarks,2048/32768real stored-ZIP paragraphs,
+3repeats each then1largest clean-session run. Every paragraph and both links
+independently validated, current production sources unchanged,250/96MiB gates
+and bounded I/O unchanged. Hyperlink-rich cancellation input and exact small
+adverse recovery.21plan/current/historical tests and affected lint PASS; no
+scaling/public/speedup result. Plan JSON records hypothesis, thresholds and
+failure/no-unchanged-retry rule before browser runs.
+
 2026-11-20 — N-08 private explicit hyperlinks/bookmarks small browser gate PASS.
 Receipt11:26:08Z/fullSHAf2895157…394bcfb:37,974B genuine Word -> four identical
 211,913B HTML/SHA15445b44…e320b90. Headless normal-service Chrome158.0.8127.36,

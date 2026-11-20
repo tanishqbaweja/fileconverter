@@ -1,5 +1,38 @@
 # Remaining work audit
 
+2026-11-20 N-08 current hyperlink scaling3x2 + fresh largest1x gate CLOSED for
+the tested fixed1024relationships/64bookmarks pattern. Genuine Word inputs
+9,462,927/148,388,967B ->9,295,737/148,682,577B HTML. Every ordered paragraph,
+external/local target, tooltip, emphasis parity and bookmark compared by native
+streaming oracle. All largest4outputs SHA98acd389…7231712, no sampled-text or
+size-only validation. Same-source/browser/inputs/binary verified across distinct
+owned sessions. Whole control peaks187.2734375/184.8515625MiB over SAME original
+blank per session; max run cleanup69.6875MiB over ORIGINAL loaded idle. Full
+1226+542native rows retained;998+323valid and1+1unavailable active samples,
+never zeros. Payload cancel, write-error and small exact recovery both sessions.
+52first-session owned PIDs/births reconciled (one unrelated reused PID7108 left
+untouched), second owned numeric PID absence; all owned files/runtime/server
+removed, protected original pre/post fullSHA/size unchanged.38/33static requests,
+0forbidden. Current app/native sources unchanged, no services disabled/rebased.
+Combined JSON/CSV/HTML:11:46:04Z-docx-hyperlink-scaling-series. No public/full Word/
+other-browser/native external destination, universal flatness/leak-free or matched
+speedup claim. Initial evidence unit13/14 had numeric-vs-ISO timestamp comparison
+in a mutation fixture; selected actual native window instead, no replay/metric
+change. Final30focused checks/scoped lint/402public audit PASS; no full-suite/
+build rerun needed or implied for test-only changes. Final compact checkpoint:
+evidence/2026-11-20-docx-hyperlink-scaling-checkpoint.json. Passed pattern must
+not be replayed unchanged; all broader original requirements remain open.
+
+2026-11-20 N-08 next distinct gate PLANNED: current hyperlink model with fixed
+1024 referenced external relationships/64bookmark names at2048/32768paragraphs,
+3repeats each plus1largest in a distinct clean browser. Genuine streamed stored
+ZIPs, no unused padding; independent streaming oracle compares EVERY ordinal/
+Unicode paragraph/link target/label/tooltip/emphasis/bookmark. Actual hyperlink
+payload cancellation and small adverse recovery; unchanged250/96MiB limits,
+256KiB reads/64KiB writes/one pending, no app/native-engine changes. Plan retained
+at evidence/2026-11-20-docx-hyperlink-scaling-plan.json.21focused plan/current/
+historical checks and affected lint PASS; this is NOT measured scaling evidence.
+
 2026-11-20 N-08: **bounded explicit DOCX hyperlinks/bookmarks implemented and
 small production-browser repeat/recovery gate PASS**, still private. Actual
 11:26:08Z receipt/fullSHAf2895157…394bcfb:37,974B python-docx1.2.0 -> four

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "status": "planned-not-run-not-acceptance",
+  "hypothesis": "With fixed relationship/bookmark metadata, increasing genuine Word paragraph and hyperlink counts does not require memory proportional to total content; same production reader, hyperlink model and async file-handle writer",
+  "baseCommit": "3056047a40b91838d8faca5c575d25a42a8e0968",
+  "sourceFixture": {
+    "nativeGenerator": "Python zipfile, actual deterministic ZIP_STORED WordprocessingML package, no sparse padding",
+    "paragraphs": [2048, 32768],
+    "fixedExternalRelationships": 1024,
+    "fixedBookmarkNames": 64,
+    "linksPerParagraph": 2,
+    "allRelationshipsReferencedAtBothActualSizes": true,
+    "perParagraphBufferBytesLimit": 8192
+  },
+  "sessions": [
+    { "mode": "--hyperlink-direct-scaling", "sizes": [2048, 32768], "repeatsEach": 3 },
+    { "mode": "--hyperlink-direct-scaling-fresh", "sizes": [32768], "repeatsEach": 1, "requiresDistinctOwnedBrowserBirthAndOriginalBaseline": true }
+  ],
+  "validation": "Independent streaming Python HTMLParser checks every ordered Unicode paragraph, exact external/local targets, link labels, tooltip, emphasis parity, bookmark placement and no-referrer attributes; full native output SHA; each completed output deleted before the next",
+  "adversePaths": "Actual hyperlink-rich generated cancellation input, selected-write failure and byte-identical independently validated small recovery; no replay of three unchanged small successes",
+  "preflight": { "diskBytes": 2147483648, "physicalAndVirtualRamGiBEach": 2 },
+  "primaryLimitMiB": 250,
+  "primaryFormula": "(peak complete spawned Chromium process-tree private bytes - SAME stable original blank private bytes) / 1048576",
+  "cleanupLimitMiB": 96,
+  "cleanupBaseline": "original converter-loaded idle, not a later or increased baseline",
+  "servicesDisabled": false,
+  "forceGarbageCollection": false,
+  "inputReadLimitBytes": 262144,
+  "outputWriteAndQueueLimitBytes": 65536,
+  "maximumPendingWrites": 1,
+  "conversionDeadlineMs": 300000,
+  "validatorDeadlineMs": 120000,
+  "fullNativeSampleLimit": 12000,
+  "fileSizeLinearMemoryPassCriterion": "All actual sizes and repeats must independently meet the unchanged whole-tree and cleanup limits; report per-run measurements and chart without claiming flatness from a smaller metric",
+  "failureRule": "Preserve failed receipt, native journal and diagnosis; cancel normally and remove owned data; do not retry unchanged or rebase/exclude a service",
+  "productionSourcesChanged": false,
+  "matchedSpeedupProven": false,
+  "publicPromotion": false,
+  "nativePickerOrExternalDriveQualification": false,
+  "wholeGoalComplete": false
+}

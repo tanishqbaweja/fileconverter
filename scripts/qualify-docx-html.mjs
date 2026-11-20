@@ -25,7 +25,7 @@ import { cancelBrowserConversionBeforeCleanup } from "./lib/cancel-browser-conve
 import { classifyPrivateRequest } from "./lib/private-browser-request.mjs";
 import { selectOwnedLocalBrowserFile } from "./lib/select-owned-local-browser-file.mjs";
 import { bindLargeDocumentOutputValidationBacking } from "./lib/opfs-output-validation-backing.mjs";
-import { DOCX_HTML_SCALING_PLAN as scalingPlan, summarizeDocxHtmlRunMemory, renderDocxHtmlScalingSummary } from "./lib/docx-html-scaling-control.mjs";
+import { DOCX_HTML_SCALING_PLAN as defaultScalingPlan, summarizeDocxHtmlRunMemory, renderDocxHtmlScalingSummary } from "./lib/docx-html-scaling-control.mjs";
 import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
 import { cancelAfterRealBrowserPayload } from "./lib/browser-payload-cancellation.mjs";
 import { completeNewBrowserJob, installDocxDestinationObservation, assertDirectDocxCompletion } from "./lib/docx-direct-control.mjs";
@@ -40,18 +40,24 @@ const outlineSmall = process.argv[2] === "--outline-small-control";
 const tableVertical = process.argv[2] === "--table-vertical-control";
 const numberingControl = process.argv[2] === "--numbering-control";
 const hyperlinkControl = process.argv[2] === "--hyperlink-control";
+const hyperlinkFresh = process.argv[2] === "--hyperlink-direct-scaling-fresh";
+const hyperlinkScaling = process.argv[2] === "--hyperlink-direct-scaling" || hyperlinkFresh;
+const hyperlinkFeature = hyperlinkControl || hyperlinkScaling;
 const tableSmall = process.argv[2] === "--table-small-control" || tableVertical || numberingControl || hyperlinkControl;
+const smallSemantic = tableSmall || hyperlinkScaling;
+const scalingPlan = hyperlinkFresh ? Object.freeze({ ...defaultScalingPlan, paragraphs: Object.freeze([32768]), repeats: 1 }) : defaultScalingPlan;
 const emphasisControl = process.argv[2] === "--emphasis-direct-scaling";
 const outlineControl = process.argv[2] === "--outline-direct-scaling" || memoryDiagnostic || outlineSmall || emphasisControl;
 const benchmark = process.argv[2] === "--direct-async-scaling";
-const asyncDirect = benchmark || outlineControl || tableSmall;
+const asyncDirect = benchmark || outlineControl || tableSmall || hyperlinkScaling;
 const direct = process.argv[2] === "--direct-scaling" || asyncDirect;
 const scaling = !outlineSmall && !tableSmall && (process.argv[2] === "--scaling" || direct);
 const cancellationOnly = process.argv[2] === "--cancel-control";
 const payloadControl = scaling || cancellationOnly || outlineSmall || tableSmall;
 assert.ok(process.argv.length === (payloadControl ? 3 : 2));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
-const tableFixtureHelper = path.join(root, hyperlinkControl ? "scripts/lib/docx-hyperlink-fixtures.py" : numberingControl ? "scripts/lib/docx-numbering-fixtures.py" : tableVertical ? "scripts/lib/docx-row-span-fixtures.py" : "scripts/lib/docx-table-span-fixtures.py");
+const tableFixtureHelper = path.join(root, hyperlinkFeature ? "scripts/lib/docx-hyperlink-fixtures.py" : numberingControl ? "scripts/lib/docx-numbering-fixtures.py" : tableVertical ? "scripts/lib/docx-row-span-fixtures.py" : "scripts/lib/docx-table-span-fixtures.py");
+const scalingFixtureHelper = path.join(root, hyperlinkScaling ? "scripts/lib/docx-hyperlink-scaling-fixtures.py" : "scripts/lib/docx-html-scaling-fixtures.py");
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 262144 })) hash.update(b); return hash.digest("hex"); };
 const original = async () => ({ bytes: (await stat(path.join(root, "test.mkv"))).size, sha256: await hashFile(path.join(root, "test.mkv")) });
@@ -90,6 +96,8 @@ if (tableSmall) report.scope = "New native DOCX horizontal span and nested table
 if (tableVertical) report.scope = "Native two-by-two Word merge with a nested table, a flushed row-span patch, later output chunks, repeated async handle writes and recovery; not stress, speed, native picker or promotion";
 if (numberingControl) report.scope = "Native Word numbered/bullet/inherited/restarted lists and nested tables through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
 if (hyperlinkControl) report.scope = "Native Word explicit links, unsafe-target inactivation, forward/backward bookmarks, styled text and nested tables through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
+if (hyperlinkScaling) { report.scope = "Current production DOCX hyperlinks: genuine stored-ZIP content scaling with fixed1024relationships/64bookmarks and every paragraph/link independently validated; same original whole-tree/cleanup limits, no service changes or public acceptance";
+  report.hyperlinkScaling = { freshLargestOnly: hyperlinkFresh, firstSessionPlannedRepeats: 3, freshSessionPlannedRepeats: 1, crossSessionComparisonVerified: false }; }
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
 const packageBytes = (body, level = 6, invalidPackage = false) => zipSync({
@@ -161,7 +169,7 @@ assert parser.tags['strong']==1 and parser.tags['em']==1 and parser.tags['table'
 assert parser.csp and parser.current is None
 print(json.dumps({'sha256':h.hexdigest(),'paragraphs':len(parser.paragraphs),'tableCells':parser.tags['td'],'strong':parser.tags['strong'],'italic':parser.tags['em'],'csp':parser.csp,'validator':'independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts'}))
 `;
-const validateArgs = file => tableSmall ? [tableFixtureHelper, "validate", file] : ["-c", validator, file];
+const validateArgs = file => smallSemantic ? [tableFixtureHelper, "validate", file] : ["-c", validator, file];
 let runtime, server, chrome, chromeBirth, browser, page, context, monitor, timer, pending = null, observerError = null, traceStarted = false;
 let realmSampler, realmPending = null, rejectSafetyStop;
 let cleanupDiagnostic;
@@ -208,28 +216,29 @@ try {
     "workers/docx-outline.ts", "workers/docx-numbering.ts", "workers/docx-hyperlinks.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/docx-emphasis-fixtures.py", "scripts/lib/bounded-error-details.mjs",
     "scripts/lib/docx-cleanup-diagnostic.mjs", "scripts/lib/bounded-dom-counters.mjs", "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "scripts/lib/owned-chromium-cleanup.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
-  if (tableSmall) {
+  if (smallSemantic) {
     report.sourcePins[path.relative(root, tableFixtureHelper).replaceAll("\\", "/")] = await hashFile(tableFixtureHelper);
     report.sourcePins["scripts/lib/reconcile-chromium-births.mjs"] = await hashFile(path.join(root, "scripts/lib/reconcile-chromium-births.mjs"));
   }
+  if (hyperlinkScaling) report.sourcePins["scripts/lib/docx-hyperlink-scaling-fixtures.py"] = await hashFile(scalingFixtureHelper);
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
   report.validatorControls = [];
-  const referenceHtml = tableSmall
-    ? (await execute("python", [tableFixtureHelper, "reference"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: tableVertical || numberingControl || hyperlinkControl ? 1048576 : 32768 })).stdout
+  const referenceHtml = smallSemantic
+    ? (await execute("python", [tableFixtureHelper, "reference"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: tableVertical || numberingControl || hyperlinkFeature ? 1048576 : 32768 })).stdout
     : '<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="default-src \'none\'"></head><body>' +
     '<p><strong><em>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</em></strong></p>' +
     '<table><tr><td><p>Cell one</p></td><td><p>Cell two</p></td></tr></table><p>Inserted</p></body></html>';
   const validatorCases = [["positive", referenceHtml, true], ["wrong-text", referenceHtml.replace("Cell two", "wrong"), false],
     ["active-markup", referenceHtml.replace("</body>", "<script>alert(1)</script></body>"), false]];
-  if (tableSmall) validatorCases.push(["missing-column-span", referenceHtml.replace(' colspan="2"', ""), false],
+  if (smallSemantic) validatorCases.push(["missing-column-span", referenceHtml.replace(' colspan="2"', ""), false],
     ["lost-nested-table", referenceHtml.replace("<table><tr><td colspan=", "<tr><td colspan="), false]);
   if (tableVertical) validatorCases.push(["unpatched-row-span", referenceHtml.replace('rowspan="00002"', 'rowspan="00001"'), false],
     ["lost-post-patch-tail", referenceHtml.replace("After patch", "Damaged"), false]);
   if (numberingControl) validatorCases.push(["wrong-list-label", referenceHtml.replace("A.i)", "A.ii)"), false],
     ["wrong-list-level", referenceHtml.replace('data-docx-list-level="1"', 'data-docx-list-level="2"'), false],
     ["wrong-restart-value", referenceHtml.replace('value="7"', 'value="8"'), false]);
-  if (hyperlinkControl) validatorCases.push(["wrong-link-target", referenceHtml.replace("example.invalid/path", "other.invalid/path"), false],
+  if (hyperlinkFeature) validatorCases.push(["wrong-link-target", referenceHtml.replace("example.invalid/path", "other.invalid/path"), false],
     ["lost-bookmark", referenceHtml.replace('id="docx-bookmark-', 'data-dropped="docx-bookmark-'), false],
     ["lost-link-emphasis", referenceHtml.replace("<strong>", "").replace("</strong>", ""), false],
     ["lost-referrer-protection", referenceHtml.replace("noreferrer noopener", "noopener"), false],
@@ -247,11 +256,13 @@ try {
   const body = '<w:p><w:r><w:rPr><w:b/><w:i/></w:rPr><w:t>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</w:t></w:r></w:p>' +
     `<w:tbl><w:tblPr/><w:tblGrid><w:gridCol w:w="2400"/><w:gridCol w:w="2400"/></w:tblGrid><w:tr><w:tc>${p("Cell one")}</w:tc><w:tc>${p("Cell two")}</w:tc></w:tr></w:tbl>` +
     '<w:p><w:del w:id="1" w:author="fixture"><w:r><w:delText>Deleted</w:delText></w:r></w:del><w:ins w:id="2" w:author="fixture"><w:r><w:t>Inserted</w:t></w:r></w:ins></w:p>';
-  if (tableSmall) report.tableFixture = JSON.parse((await execute("python", [tableFixtureHelper, "generate", input],
+  if (smallSemantic) report.tableFixture = JSON.parse((await execute("python", [tableFixtureHelper, "generate", input],
     { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
   else await writeFile(input, packageBytes(body), { flag: "wx" });
   // Finite generated cancellation fixture BEFORE browser conversion, never a user-file copy.
-  await writeFile(cancellation, packageBytes(p("cancel payload ".repeat(600000)), 0), { flag: "wx" });
+  if (hyperlinkScaling) report.hyperlinkCancellationFixture = JSON.parse((await execute("python", [scalingFixtureHelper, "generate", cancellation, "2048"],
+    { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
+  else await writeFile(cancellation, packageBytes(p("cancel payload ".repeat(600000)), 0), { flag: "wx" });
   report.sourceValidation = [];
   for (const [kind, file] of [["structure", input], ["cancellation", cancellation]]) {
     const proof = JSON.parse((await execute("python", ["-c", sourceValidator, file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
@@ -263,7 +274,7 @@ try {
   report.fixture = { bytes: (await stat(input)).size, sha256: await hashFile(input), cancelBytes: (await stat(cancellation)).size };
   const scalingInputs = [];
   if (scaling) {
-    const helper = path.join(root, "scripts/lib/docx-html-scaling-fixtures.py");
+    const helper = scalingFixtureHelper;
     for (const paragraphs of scalingPlan.paragraphs) {
       const file = path.join(runtime.directory, direct ? `${ownedPrefix}${paragraphs}.docx` : `scaling-${paragraphs}.docx`);
       const generated = JSON.parse((await execute("python", [helper, outlineControl ? "generate-styled" : "generate", file, String(paragraphs)],
@@ -293,10 +304,16 @@ try {
     // Test the separate streaming large-output validator BEFORE conversion.
     const fixture = path.join(runtime.directory, "validator-scaling.html");
     const text = number => String(number).padStart(8, "0") + "|" + "bounded-stream-".repeat(280) + "|β 😀 &amp; &lt;script&gt;safe&lt;/script&gt;";
-    const positive = `<html><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'"></head><body><p>${text(0)}</p><p>${text(1)}</p></body></html>`;
+    const positive = hyperlinkScaling ? (await execute("python", [helper,"reference"], {cwd:root,env,windowsHide:true,timeout:10000,maxBuffer:32768})).stdout
+      : `<html><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'"></head><body><p>${text(0)}</p><p>${text(1)}</p></body></html>`;
     report.scalingValidatorControls = [];
-    for (const [name, value, accepted] of [["positive", positive, true], ["wrong-ordinal", positive.replace("00000001|", "00000007|"), false],
-      ["active-markup", positive.replace("</body>", "<script>bad</script></body>"), false], ["truncated", positive.slice(0, -25), false]]) {
+    const scalingValidatorCases = [["positive", positive, true], ["wrong-ordinal", positive.replace("00000001|", "00000007|"), false],
+      ["active-markup", positive.replace("</body>", "<script>bad</script></body>"), false], ["truncated", positive.slice(0, -25), false]];
+    if (hyperlinkScaling) scalingValidatorCases.push(["wrong-external-target",positive.replace("item/1?", "item/7?"),false],
+      ["wrong-local-target",positive.replace('href="#docx-bookmark-4230303031"','href="#docx-bookmark-4230303037"'),false],
+      ["lost-link-emphasis",positive.replace("<strong>","").replace("</strong>",""),false],
+      ["lost-bookmark",positive.replace('id="docx-bookmark-', 'data-dropped="docx-bookmark-'),false]);
+    for (const [name, value, accepted] of scalingValidatorCases) {
       await writeFile(fixture, value); let exitCode = 0;
       try { await execute("python", [helper, "validate", fixture, "2"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
       catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
@@ -439,7 +456,7 @@ try {
     caseRow.validated = validated; caseRow.kind = "complete";
     await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
-    if (tableSmall) {
+    if (smallSemantic) {
       assert.ok(state.warnings.some(message => message.includes("Legacy horizontal merges")));
       assert.ok(state.metrics.peakQueuedBytes <= 65536);
       if (tableVertical) {
@@ -454,7 +471,7 @@ try {
         assert.equal(validated.nestedHtmlListsAndTablesVerified, true);
         assert.ok(state.warnings.some(message => message.includes("instance continuation")));
       }
-      if (hyperlinkControl) {
+      if (hyperlinkFeature) {
         assert.equal(validated.semanticCases, 10); assert.equal(validated.allHyperlinksBookmarksTextAndEmphasisVerified, true);
         assert.equal(validated.unsafeTargetsInactive, true); assert.equal(validated.nestedHtmlTablesVerified, true);
         assert.ok(state.warnings.some(message => message.startsWith("Unsafe or unsupported DOCX link targets")));
@@ -528,7 +545,7 @@ try {
         const binding = await bindLargeDocumentOutputValidationBacking(page, profile, name, state.metrics.outputBytes);
         row.binding = binding.proof;
         if (diagnoseLarge) await cleanupDiagnostic.sample("bound");
-        row.validated = JSON.parse((await execute("python", [path.join(root, "scripts/lib/docx-html-scaling-fixtures.py"), "validate", binding.file, String(fixture.paragraphs)],
+        row.validated = JSON.parse((await execute("python", [scalingFixtureHelper, "validate", binding.file, String(fixture.paragraphs)],
           { cwd: root, env, windowsHide: true, timeout: scalingPlan.validatorTimeoutMs, maxBuffer: 32768 })).stdout);
         await assertOpfsOutputValidationBackingUnchanged(binding);
         if (diagnoseLarge) await cleanupDiagnostic.sample("validated");
@@ -562,7 +579,7 @@ try {
         previous = name;
       }
       const hashes = report.cases.filter(c => c.kind === "complete" && c.paragraphs === fixture.paragraphs).map(c => c.validated.sha256);
-      assert.equal(hashes.length, 3); assert.equal(new Set(hashes).size, 1);
+      assert.equal(hashes.length, scalingPlan.repeats); assert.equal(new Set(hashes).size, 1);
     }
   } else if (!cancellationOnly) {
     await select(input); let previous = null; for (let n = 0; n < 3; n++) previous = await success(previous);
@@ -649,6 +666,8 @@ try {
   if (scaling) report.completedDocumentScalingControlVerified = true;
   if (numberingControl) report.status = "passed-private-docx-numbering-and-recovery-not-scaling-or-promotion";
   if (hyperlinkControl) report.status = "passed-private-docx-hyperlinks-and-recovery-not-scaling-or-promotion";
+  if (hyperlinkScaling) report.status = hyperlinkFresh ? "passed-private-docx-hyperlink-fresh-largest-control-not-full-route" : "passed-private-docx-hyperlink-scaling-repeats-not-full-route";
+  if (hyperlinkFresh) { report.completedDocumentScalingControlVerified = false; report.freshLargestDocumentControlVerified = true; }
   if (outlineControl) report.outlineControlVerified = !outlineSmall;
   if (outlineSmall) report.smallNativeHeadingRecoveryVerified = true;
   if (emphasisControl) report.inheritedEmphasisControlVerified = true;
@@ -713,7 +732,7 @@ finally {
         const observedPids = [...new Set(samples.flatMap(sample => (sample.processes ?? []).map(p => p.pid)))];
         report.browserCleanup = await cleanupOwnedChromium({ identity: chromeBirth, observedPids,
           disconnect: async () => { await browser?.close(); } });
-        if (tableSmall && report.browserCleanup.status !== "owned-observed-pids-absent") {
+        if (smallSemantic && report.browserCleanup.status !== "owned-observed-pids-absent") {
           const pids = report.browserCleanup.observedPids;
           report.browserBirthReconciliation = reconcileChromiumBirths({ identity: chromeBirth, observedPids: pids,
             samples, current: await queryObservedPidCensus(pids) });
@@ -760,7 +779,7 @@ finally {
   }
   // Heading controls have separate cases, but the same late native replies
   // must be reconciled against their original immutable run windows as scaling.
-  if (report.blankBaseline && report.loadedIdle) for (const row of [...report.outlineControl?.cases ?? [], ...report.emphasisControl?.cases ?? [], ...(tableSmall ? report.cases : [])]) {
+  if (report.blankBaseline && report.loadedIdle) for (const row of [...report.outlineControl?.cases ?? [], ...report.emphasisControl?.cases ?? [], ...(smallSemantic ? report.cases : [])]) {
     if (!row.smallRunMemory) continue;
     const online = row.smallRunMemory;
     row.onlineSampleCounts = { validSamples: online.validSamples, unavailableSamples: online.unavailableSamples };

@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "scope": "Current-model private hyperlink scaling3x2 plus independent clean largest1x; not full Word/native destination/browser/public acceptance",
+  "crossSessionSameSourceAndOutputVerified": true,
+  "rows": [
+    {
+      "session": 1,
+      "paragraphs": 2048,
+      "repeat": 1,
+      "sourceBytes": 9462927,
+      "outputBytes": 9295737,
+      "outputSha256": "88c9f419c92b94221a9f25e7536cb8310f66133ad248b78093f4460792f8d74e",
+      "elapsedMs": 816.3700000047684,
+      "incrementalPrivateMiB": 130.171875,
+      "cleanupDeltaFromOriginalLoadedMiB": 41.4609375
+    },
+    {
+      "session": 1,
+      "paragraphs": 2048,
+      "repeat": 2,
+      "sourceBytes": 9462927,
+      "outputBytes": 9295737,
+      "outputSha256": "88c9f419c92b94221a9f25e7536cb8310f66133ad248b78093f4460792f8d74e",
+      "elapsedMs": 745.4199999570847,
+      "incrementalPrivateMiB": 134.01953125,
+      "cleanupDeltaFromOriginalLoadedMiB": 34.078125
+    },
+    {
+      "session": 1,
+      "paragraphs": 2048,
+      "repeat": 3,
+      "sourceBytes": 9462927,
+      "outputBytes": 9295737,
+      "outputSha256": "88c9f419c92b94221a9f25e7536cb8310f66133ad248b78093f4460792f8d74e",
+      "elapsedMs": 765.625,
+      "incrementalPrivateMiB": 140.11328125,
+      "cleanupDeltaFromOriginalLoadedMiB": 36.15234375
+    },
+    {
+      "session": 1,
+      "paragraphs": 32768,
+      "repeat": 1,
+      "sourceBytes": 148388967,
+      "outputBytes": 148682577,
+      "outputSha256": "98acd389699abc3c13b166d1807edbf1c74604a9c82119788d1350c577231712",
+      "elapsedMs": 9556.050000011921,
+      "incrementalPrivateMiB": 187.2734375,
+      "cleanupDeltaFromOriginalLoadedMiB": -2.21875
+    },
+    {
+      "session": 1,
+      "paragraphs": 32768,
+      "repeat": 2,
+      "sourceBytes": 148388967,
+      "outputBytes": 148682577,
+      "outputSha256": "98acd389699abc3c13b166d1807edbf1c74604a9c82119788d1350c577231712",
+      "elapsedMs": 9399.430000007153,
+      "incrementalPrivateMiB": 145.9609375,
+      "cleanupDeltaFromOriginalLoadedMiB": 69.375
+    },
+    {
+      "session": 1,
+      "paragraphs": 32768,
+      "repeat": 3,
+      "sourceBytes": 148388967,
+      "outputBytes": 148682577,
+      "outputSha256": "98acd389699abc3c13b166d1807edbf1c74604a9c82119788d1350c577231712",
+      "elapsedMs": 9349.175000011921,
+      "incrementalPrivateMiB": 151.8046875,
+      "cleanupDeltaFromOriginalLoadedMiB": 69.6875
+    },
+    {
+      "session": 2,
+      "paragraphs": 32768,
+      "repeat": 1,
+      "sourceBytes": 148388967,
+      "outputBytes": 148682577,
+      "outputSha256": "98acd389699abc3c13b166d1807edbf1c74604a9c82119788d1350c577231712",
+      "elapsedMs": 9635.324999988079,
+      "incrementalPrivateMiB": 184.8515625,
+      "cleanupDeltaFromOriginalLoadedMiB": 13.3359375
+    }
+  ],
+  "peakCompleteControlIncrementalPrivateMiB": 187.2734375,
+  "maximumPerRunCleanupDeltaMiB": 69.6875,
+  "primaryLimitMiB": 250,
+  "cleanupLimitMiB": 96,
+  "measuredBoundsPassed": true,
+  "universalFlatMemoryClaim": false,
+  "matchedSpeedupProven": false,
+  "publicPromotion": false,
+  "wholeGoalComplete": false,
+  "references": [
+    {
+      "file": "evidence/2026-11-20T11-39-33-444Z-docx-html-qualification.json",
+      "sha256": "71ef91ef096dadb7619c660d4194e23644a14d4d17de4aca6182701710630096",
+      "nativeArchive": {
+        "file": "evidence/2026-11-20T11-39-33-444Z-docx-html-native-samples.json.gz",
+        "bytes": 74453,
+        "sha256": "970c72ead5809de7bb0a952f691d6fcb25f1aa091f800108d80804c12a738126",
+        "decodedBytes": 4071902,
+        "decodedSha256": "ff2eb75135c9775a831f20b76b5f5e0bfc68ca50fd291c7bb6204de83f785d57"
+      }
+    },
+    {
+      "file": "evidence/2026-11-20T11-43-44-352Z-docx-html-qualification.json",
+      "sha256": "2272446702b171610c5ebcc10b9cb9e52d37726518a607cdef8fcb3d7d4b51ab",
+      "nativeArchive": {
+        "file": "evidence/2026-11-20T11-43-44-352Z-docx-html-native-samples.json.gz",
+        "bytes": 35089,
+        "sha256": "b47fe546a61aa88ce38c211a3d7c190782eea7f9314a84a04b3a97379c17cb48",
+        "decodedBytes": 1872874,
+        "decodedSha256": "c9e542b33ee3e211f69d5810101b971d2ef5b392ce64eced906dfa9fc521b6f2"
+      }
+    }
+  ],
+  "generatedAt": "2026-11-20T11:46:04.089Z"
+}
