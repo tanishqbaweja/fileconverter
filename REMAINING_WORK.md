@@ -1,5 +1,23 @@
 # Remaining work audit
 
+2026-11-20 M-09 specialist ORIGINAL runtime gate FAILED, not a solution despite
+native26.76% static reduction/small qualification. Actual380.58203125MiB over
+original blank vs250MiB,155.083s untouched source1920x804/24fps/4Mbps; no full
+converted output/fidelity/scaling/speed/public acceptance. All1675native100ms
+records independently streamed/replayed;1420valid/0missing active. Contemporary
+exact-birth PID20340/FILETIME134396524431630101 proves model-service role for
+THIS run;237.09765625MiB global-peak contribution stays INCLUDED. Its later own
+249.38671875MiB peak differs; pre-birth203.5546875MiB is not alternate acceptance.
+No app causation or retroactive Nov6 attribution. JSON/CSV/HTML retained at
+2026-11-20-vp9-cpu-specialist-original-startup-44735542199(-analysis). All47pins/
+HTTP/trace/owned-birth cleanup/original integrity verified.18focused checks and
+scoped lint/402public audit PASS, not runtime PASS. Initial17/18 assertion fixed
+separate component/global moments without metric change or browser replay.
+Current exact default-Chrome profile remains private/unqualified, M-09 partial.
+Do not rerun unchanged, disable/exclude model service or shrink source/settings.
+Continue other original requirements; further video work requires distinct
+implementation/browser hypothesis. No goal blocking/completion inferred.
+
 2026-11-20 M-09 specialist original startup prepared, still NOT RUN. Full exact
 test.mkv/no excerpt, unchanged1920x804/24fps/4Mbps/5minute/250MiB sameblank guard.
 Already qualified44735542199 native core/small gate reused; no rebuild/replay.

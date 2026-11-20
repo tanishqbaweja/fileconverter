@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "status": "failed-unchanged250MiB-original-startup",
+  "sourceReport": "evidence/2026-11-20-vp9-cpu-specialist-original-startup-44735542199.json",
+  "sourceReportSha256": "59ee51e70d057c3ce19e22552774d6c238657015d34af144092059b9dd2e5b6e",
+  "executedHead": "074866e66fa9b0d8618460819e53cc1d0019ded6",
+  "scope": "Full original supplied, bounded startup only; no completed output/fidelity/scaling/public or matched speed acceptance",
+  "primary": {
+    "blankPrivateBytes": 320790528,
+    "peakPrivateBytes": 719859712,
+    "incrementalPrivateMiB": 380.58203125,
+    "validSamples": 1420,
+    "unavailableSamples": 0,
+    "allPeakProcessesIncluded": true
+  },
+  "nativeJournal": {
+    "file": "output\\playwright\\2026-11-20-vp9-cpu-specialist-original-startup-44735542199-native.ndjson.gz",
+    "rawBytes": 5592378,
+    "rawSha256": "bb7eb0c927a3096bf13104d3c6de87004082c48889082b4952e33ba06fcc5ca2",
+    "archiveBytes": 84709,
+    "archiveSha256": "12c833e87dd5c3b9eec46f547bafe9ce25207a0986b8e1af0524f6ba85cfe793",
+    "records": 1675,
+    "completeStreamingReplayVerified": true,
+    "rawRemoved": true
+  },
+  "lateChild": {
+    "pid": 20340,
+    "parentPid": 10428,
+    "createdAt": "2026-11-20T12:47:23.1630101Z",
+    "creationFileTime": "134396524431630101",
+    "executableName": "chrome.exe",
+    "type": "unknown",
+    "utilitySubtype": null,
+    "sandboxType": null,
+    "privateBytes": 248614912,
+    "rssBytes": 192040960,
+    "role": {
+      "status": "classified",
+      "type": "utility",
+      "utilitySubtype": "on_device_model.mojom.OnDeviceModelService",
+      "sandboxType": "on_device_model_execution"
+    },
+    "privateMiBAtWholeTreePeak": 237.09765625,
+    "exactBirthMatched": true,
+    "excludedFromAcceptance": false,
+    "appCausationProven": false
+  },
+  "beforeLateBirth": {
+    "wholeTreePrivateBytes": 534233088,
+    "incrementalPrivateMiB": 203.5546875,
+    "timestamp": "2026-11-20T12:46:25.3679720Z",
+    "diagnosticOnly": true,
+    "notAnAlternateAcceptanceWindow": true
+  },
+  "safetyStop": {
+    "kind": "memory-budget-exceeded",
+    "incrementalPrivateMiB": 378.0859375,
+    "acquiredAt": "2026-11-20T12:47:26.202Z",
+    "elapsedMs": 154945
+  },
+  "elapsedMs": 155083.4700000286,
+  "inputFileBytes": 2958573265,
+  "actualInputBytesRead": 29451841,
+  "actualOutputBytesWrittenBeforeAbort": 22962542,
+  "actualWriteAttempts": 96,
+  "partialOutputBytesAfterAbort": 0,
+  "encodedFrames": null,
+  "sourcePinsVerified": 47,
+  "freshBrowserBirthReconciliation": {
+    "allObservedBirthsAbsent": true,
+    "observedPidCount": 47,
+    "reused": [
+      {
+        "pid": 24444,
+        "currentBirth": "2026-11-20T12:45:27.805962Z",
+        "observedBirths": [
+          "2026-11-20T12:44:25.932087Z"
+        ]
+      }
+    ],
+    "unresolved": [],
+    "noProcessesKilled": true
+  },
+  "allOwnedDataRemoved": true,
+  "originalBeforeAfterFullShaAndSizeUnchanged": true,
+  "publicAssetsOrRoutesChanged": false,
+  "servicesDisabled": false,
+  "speedGainProven": false,
+  "fullOriginalConverted": false,
+  "independentFullFidelityPassed": false,
+  "wholeGoalComplete": false,
+  "nextAction": "Do not replay this configuration or disable/exclude the model service. Preserve measured default-Chrome failure and continue other original requirements; any further video run needs a distinct implementation or browser hypothesis.",
+  "reports": {
+    "csv": "evidence/2026-11-20-vp9-cpu-specialist-original-startup-44735542199-native.csv",
+    "csvRows": 1675,
+    "html": "evidence/2026-11-20-vp9-cpu-specialist-original-startup-44735542199-analysis.html"
+  }
+}

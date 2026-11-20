@@ -6,16 +6,35 @@ specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complet
 
 ## Active implementation: private VP9 CPU specialist
 
-NEXT GATE PREPARED, NOT RUN: `scripts/test-vp9-cpu-specialist-original.mjs`
-uses already authenticated44735542199 core and passed small receipt, the FULL
-unchanged test.mkv, same1920x804/24fps/4Mbps, five-minute startup/cancellation
-and exact250MiB originalblank guard. Adds full streamed100ms native journal and
-contemporary exact-birth role capture; no service disabling/process exclusion.
-25source/journal/startup checks + check-only parse and scoped lint PASS. Raw
-journal ownership is acquired before starting its monitor, so failure cannot
-strand a monitor before the parallel observer owns it. Run exactly once; receipt
-prefix2026-11-20-vp9-cpu-specialist-original-startup-44735542199. No rebuilt core,
-small replay, excerpt or full-conversion acceptance implied.
+LATEST ORIGINAL GATE FAILED; do NOT replay. Actual receipt prefix:
+`evidence/2026-11-20-vp9-cpu-specialist-original-startup-44735542199`, fullSHA
+59ee51e70d057c3ce19e22552774d6c238657015d34af144092059b9dd2e5b6e.
+Same untouched2,958,573,265B original/1920x804/24fps/4Mbps/250MiB originalblank.
+After155.083s CPU work, whole-tree380.58203125MiB FAIL; normal cancellation,
+29,451,841B read/22,962,542B written/96writes before transactional abort0B.
+FULL1675native100ms records replayed,1420valid/0missing active. Raw5,592,378B
+verified/compressed to84,709B, raw removed. CSV all1675rows + HTML graph + compact
+analysis JSON retained. All47sourcepins/HTTP/trace/original integrity verified.
+
+This run NOW has contemporary exact-birth attribution: PID20340,parent10428,
+FILETIME134396524431630101 is on_device_model.mojom.OnDeviceModelService.
+It contributes237.09765625MiB AT THE WHOLE-TREE PEAK, INCLUDED. Its separate
+later component-only peak249.38671875MiB is not substituted into that total.
+Pre-child full-journal203.5546875MiB is diagnostic ONLY, not a passing subwindow.
+Application-triggered service allocation unproven; never retroactively label
+Nov6's unclassified child using this Nov20 observation.
+
+All47observed owned births and3roots absent; one unrelated reusedPID24444 left
+untouched. Exact runtime/stages gone, partial media/profile removed; original
+pre/post fullSHA+size unchanged. No full output/frame count/fidelity/scaling/
+speed/public acceptance. New18focused checks + affected lint +402public audit
+PASS, not a release pass. Initial17/18 evidence assertions wrongly equated the
+component-only maximum with its contribution at the global peak; corrected to
+verify BOTH observations, without rerunning browser or changing measured failure.
+No live job.26.76% smaller static core does NOT solve this default-Chrome gate.
+Final12evidence/recipe/suite-contract checks also PASS; no old portable gate
+removed. C: has only about7MiB free at final observation; unrelated files and
+applications were left alone. All conversion data/profile/journal stayed in repo.
 
 Small specialist browser gate CLOSED, still private. Actual receipt:
 `evidence/2026-11-20-vp9-cpu-specialist-qualification-44735542199.json`, SHA256
@@ -54,15 +73,14 @@ retention fixed the cause without weakening support/guard. GH logs now use direc
 API, avoiding `gh run view --log` persistent system-drive cache. C: was full,
 only~117MiB free after browser test; no unrelated data deleted. No job is live.
 
-NEXT: one distinct untouched-original startup with this authenticated specialist,
-same1920x804/24fps/4Mbps settings and250MiB originalblank limit; retain full guard,
-HTTP transport, bounded traces, birth-aware cleanup and before/after original
-SHA. Existing original9 with old packed core remains389.296875MiB FAIL with an
-unclassified late child; do not guess its role, disable services or replay old
-bytes. Small control is prerequisite only, not full original/scaling acceptance.
-Do not repeat passed small qualification/build; reuse retained authenticated
-core and receipt. Overall M-09, production integration, fidelity breadth, scaling,
-matched-speed optimization and entire original project remain incomplete.
+NEXT: continue other incomplete original requirements with constraints intact.
+Any further video run needs a DISTINCT implementation or explicit browser-specific
+hypothesis, not another default-Chrome original replay or service exclusion.
+Current exact original CPU profile remains private/unqualified; broader M-09 is
+partial, not silently completed or globally unsupported. Preserve this measured
+failure and old original9's389.296875MiB/unclassified-child failure separately.
+Do not rebuild or repeat passed small control. Production integration, compatible
+stream preservation, scaling, matched speed and entire project remain incomplete.
 
 ## Current capability increment: private DOCX hyperlinks
 
