@@ -6368,14 +6368,15 @@ export const privateQualificationProfiles: readonly ConversionProfile[] = [{
   cpuClass: "low", memoryClass: "bounded-low",
   metadataLimitations: [
     "Private qualification only: not publicly supported until correctness, full-process memory, repeats, adverse-path recovery and browser qualification pass.",
-    "Main Word document only. Package properties, headers, footers, notes, comments, hyperlinks, images and drawings are not exported. Unsafe or macro-enabled ZIP packages, DTDs and external entities are rejected.",
+    "Main Word document only. Package properties, headers, footers, notes, comments, images and drawings are not exported. Unsafe or macro-enabled ZIP packages, DTDs and external entities are rejected.",
   ],
   fidelityLimitations: [
     "Preserves main-document paragraphs, direct/inherited paragraph outline hierarchy as semantic headings, table rows/cells with horizontal grid spans and standard vertical merges, direct and referenced paragraph/character style bold/italic/underline/strike emphasis, Unicode, tabs and line breaks. Supported style toggles and direct overrides are resolved. Accepted insertions are included; tracked deletions and moved-from text are excluded.",
     "Omitted edge grid positions use empty cells; vertical continuations must have matching columns and no visible content. Legacy horizontal merges, cell sizing and exact Word table layout are not reproduced.",
     "Supported outline/emphasis and paragraph list references inherit from document defaults and paragraph/character styles as applicable. Decimal, repeated-letter, Roman and Unicode-bullet list labels preserve instance continuation, level restarts and start overrides. Marker fonts, tab stops and indent geometry normalize; picture/legacy markers, linked numbering styles and other numbering systems are rejected when referenced. Optional numbering has a1MiB part limit,1024definitions/instances and9levels, independent of document size.",
     "Table-style effects, complex-script properties, underline patterns/colors, other fonts/colors, page layout and field instructions are not reproduced. Underlines normalize to single; headings reflow in HTML rather than preserving exact Word appearance; field display text remains. Optional styles/relationships are bounded to1MiB each,1024definitions and64inheritance levels. Foreign-namespace content is omitted with a warning.",
-    "Output is static self-contained HTML with escaped document text and restrictive CSP; no source URLs, scripts, styles or external resources are emitted.",
+    "Explicit HTTP/HTTPS/mailto hyperlinks, tooltips and bookmark positions are preserved without fetching targets; relationship targets supersede local anchors. Unsafe, relative and package links retain inactive display text. Nested links are rejected; frame/history/document-location hints and field-code links are not reproduced. Missing bookmark fragments remain unresolved, not Word's fallback-to-start behavior. Relationships cap1MiB/4096entries/1024links and bookmark names/references each cap4096.",
+    "Output is static HTML with escaped document text/validated link attributes and restrictive CSP; no source scripts, CSS or automatically loaded external resources are emitted. Navigation links have no-referrer/noopener protections; following an external link is a separate user action.",
   ],
   maxTestedBytes: null, automatedTestStatus: "pending", public: false,
 }];

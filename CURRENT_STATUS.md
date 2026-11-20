@@ -1,8 +1,48 @@
 # Current project checkpoint
 
-Updated 2026-11-17. Read this first after resuming; then follow the cited receipts.
+Updated 2026-11-20. Read this first after resuming; then follow the cited receipts.
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
+
+## Current capability increment: private DOCX hyperlinks
+
+Implemented and small production-browser qualification PASS, still private.
+Explicit HTTP/HTTPS/mailto links, escaped tooltips and bookmark positions retain
+text/emphasis without fetching targets. Unsafe/relative/package links keep
+inactive text with a content-free warning. Relationship metadata caps at1MiB/
+4096entries/1024links; bookmark names/references cap4096each;64KiB backpressured
+output unchanged. Nested links reject; frame/history/docLocation, field-code
+links and Word's missing-bookmark fallback are not reproduced.
+
+[Actual receipt](evidence/2026-11-20T11-26-08-834Z-docx-html-qualification.json):
+37,974B genuine python-docx package -> four identical211,913B HTML outputs.
+Chrome158.0.8127.36 headless, three same-page repeats plus payload cancellation,
+injected write failure and exact recovery. Independent hardcoded10-link semantic
+oracle verifies targets, text, tooltips, emphasis, forward/backward bookmarks and
+nested tables; nine rejecting validator mutations. Peak84.23828125MiB over SAME
+blank,445valid/0missing active samples; complete795-row native journal retained.
+Cleanup max30.62109375MiB over original loaded idle.36static requests/0forbidden;
+48observed owned PIDs absent, owned files/profile/runtime/server removed, original
+test.mkv pre/post full SHA/size unchanged. No public promotion, large-link scaling,
+native picker/external drive, headed/manual, full Word fidelity or speedup claim.
+
+The first11:24:08Z runner failed before launching Chrome because Python's Windows
+cp1252 output could not print the Unicode reference; retained zero-case failure,
+owned runtime removed. Explicit UTF-8 fixed the helper. Earlier unit8/9 fixture
+failure was corrected to exercise image-vs-hyperlink type, not missing styles;
+no safety guard weakened.96related and61overlapping checks PASS; after strengthened
+caps/actual-evidence checks,14/14 PASS. Build/TypeScript/scoped lint PASS. Portable
+snapshot **2917/2917 PASS**,0fail/skip/cancel,111559.0123ms/784selected files;
+164 prerequisite qualification files not run. The new evidence-test file and
+strengthened cap assertions were verified separately in the14checks, not claimed
+as part of that earlier inventory snapshot. All32 browser source pins freshly
+reverified;402-entry public evidence audit PASS. Final checkpoint:
+[DOCX hyperlink verification](evidence/2026-11-20-docx-hyperlinks-checkpoint.json).
+
+Next distinct DOCX gate: scale repeated link IDs and bookmark references on the
+existing genuine large-document sizes with the current model, same real handle
+writer, repeat/cleanup/fresh-session and memory thresholds. Do not replay the
+unchanged no-link/emphasis controls as evidence of hyperlink scaling.
 
 ## Current critical path
 
@@ -41,7 +81,7 @@ The initial worker-header setup failure is retained separately, not a passing
 copy. [Actual comparison](evidence/2026-11-16T23-24-56-258Z-staged-writer-control.json).
 Do not retry this candidate unchanged or claim it speeds up conversion.
 
-## Last completed capability increment
+## Previous completed capability increment
 
 Private bounded DOCX list-numbering preservation: genuine production-browser
 small-repeat/cancellation/write-error/recovery proof, 83.296875 MiB peak; still
@@ -52,7 +92,7 @@ new tests added after that checkpoint.
 
 ## Next distinct work and stop rules
 
-Focused verification of this increment: **39/39 PASS**, zero skips/failures,
+Historical November17 checkpoint verification: **39/39 PASS**, zero skips/failures,
 11.60 seconds, including unchanged saver and historical TypeScript overlay
 checks, actual archived comparison/attribution and ledger-history preservation.
 Affected lint PASS. No full portable/build/browser rerun or release pass claimed.

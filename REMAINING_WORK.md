@@ -1,5 +1,47 @@
 # Remaining work audit
 
+2026-11-20 N-08: **bounded explicit DOCX hyperlinks/bookmarks implemented and
+small production-browser repeat/recovery gate PASS**, still private. Actual
+11:26:08Z receipt/fullSHAf2895157…394bcfb:37,974B python-docx1.2.0 -> four
+identical211,913B HTML/SHA15445b44…e320b90. Chrome158.0.8127.36 headless,
+three repeats/payload cancel/injected write error/exact recovery; independent
+hardcoded10-link oracle verifies targets/tooltip/text/emphasis, forward/backward
+bookmarks and nested tables; nine negative mutations reject. Peak84.23828125MiB
+over SAME blank,445valid/0missing active samples; complete795-row native journal.
+Cleanup max30.62109375MiB over original loaded idle.36requests/0forbidden.
+All48 observed owned PIDs absent; owned files/runtime/profile/server removed;
+protected original pre/post fullSHA/size unchanged. No service disabling,
+baseline substitution, public promotion, full Word/link-scaling/browser/native
+external-destination or speedup claim. Earlier11:24:08Z Python cp1252 reference
+failure is retained with0cases/no browser/owned cleanup; explicit UTF-8 fixed it.
+Current implementation/disclosures and complete prior history remain below.
+14focused current/evidence/cap checks PASS after strengthening;96/61 earlier
+overlapping regression groups/build/TypeScript/scoped lint PASS. Full portable
+snapshot now **2917/2917 PASS**,0fail/skip/cancel/111559.0123ms across784selected
+portable files;164 prerequisite files not run. New evidence-test file and later
+cap guards were checked separately in14focused tests, not inside that snapshot.
+All32 current source pins reverified;402-entry public audit PASS. Checkpoint:
+`evidence/2026-11-20-docx-hyperlinks-checkpoint.json`. Next: current-model large-link
+scaling/repeats/fresh-session while broader original requirements remain open.
+
+2026-11-20 N-08 implementation cycle IN PROGRESS: private DOCX HTML now emits
+validated HTTP/HTTPS/mailto relationship links, escaped tooltips and bounded
+bookmark point targets, preserving link text/run emphasis without fetching URLs.
+Unsafe/relative/package targets retain inactive display text with a content-free
+warning; nested links reject explicitly. Relationships1MiB/4096entries/1024links,
+bookmarks/references4096each;64KiB output and strict backpressure unchanged.
+Missing bookmarks warn about unresolved fragments rather than claim Word's
+fallback semantics. Frame/history/docLocation and field-code links remain omitted.
+Initial8/9 focused: wrong-type fixture actually triggered missing styles part;
+corrected fixture to unrelated image relationship, no safety assertion weakened.
+Then96/96 related conversion/lifecycle checks PASS;61/61 overlapping historical/
+hyperlink/evidence checks PASS. TypeScript found callback initialization annotation
+and is now PASS after non-null definite initialization assertion; build/scoped
+lint PASS. Native python-docx fixture/independent streaming oracle and actual
+headless production3repeat/cancel/write-failure/recovery control is RUNNING, not
+yet acceptance. Historic reports remain immutable and exact source adapters
+identify their prior code; no inherited hyperlink qualification or public change.
+
 2026-11-17 current navigation: [CURRENT_STATUS.md](CURRENT_STATUS.md). Complete
 requirement scope and all historical entries below are retained. Offline
 reconciliation corrects an incomplete earlier diagnosis: the later original

@@ -20,7 +20,19 @@ restarts, start overrides and paragraph-style inheritance. Numbering uses a
 1 MiB metadata-part cap, 1,024 definitions/instances and nine levels; counters
 do not grow with paragraph count. Original marker fonts, tab/indent geometry,
 picture/legacy markers and other numbering systems are not fully reproduced.
-Fonts, exact page/table layout, links, graphics and ancillary parts are not fully
+Explicit HTTP/HTTPS/mailto links, escaped tooltips and bookmark positions are
+preserved without fetching targets. Unsafe, relative and package targets retain
+inactive display text. Navigation has no-referrer/noopener protections; following
+an external link is a separate user action. Relationship metadata caps at 1 MiB,
+4,096 entries and 1,024 links; bookmark names and references each cap at 4,096.
+Nested links are rejected; frame/history/document-location hints, field-code links
+and Word's missing-bookmark fallback are not reproduced. This increment passed a
+small headless Chrome158 production repeat/cancel/write-error/recovery control:
+four identical211,913-byte HTML outputs from a genuine Word package, independently
+validated links/bookmarks/text/emphasis,84.24MiB whole-tree peak and30.62MiB maximum
+cleanup delta. It remains private; large hyperlink scaling, other browsers and
+native-picker/external-drive qualification are open. Fonts, exact page/table
+layout, graphics and ancillary parts are not fully
 preserved; the UI discloses those limits. Paragraph outline/heading inheritance
 and supported document-default/paragraph/character-style emphasis are implemented
 with 1 MiB metadata, 1,024-style and 64-level safety bounds. The new emphasis

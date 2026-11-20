@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
 import { preDocxNumbering } from "../scripts/lib/reviewed-docx-numbering.mjs";
+import { preDocxHyperlinks } from "../scripts/lib/reviewed-docx-hyperlinks.mjs";
 const sha=bytes=>createHash("sha256").update(bytes).digest("hex");
 const raw=await readFile("evidence/2026-11-16T14-24-12-204Z-docx-html-qualification.json");
 assert.equal(sha(raw),"cd950697c2833e2b8903c4202dffa4d2cade299d1860de4e847272ff4a192a16");
@@ -14,8 +15,11 @@ const samples=JSON.parse(journal),window=record=>samples.filter(s=>Date.parse(s.
 test("actual source-pinned headless Word lists pass three repeated outputs and adverse recovery, not route publication",async()=>{
   assert.equal(r.status,"passed-private-docx-numbering-and-recovery-not-scaling-or-promotion");
   assert.deepEqual(r.cases.map(c=>c.kind),["complete","complete","complete","payload-cancel","write-error","complete"]);
-  for(const file of ["workers/docx-numbering.ts","workers/docx-outline.ts","workers/docx-html-conversion.ts","scripts/lib/docx-numbering-fixtures.py"])
-    assert.equal(sha(await readFile(file)),r.sourcePins[file],file);
+  // Historical numbering qualification, not current hyperlink certification.
+  for(const file of ["workers/docx-numbering.ts","workers/docx-outline.ts","workers/docx-html-conversion.ts","scripts/lib/docx-numbering-fixtures.py"]){
+    const bytes=await readFile(file);
+    assert.equal(sha(file==="workers/docx-html-conversion.ts"?preDocxHyperlinks(file,bytes):bytes),r.sourcePins[file],file);
+  }
   assert.equal(r.fixture.bytes,37964);assert.equal(r.tableFixture.generator,"python-docx");assert.equal(r.tableFixture.semanticCases,18);
   assert.equal(r.tableFixture.anchorContentBytes,224000);
   for(const c of r.cases.filter(c=>c.kind==="complete")){

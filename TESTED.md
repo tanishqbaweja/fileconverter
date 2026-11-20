@@ -14014,6 +14014,45 @@ Updated 2026-11-16 from the capability registry, retained successful Chrome stre
 - **2026-09-27 bounded archive/package source inspection:** ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB read only the 65,557-byte ZIP tail plus at most a 1 MiB central-directory prefix. TAR performs at most 256 isolated 512-byte header reads while skipping payloads; GZIP/BZIP2/XZ wrappers read at most 64 KiB plus an eight-byte GZIP trailer; 7Z reads its 32-byte start header plus one next-header marker. The panel reports bounded entry/size/compression/encryption/path-safety and package facts without decompressing payloads or displaying names. Eight ZIP-based families, TAR/TAR.GZ/TAR.BZ2/TAR.XZ/7Z, raw GZIP/BZIP2/XZ, unsafe ZIP/TAR, an in-memory 20,000-entry oversized ZIP directory, and a 1,024-entry TAR passed the focused production-Chromium gate 1/1. The ZIP stress stopped at exactly 1,114,133 bytes; TAR stopped at exactly 131,072 header bytes and both qualified incomplete counts. Exact scope and cleanup are in `evidence/package-source-inspection-2026-09-27.json`.
 <!-- BEGIN MANUAL TEST LOG -->
 
+2026-11-20 — N-08 private explicit hyperlinks/bookmarks small browser gate PASS.
+Receipt11:26:08Z/fullSHAf2895157…394bcfb:37,974B genuine Word -> four identical
+211,913B HTML/SHA15445b44…e320b90. Headless normal-service Chrome158.0.8127.36,
+three same-page repeats + actual payload cancellation (1,376,256B output armed),
+injected write failure + exact recovery. Independent hardcoded10-link Python
+oracle and nine rejecting mutations cover target/tooltip/text/emphasis/bookmark/
+table fidelity, unsafe targets inactive. Complete795-row native journal retained;
+SAME-blank peak84.23828125MiB/445valid0missing; original-loaded cleanup max
+30.62109375MiB,250/96 limits unchanged.36static requests/0forbidden.48observed
+owned PIDs absent, owned fixture/output/profile/runtime/server removed, original
+pre/post fullSHA/size unchanged. No public/large-link scaling/native picker/
+external drive/headed/full Word/speedup claim. First11:24:08Z control failed
+before browser/any conversion because Python cp1252 could not print Unicode;
+zero-case failure and cleanup retained. Helper now emits explicit UTF-8.
+14/14 current/evidence/cap tests PASS; build/TypeScript/scoped lint PASS, with
+96/61 earlier overlapping focused groups. Final portable snapshot2917/2917 PASS,
+0fail/skip/cancel/111559.0123ms/784files;164 prerequisite files not run. Newly
+added evidence-test file/later cap assertions independently14PASS, not claimed
+inside earlier snapshot. All32 browser source pins reverified;402-entry public
+audit PASS. Final evidence/2026-11-20-docx-hyperlinks-checkpoint.json.
+Prior IN PROGRESS notes record the earlier cycle; all old chronology retained.
+
+2026-11-20 — N-08 DOCX hyperlinks IN PROGRESS, not yet browser-qualified.
+Implementation adds bounded safe explicit targets/tooltips and bookmark points;
+unsafe/relative/package links stay inactive, nested links reject, no URL fetch.
+Same64KiB output/strict backpressure. Relationships1MiB/4096entries/1024links;
+bookmark names/references4096each. Field-code links, frame/history/docLocation
+and Word missing-anchor fallback remain disclosed omissions. Initial8/9 test
+failure was a wrong-type fixture using a missing styles part (style reader ran
+first); changed fixture to image type, no production guard relaxation.
+Related conversion/lifecycle96/96 PASS, overlapping historical/current group
+61/61 PASS; initial TypeScript callback-assignment diagnostic repaired, current
+TypeScript/build/affected lint PASS. Native real Word fixture + independent
+streaming HTML semantic oracle with negative mutations added. Actual production
+headless repeat/cancel/write-error/recovery started; no result claimed yet.
+The prior November17 test handle27057 is absent, not a live wait. Runtime memory
+is re-preflighted by the browser runner. Historical reports remain immutable;
+exact prior/current source identities are separated from new feature proof.
+
 2026-11-17 — Current handoff is CURRENT_STATUS.md; full audit/history retained.
 Offline reconciliation found an earlier missed witness in the FAILED original
 production-staged repeat receipt d5edb76a…ced18258. The retained birth-aware

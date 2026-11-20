@@ -4,9 +4,11 @@ import {
 } from "./docx-conversion";
 import { readDocxOutlineModel, parseDocxOutlineLevel, docxEmphasisKey, parseDocxEmphasisValue, type DocxOutlineModel, type DocxEmphasis } from "./docx-outline";
 import { readDocxNumberingModel, parseDocxNumberingInteger, type DocxNumberingModel, type DocxNumberingReference, type DocxListMarker } from "./docx-numbering";
+import { readDocxHyperlinkModel, docxBookmarkId, docxHtmlAttribute, type DocxHyperlinkModel } from "./docx-hyperlinks";
 
 const WORD = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const XML = "http://www.w3.org/XML/1998/namespace";
+const OFFICE_RELS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
 const MAX_DEPTH = 256, MAX_NAMESPACE_BINDINGS = 512, MAX_NAMESPACE_CHARS = 65536;
 const OUTPUT_CHUNK_BYTES = 65536;
 const MAX_HTML_COLUMN_SPAN = 1000;
@@ -19,27 +21,31 @@ type Run = { direct: Partial<DocxEmphasis>; styleId?: string; propertiesSeen: bo
 type Paragraph = { opened: boolean; contentStarted: boolean; propertiesSeen: boolean; styleId?: string; outline?: number; tag: string; muted: boolean; numbering?: DocxNumberingReference };
 type Cell = { opened: boolean; propertiesSeen: boolean; columnSpan?: number; vertical?: "restart" | "continue"; continued?: boolean };
 type Frame = { name: string; local: string | null; declarations: Map<string, string>; namespaceChars: number;
-  block?: Block; paragraph?: Paragraph; table?: Table; row?: Table; cell?: Cell; run?: Run; text?: boolean; suppress: boolean };
+  block?: Block; paragraph?: Paragraph; table?: Table; row?: Table; cell?: Cell; run?: Run; text?: boolean; hyperlinkClose?: string; suppress: boolean };
 type DocxHtmlRuntime = DocxRuntime & { patch(position: number, chunk: Uint8Array<ArrayBuffer>, phase: string): Promise<void> };
 
 /** Private candidate until complete production/browser/memory qualification.
  * Main-document structure and bounded supported style/direct emphasis only.
- * User XML attributes, URLs, styles, markup and relationship targets are NEVER
- * copied into executable HTML/CSS. Output text is escaped after XML decoding.
+ * Source markup/CSS is never executed. Only explicitly validated navigation
+ * targets become escaped attributes; output text is escaped after XML decoding.
  */
 export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
   runtime.warn("DOCX HTML preserves main-document paragraphs, table rows/cells, horizontal grid spans, and standard vertical merges with empty continuation cells. Omitted edge grid positions use empty HTML cells. Direct bold/italic/underline/strike, tabs, line breaks, Unicode and accepted tracked insertions are preserved. Tracked deletions and moved-from text are excluded.");
-  runtime.warn("Named styles (referenced/default paragraph and character) preserve outline hierarchy and supported bold/italic/underline/strike emphasis with direct overrides. Underline patterns/colors are normalized to a single underline. Legacy horizontal merges, table-style effects, complex-script properties, other font/run styling, fonts, colors, borders, page layout, links, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
-  let outlines: DocxOutlineModel, numbering: DocxNumberingModel;
+  runtime.warn("Named styles (referenced/default paragraph and character) preserve outline hierarchy and supported bold/italic/underline/strike emphasis with direct overrides. Underline patterns/colors are normalized to a single underline. Legacy horizontal merges, table-style effects, complex-script properties, other font/run styling, fonts, colors, borders, page layout, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
+  let outlines: DocxOutlineModel, numbering: DocxNumberingModel, hyperlinks: DocxHyperlinkModel;
   const source = await openDocxMainDocument(runtime, async entries => {
     outlines = await readDocxOutlineModel(runtime, entries); numbering = await readDocxNumberingModel(runtime, entries);
+    hyperlinks = await readDocxHyperlinkModel(runtime, entries);
   }), writer = htmlWriter(runtime);
+  runtime.warn("Explicit DOCX HTTP/HTTPS/mailto hyperlinks and local bookmark positions are preserved without fetching targets; unsafe/relative/package links retain display text but are inactive. Frame targets, browsing history, document-location hints and field-code links are not reproduced; nested hyperlinks are rejected. Relationships are capped at1MiB/4096entries/1024links and bookmarks at4096names.");
   runtime.warn("Supported DOCX decimal, repeated-letter, Roman and Unicode-bullet list labels, instance continuation, level restarts and inherited paragraph-style numbering are preserved in streamed HTML lists. Marker fonts, original tab stops and indent geometry are normalized; picture/legacy markers, linked numbering styles and other numbering systems are rejected when used.");
   if (outlines!.definitionCount) runtime.warn(`DOCX outline metadata read ${outlines!.definitionCount} style definitions from a referenced internal package part.`);
   const stack: Frame[] = [], blocks: Block[] = [], cells: Cell[] = [], tables: Table[] = [];
   let rootSeen = false, rootClosed = false, bodySeen = false, bodyDepth = 0, textDepth = 0, suppressed = 0;
   let bindings = 0, namespaceChars = 0, run: Run | null = null, foreignWarning = false;
   let paragraph: Paragraph | null = null;
+  let hyperlinkActive = false, unsafeLinkWarned = false;
+  const bookmarkNames = new Set<string>(), bookmarkReferences = new Set<string>();
   const lists: { numId: number; level: number; tag: "ol" | "ul" }[] = [];
   const closeLists = async (keep = 0) => {
     while (lists.length > keep) { const list = lists.pop()!; await writer.markup(`</li></${list.tag}>\n`); }
@@ -144,6 +150,7 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
   const close = async (frame: Frame) => {
     if (frame.text) textDepth--;
     if (frame.run) { await writer.markup(frame.run.close); run = null; }
+    if (frame.hyperlinkClose) { if (run) throw new Error("DOCX hyperlink contains an unclosed run."); await writer.markup(frame.hyperlinkClose); hyperlinkActive = false; }
     if (frame.block) {
       if (blocks.pop() !== frame.block) throw new Error("DOCX HTML block state is inconsistent.");
       if (frame.paragraph) {
@@ -235,6 +242,7 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
     if (bodyDepth && !suppressed) {
       const block: Block | null = local === "p" ? "p" : local === "tbl" ? "table" : local === "tr" ? "tr" : local === "tc" ? "td" : null;
       if (block) {
+        if (hyperlinkActive) throw new Error("DOCX hyperlink cannot contain block structure.");
         const parent = blocks.at(-1);
         if ((block === "p" || block === "table") ? parent !== undefined && parent !== "td"
           : block === "tr" ? parent !== "table" : parent !== "tr")
@@ -327,6 +335,41 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
         if (paragraph) paragraph.contentStarted = true;
         frame.run = run = { direct: {}, propertiesSeen: false, contentStarted: false, opened: false, close: "" };
       }
+      if (local === "hyperlink" || local === "bookmarkStart") {
+        const attribute = (name: string, uri = WORD) => element.attributes.find(a => {
+          if (a.name === "xmlns" || a.name.startsWith("xmlns:")) return false;
+          const q = resolve(a.name, true, declarations); return q.uri === uri && q.local === name;
+        })?.value;
+        if (local === "hyperlink") {
+          if (!paragraph || paragraph.muted || blocks.at(-1) !== "p" || run || hyperlinkActive)
+            throw new Error("DOCX nested or non-paragraph hyperlink cannot be represented safely in HTML.");
+          const id = attribute("id", OFFICE_RELS), anchor = attribute("anchor"), tooltip = attribute("tooltip");
+          if (tooltip !== undefined && tooltip.length > 1024) throw new Error("DOCX hyperlink tooltip exceeds1024characters.");
+          // OOXML relationship targets supersede anchor when both are present.
+          const href = id !== undefined ? hyperlinks!.resolve(id).href : anchor ? "#" + docxBookmarkId(anchor) : "#";
+          if (id === undefined && anchor) {
+            if (!bookmarkReferences.has(anchor) && bookmarkReferences.size >= 4096) throw new Error("DOCX exceeds4096distinct bookmark link references.");
+            bookmarkReferences.add(anchor);
+          }
+          paragraph.contentStarted = true; await openParagraph(); hyperlinkActive = true;
+          if (href === null) {
+            await writer.markup('<span data-docx-link-disabled="unsafe-target">'); frame.hyperlinkClose = "</span>";
+            if (!unsafeLinkWarned) { runtime.warn("Unsafe or unsupported DOCX link targets were made inactive; their display text is retained. No target was fetched."); unsafeLinkWarned = true; }
+          } else {
+            await writer.markup(`<a href="${docxHtmlAttribute(href)}" rel="noreferrer noopener" referrerpolicy="no-referrer"${tooltip !== undefined ? ` title="${docxHtmlAttribute(tooltip)}"` : ""}>`);
+            frame.hyperlinkClose = "</a>";
+          }
+        } else {
+          const name = attribute("name");
+          if (!name) throw new Error("DOCX bookmark start has no name.");
+          const id = docxBookmarkId(name);
+          if (bookmarkNames.has(name) || bookmarkNames.size >= 4096) throw new Error("DOCX bookmark names are duplicated or exceed4096entries.");
+          if (paragraph?.muted || ["table", "tr"].includes(blocks.at(-1) ?? "")) throw new Error("DOCX bookmark position cannot be represented at this table location.");
+          if (paragraph) { paragraph.contentStarted = true; if (run) await openRun(); else await openParagraph(); }
+          else { await closeLists(); if (blocks.at(-1) === "td") await openCell(cells.at(-1)!); }
+          bookmarkNames.add(name); await writer.markup(`<span id="${id}"></span>`);
+        }
+      }
       if (local === "rPr" && stack.at(-1)?.run === run && run) {
         if (run.contentStarted) throw new Error("DOCX HTML run properties must precede run text.");
         if (run.propertiesSeen) throw new Error("DOCX HTML run properties must occur once.");
@@ -368,8 +411,9 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
       stack.push(frame);
     }
   }
-  if (!rootSeen || !rootClosed || !bodySeen || stack.length || blocks.length || cells.length || tables.length || run || paragraph || bodyDepth || textDepth || suppressed)
+  if (!rootSeen || !rootClosed || !bodySeen || stack.length || blocks.length || cells.length || tables.length || run || paragraph || hyperlinkActive || bodyDepth || textDepth || suppressed)
     throw new Error("DOCX HTML main-document structure is incomplete.");
+  if ([...bookmarkReferences].some(name => !bookmarkNames.has(name))) runtime.warn("Some DOCX local hyperlinks reference absent or excluded bookmarks. Their fragments remain unresolved rather than Word's fallback-to-start behavior.");
   await closeLists(); await writer.markup("</body></html>\n"); await writer.flush(); runtime.metrics.inputBytes = runtime.file.size;
 }
 

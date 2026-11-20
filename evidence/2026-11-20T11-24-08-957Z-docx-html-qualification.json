@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-20T11:24:08.958Z",
+  "status": "failed-not-acceptance",
+  "cases": [],
+  "sourcePins": {
+    "scripts/qualify-docx-html.mjs": "f05fef81569076023f2ba94d8955a042f84f2270705e361127badb1c92c2ebdf",
+    "workers/docx-html-conversion.ts": "0f00ecbe348a782ba2388543c5d67f9e4524c7707f78b880861a211cc9e48d4c",
+    "workers/docx-conversion.ts": "e64d554d7bb2f762bcf33b75c90dd22ea492419c5374db79a4a3745ec61bce4a",
+    "workers/conversion.worker.ts": "893908859d5098d7e2078d2ae8e4231e1b6b7ba199dac9126d8cf8a5c761dbe5",
+    "lib/capability-registry.ts": "8441cf882fe64a188928ac6f6672d2a1f38cbd963bc98de3d8e9fb45263a8798",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/birth-type-capture.mjs": "fb76463e1e90d87ffb8a2d13b3cb6b7a53db3ffffdff2aab4c1b954f7655a398",
+    "scripts/lib/select-owned-local-browser-file.mjs": "24c8db43c82868c1131c0742f60197c618e0224292c8fe4f785b41f105c21755",
+    "scripts/lib/docx-html-scaling-control.mjs": "d8623f6170ae7f3b88f2b8c3a16ce7b5fe7866793778c7ba3837d804c851bf36",
+    "scripts/lib/docx-html-scaling-fixtures.py": "490570cd9223c6f77c802b314d78444a1e6b0421d2a1bf4d73a3734b35ba0349",
+    "scripts/lib/opfs-output-validation-backing.mjs": "3efb96b0016827b405f56fe7d68920e1ad58296fb1dac8a03c30cd7944bfa9f2",
+    "scripts/lib/cdp-realm-memory.mjs": "dacac72ad581a52fa46cdcec4fae3cf97e52f065c8594c4341ef6940be9e41bd",
+    "scripts/lib/browser-payload-cancellation.mjs": "63a90c78efac05f7eda4cc90af5d6eb5daf4ec5a9ba374ddd1fcab41ce89e9ab",
+    "scripts/lib/docx-direct-control.mjs": "76daac79a630a7f45e71a6a8129e8d05b40f18d56313a355885a4b98865dc862",
+    "app/converter/ConverterApp.tsx": "a89177c10e3e97851980b30f7756a4805db337cfbfb62b4c21835bdc021d0df7",
+    "workers/random-access-destination.ts": "f46a4db401daabeb40a0b9eaa9feb256b623c21d2a7f41af549b6797842b4375",
+    "workers/direct-file-writer.worker.ts": "212b8d6dd6ef9344e26cf65ca66fe0aae7db9a8bba7272b96c0cf8e74f55acaa",
+    "workers/direct-writer-protocol.ts": "4ca103db370944f162660749984e872e3d3abc18ee349d5f1231316386e8bf47",
+    "workers/docx-outline.ts": "ac11aa2eb3d122131ab8108daffc0e66cb1397acd47cb649ccb5a5e3c528b882",
+    "workers/docx-numbering.ts": "abfe275f5b194bb50ea678443ba92523e1ba957e05a304fbd260a17d695bbeac",
+    "workers/docx-hyperlinks.ts": "d5af41bd59c5e119f8f6fb3346588555da0f6f17a85f8f6b5332b1d3ca762e41",
+    "scripts/lib/docx-outline-fixtures.py": "a9b63541e3e943fc78aee41434a263e0ef6d9256b0609212efcd5657ff26d9b2",
+    "scripts/lib/docx-emphasis-fixtures.py": "35433186ebf6aa51cf0d41f5947b54384e2215aac83170cc8916ee7e59b33225",
+    "scripts/lib/bounded-error-details.mjs": "6a2af6cf5c61d680db1e5b8099b0f2cd0797573a8395071c831b97ea44554eab",
+    "scripts/lib/docx-cleanup-diagnostic.mjs": "50a6556d9c33955f0a909655093e2a018519a32b0835de1ef6e3b5c31f4b6dd4",
+    "scripts/lib/bounded-dom-counters.mjs": "c56c81f64adb753c96d2189b0283c52a8b7e2b824fa66992d958a98c3fb34b45",
+    "scripts/lib/live-memory-infra.mjs": "8178653cbf6b8aaf4d631b52fcb626b3acce0dfc62a30c8c848d887521af08e0",
+    "scripts/lib/memory-infra-attribution.mjs": "057d8308f612ba56620003d1e6f8393ef907372663b92c476ab1a3e62d02902d",
+    "scripts/lib/owned-chromium-cleanup.mjs": "1cfc3af050aed6d55bce8c4d40ef68eb374e507da6925dc741a54421efbdb0f8",
+    "scripts/lib/docx-hyperlink-fixtures.py": "44617925dbbe640f94c21162d9b8bfc32468ffeb1fe6735ca45a3432437c230a",
+    "scripts/lib/reconcile-chromium-births.mjs": "7666f5149412a65849544a90135ba915e372e75084c976a082f5c21f750f3056"
+  },
+  "failures": [
+    "Error: Command failed: python H:\\Github Repositories\\fileconverter\\scripts\\lib\\docx-hyperlink-fixtures.py reference\nTraceback (most recent call last):\r\n  File \"H:\\Github Repositories\\fileconverter\\scripts\\lib\\docx-hyperlink-fixtures.py\", line 177, in <module>\r\n    elif mode == 'reference': print(reference())\r\n                              ^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\slato\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\encodings\\cp1252.py\", line 19, in encode\r\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 956-957: character maps to <undefined>\r\n\n    at genericNodeError (node:internal/errors:985:15)\n    at wrappedFn (node:internal/errors:539:14)\n    at ChildProcess.exithandler (node:child_process:417:12)\n    at ChildProcess.emit (node:events:508:28)\n    at maybeClose (node:internal/child_process:1101:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:305:5)"
+  ],
+  "scope": "Native Word explicit links, unsafe-target inactivation, forward/backward bookmarks, styled text and nested tables through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification",
+  "headed": false,
+  "browserServicesDisabled": false,
+  "nativeConversionUsed": false,
+  "publicPromotion": false,
+  "stressAcceptance": false,
+  "nativePickerVerified": false,
+  "largeFileScalingVerified": false,
+  "speedImprovementProven": false,
+  "memoryFormula": "(peak complete spawned Chrome process-tree private bytes during full control window - earliest stable same clean blank Chrome private bytes) / 1048576",
+  "traceMode": {
+    "screenshots": true,
+    "domSnapshots": false,
+    "networkBodies": false
+  },
+  "requestCount": 0,
+  "forbiddenRequests": [],
+  "destinationAdapter": "Existing production directory=1 adapter supplies real FileSystemFileHandle from owned browser OPFS; engine/writer/bridge unchanged",
+  "destinationMode": "handle",
+  "nativeExternalDestinationVerified": false,
+  "directHandleWriterControlVerified": false,
+  "directWriterImplementation": "async-file-stream",
+  "hostMemory": {
+    "acquiredAt": "2026-11-20T11:24:09.3350771Z",
+    "freePhysicalBytes": 11903762432,
+    "freeVirtualBytes": 17558589440,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskFreeBytes": 749907042304,
+  "python": "Python 3.11.9",
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "browserBefore": {
+    "version": "158.0.8127.36",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4723864,
+      "sha256": "3d9a55036ac018816c9631bb79f61e497a6cfb0adfdd89baada8fb8bf9c72d1f",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "23362423067811107",
+        "birthtimeNs": "1794949667830412900",
+        "mtimeNs": "1794449828023041000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\158.0.8127.36\\chrome.dll",
+      "bytes": 313662616,
+      "sha256": "df1049622b377e53600a3a23671e74728c43dc5ad0e4415180723b2fb9e0b444",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "10696049115838952",
+        "birthtimeNs": "1794949667840485000",
+        "mtimeNs": "1794449836633377000"
+      }
+    }
+  },
+  "executedHead": "6b8aefe3de0c6c76d4ea0d4e22a454d4140350c1",
+  "validatorControls": [],
+  "ownedRuntimeRemoved": true,
+  "browserAfter": {
+    "version": "158.0.8127.36",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4723864,
+      "sha256": "3d9a55036ac018816c9631bb79f61e497a6cfb0adfdd89baada8fb8bf9c72d1f",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "23362423067811107",
+        "birthtimeNs": "1794949667830412900",
+        "mtimeNs": "1794449828023041000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\158.0.8127.36\\chrome.dll",
+      "bytes": 313662616,
+      "sha256": "df1049622b377e53600a3a23671e74728c43dc5ad0e4415180723b2fb9e0b444",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "10696049115838952",
+        "birthtimeNs": "1794949667840485000",
+        "mtimeNs": "1794449836633377000"
+      }
+    }
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "nativeArchive": {
+    "file": "evidence/2026-11-20T11-24-08-957Z-docx-html-native-samples.json.gz",
+    "bytes": 22,
+    "sha256": "50c15d921df28492e2d9bf2da5d1cd5c78ee416bdcf478074db63d76d2381cba",
+    "decodedBytes": 2,
+    "decodedSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "finishedAt": "2026-11-20T11:24:23.151Z"
+}
