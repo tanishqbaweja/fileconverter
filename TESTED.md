@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-11-20 next specialist untouched-original startup SOURCE PREPARED, not run.
+Same exact original1920x804/24fps/4Mbps, five-minute safety window,250MiB SAME
+blank; passed small44735542199 receipt prerequisite. Existing qualified static
+HTTP/birth cleanup retained; full100ms journal streamed with bounded writes/
+verified gzip replay, contemporary birth-role labels never affect primary sums.
+25source/journal/startup checks/check-only parse/scoped lint PASS. One run next;
+no full original conversion/fidelity/scaling/public or speed result yet.
+
 2026-11-20 VP9 specialist actual headless small automatic-fallback gate PASS,
 NOT full-original/scaling/public/speed acceptance. Receipt44735542199/fullSHA
 a934fafbbd6f128b2049f39f9476d990394dfc159d86adc19e99213584118ee7, executed154864fb.

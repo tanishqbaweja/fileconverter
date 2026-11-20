@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-20 M-09 specialist original startup prepared, still NOT RUN. Full exact
+test.mkv/no excerpt, unchanged1920x804/24fps/4Mbps/5minute/250MiB sameblank guard.
+Already qualified44735542199 native core/small gate reused; no rebuild/replay.
+Full streamed100ms raw journal + contemporary birth-aware role capture added,
+strict HTTP/owned-birth cleanup retained.25focused source/journal/startup checks
+and check-only parse/scoped lint PASS. Runtime result/full conversion remain open.
+
 2026-11-20 M-09 specialist SMALL gate CLOSED: actual same automatic-fallback
 sequence, four golden outputs, full48frame timing/8metadata/SSIM0.993273 and real
 cancel/write-failure/recovery pass.186.7734375MiB whole-tree over SAME blank,

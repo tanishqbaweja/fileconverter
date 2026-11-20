@@ -6,6 +6,17 @@ specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complet
 
 ## Active implementation: private VP9 CPU specialist
 
+NEXT GATE PREPARED, NOT RUN: `scripts/test-vp9-cpu-specialist-original.mjs`
+uses already authenticated44735542199 core and passed small receipt, the FULL
+unchanged test.mkv, same1920x804/24fps/4Mbps, five-minute startup/cancellation
+and exact250MiB originalblank guard. Adds full streamed100ms native journal and
+contemporary exact-birth role capture; no service disabling/process exclusion.
+25source/journal/startup checks + check-only parse and scoped lint PASS. Raw
+journal ownership is acquired before starting its monitor, so failure cannot
+strand a monitor before the parallel observer owns it. Run exactly once; receipt
+prefix2026-11-20-vp9-cpu-specialist-original-startup-44735542199. No rebuilt core,
+small replay, excerpt or full-conversion acceptance implied.
+
 Small specialist browser gate CLOSED, still private. Actual receipt:
 `evidence/2026-11-20-vp9-cpu-specialist-qualification-44735542199.json`, SHA256
 a934fafbbd6f128b2049f39f9476d990394dfc159d86adc19e99213584118ee7.
