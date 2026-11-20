@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-20 VP9 specialist attempt14 FAILED, correctly rejected by native guard.
+Run44733153901/head eb482a8fc20ac97728625fb94a47850c939d37f6 completed12:15:11Z.
+Native component inventory lacked AC3_PARSER after unrelated muxers were removed;
+all11baseline parsers now explicitly enabled, input support/guard unchanged.
+Both remote owned-cleanup steps PASS; no artifact accepted/browser launched.
+Corrected source checks59/59PASS (2438.5451ms), related loader/HTTP checks34/34PASS
+(2548.4623ms),0skip, affected lint PASS. Controller direct job-log API fixes its
+system-drive run-log cache write; C: is full, H: about698GiB free, no unrelated
+data deleted. Next one changed-source attempt15, not replaying the old failure.
+Terminal: evidence/2026-11-20-vp9-cpu-specialist-build-44733153901-terminal.json.
+
 2026-11-16 **unmodified production-staged ORIGINAL3+1 gate FAILED on job3**.
 Receipt13-03-58-368Z/fullSHAd5edb76abe6f4a239bb44d89bcae0c121d7a4085d7964b0f797e5d62ced18258.
 Actual full test.mkv source unchanged. First TWO genuine browser remuxes finish
@@ -14031,6 +14042,12 @@ Full declared native recipe gate first57/59: two source-wiring string assertions
 needed explicit cpuSpecialist option/engine identity. No prior obligation removed.
 Final59/59 PASS/0skip/3860.8438ms incl real compiled allocator/packed-token controls;
 affected lint PASS. Native compilation and browser results still unverified.
+One exact build44733153901/attempt1 dispatched at12:07:21Z via isolated registered
+workflow branch/headeb482a8f; no main/local canonical workflow or media copy.
+Last observed12:10:14Z actually compiling, both source gates and SDK PASS. Collector
+and explicit specialist asset-namespace safeguards prepared,27related tests and
+affected lint PASS. Not a native/browser result; resume exact live handle, never
+redispatch because this checkpoint or a polling call is stale.
 
 2026-11-20 — Actual current-model hyperlink scaling3x2/fresh-largest1x PASS for
 fixed1024relationships/64bookmarks, not whole Word/public/browser qualification.

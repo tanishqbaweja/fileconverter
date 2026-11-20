@@ -18,9 +18,11 @@ import { makeVp9LazyUtilityEncoder,makeVp9LazyUtilityFilter } from "../media/ffm
 import {makeVp9TokenContextSources} from "../media/ffmpeg/vp9-token-context-recipe.mjs";
 import {VP9_TOKEN_CONTEXT_LIFETIME_PINS} from "../media/ffmpeg/vp9-token-context-lifetime.mjs";
 import {authenticateVp9PackedArtifacts,VP9_PACKED_ARTIFACTS} from "../media/ffmpeg/vp9-token-packed-artifacts.mjs";
+import {makeVp9CpuSpecialistLibraries,makeVp9CpuSpecialistWrapper,VP9_CPU_SPECIALIST_INPUTS} from "../media/ffmpeg/vp9-cpu-specialist-recipe.mjs";
 assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]\d?$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt, root = path.resolve(import.meta.dirname, ".."), repo = "tanishqbaweja/fileconverter";
-const prefix = Number(attempt) >= 5 ? "evidence/2026-11-06-vp9-original-width" : "evidence/2026-11-05-vp9-duration";
+const cpuSpecialist=Number(attempt)>=14;
+const prefix = cpuSpecialist ? "evidence/2026-11-20-vp9-cpu-specialist" : Number(attempt) >= 5 ? "evidence/2026-11-06-vp9-original-width" : "evidence/2026-11-05-vp9-duration";
 const dispatch = JSON.parse(await readFile(path.join(root, prefix + "-build-dispatch" + suffix + ".json")));
 const runId = dispatch.run.databaseId; assert.ok(Number.isSafeInteger(runId));
 const terminal = JSON.parse(await readFile(path.join(root, prefix + `-build-${runId}-terminal.json`)));
@@ -55,6 +57,7 @@ try {
   if(tokenContext)allowed.push("vp9_tokenize.header.base.c","vp9_tokenize.header.compact.c","vp9_tokenize.producer.base.c","vp9_tokenize.producer.compact.c",
     "vp9_bitstream.packer.base.c","vp9_bitstream.packer.compact.c","vp9-token-context-proof.json",
     ...(tokenPacked?VP9_PACKED_ARTIFACTS:["vp9-token-vpx-config.h","vp9-token-layout-probe.c","vp9-token-layout-probe.ll"]));
+  if(cpuSpecialist)for(const stem of ["build-libraries.vp9-specialist","within_remux.vp9-specialist"])for(const ext of ["base","generated","json"])allowed.push(stem+"."+ext);
   const seen = new Set(); let total = 0;
   const members = unzipSync(zip, { filter(entry) {
     assert.ok(allowed.includes(entry.name) && !seen.has(entry.name)); seen.add(entry.name);
@@ -63,12 +66,17 @@ try {
   } });
   assert.deepEqual(Object.keys(members).sort(), allowed.toSorted());
   const manifest = JSON.parse(Buffer.from(members["build-manifest.json"]).toString());
-  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width", "private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(manifest.engine)); assert.equal(manifest.candidate.publicAcceptance, false);
-  assert.equal(["private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(manifest.engine), temporalGuard);
-  assert.equal(["private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(manifest.engine), allocationDiagnostic);
-  assert.equal(["private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(manifest.engine),lazyUtility);
-  assert.equal(["private-vp9-token-context","private-vp9-token-packed"].includes(manifest.engine),tokenContext);
-  assert.equal(manifest.engine==="private-vp9-token-packed",tokenPacked);
+  assert.equal(manifest.engine==="private-vp9-cpu-specialist",cpuSpecialist);
+  // This classification selects prior shared proof obligations only. The actual
+  // distinct engine identity, final sources and reduced output inventory remain
+  // explicitly authenticated below; it is never relabelled the baseline binary.
+  const family=cpuSpecialist?"private-vp9-token-packed":manifest.engine;
+  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width", "private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(family)); assert.equal(manifest.candidate.publicAcceptance, false);
+  assert.equal(["private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(family), temporalGuard);
+  assert.equal(["private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(family), allocationDiagnostic);
+  assert.equal(["private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(family),lazyUtility);
+  assert.equal(["private-vp9-token-context","private-vp9-token-packed"].includes(family),tokenContext);
+  assert.equal(family==="private-vp9-token-packed",tokenPacked);
   assert.equal(manifest.candidate.browserValidated, false); assert.equal(manifest.candidate.nodeInstantiated, false);
   assert.equal(manifest.candidate.mediaRead, false); assert.equal(manifest.candidate.mediaWritten, false);
   assert.equal(manifest.candidate.memoryLimitsRaised, false); assert.equal(manifest.buildEnvironment.usedDocker, false);
@@ -88,11 +96,32 @@ try {
     assert.equal(manifest.candidate.privateVp9ExplicitWidth, 1920); assert.equal(manifest.candidate.defaultWidthPolicyChanged, false);
     assert.equal(manifest.candidate.publicWidthRegistryOrControlsChanged, false);
   }
-  const sourceProof = (originalWidth ? makeVp9OriginalWidthSource : streamDuration ? makeVp9StreamDurationSource : makeVp9PacketDurationSource)(Buffer.from(members["within_remux.base.c"]).toString());
+  const widthProof = (originalWidth ? makeVp9OriginalWidthSource : streamDuration ? makeVp9StreamDurationSource : makeVp9PacketDurationSource)(Buffer.from(members["within_remux.base.c"]).toString());
+  const specialized=cpuSpecialist?makeVp9CpuSpecialistWrapper(widthProof.generated):null;
+  const sourceProof=specialized?{...widthProof,...specialized,parentSha256:widthProof.parentSha256,edits:[...widthProof.edits,...specialized.edits]}:widthProof;
   assert.equal(sourceProof.parentSha256, "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd");
   assert.equal(sourceProof.generated, Buffer.from(members["within_remux.duration.c"]).toString());
   assert.equal(sourceProof.generatedSha256, manifest.candidate.compiledWrapperSha256);
   assert.equal(sourceProof.edits.length, manifest.candidate.wrapperEdits);
+  if(cpuSpecialist){
+    assert.equal(sha(await readFile(path.join(root,"media/ffmpeg/vp9-cpu-specialist-recipe.mjs"))),manifest.sources["media/ffmpeg/vp9-cpu-specialist-recipe.mjs"]);
+    const configure=makeVp9CpuSpecialistLibraries(Buffer.from(members["build-libraries.allocation.diagnostic.sh"]).toString());
+    for(const [stem,proof,base]of [["build-libraries.vp9-specialist",configure,Buffer.from(members["build-libraries.allocation.diagnostic.sh"]).toString()],
+      ["within_remux.vp9-specialist",specialized,widthProof.generated]]){
+      assert.equal(Buffer.from(members[stem+".base"]).toString(),base);assert.equal(Buffer.from(members[stem+".generated"]).toString(),proof.generated);
+      const saved=JSON.parse(Buffer.from(members[stem+".json"]).toString());assert.equal(saved.generatedSha256,proof.generatedSha256);assert.deepEqual(saved.edits,proof.edits);
+    }
+    const components=Buffer.from(members["config_components.h"]).toString();
+    const enabled=category=>[...components.matchAll(new RegExp("^#define CONFIG_(\\w+)_"+category+" 1$","gm"))].map(row=>row[1].toLowerCase());
+    for(const [category,key]of [["DECODER","enabledDecoders"],["DEMUXER","enabledDemuxers"],["PARSER","enabledParsers"],["BSF","enabledBitstreamFilters"]]){
+      assert.deepEqual(enabled(category).toSorted(),[...VP9_CPU_SPECIALIST_INPUTS[category]].sort());assert.deepEqual(enabled(category),manifest[key]);
+    }
+    assert.deepEqual(enabled("ENCODER"),["libvpx_vp9"]);assert.deepEqual(enabled("MUXER"),["webm"]);
+    const c=manifest.candidate.cpuSpecialist;assert.ok(c);assert.equal(c.configureSha256,configure.generatedSha256);assert.equal(c.wrapperSha256,specialized.generatedSha256);
+    assert.deepEqual(c.allowedProfiles,[10,11]);assert.equal(c.inputSupportChanged,false);assert.equal(c.codecSettingsChanged,false);assert.equal(c.ioChanged,false);
+    assert.equal(c.memoryLimitsRaised,false);assert.equal(c.actualMemorySavedBytes,null);assert.equal(c.browserValidated,false);assert.equal(c.publicAcceptance,false);
+    assert.equal(c.ancestorDurationProofIsNotCompiledSource,true);
+  }
   if (temporalGuard) {
     assert.equal(sha(await readFile(path.join(root, "media/ffmpeg/vp9-realtime-temporal-filter-recipe.mjs"))), manifest.sources["media/ffmpeg/vp9-realtime-temporal-filter-recipe.mjs"]);
     const vendor = makeVp9RealtimeTemporalFilterSource(Buffer.from(members["vp9_encoder.temporal.base.c"]).toString());

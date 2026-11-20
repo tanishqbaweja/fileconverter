@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-11-20 M-09 attempt14 TERMINAL FAILED at unchanged native PARSER inventory
+guard: removing output muxers also removed automatically enabled AC3_PARSER.
+Run44733153901/sourceeb482a8f, both owned cleanup steps PASS. Corrected recipe
+explicitly retains all11baseline parsers; no input narrowing/guard relaxation.
+59native-source and34related checks PASS, affected lint PASS. Controller now
+streams direct job logs instead of caching run-logZIPs on full C:. No unrelated
+files removed. One distinct corrected-source attempt15 next; no native artifact,
+browser memory/speed or public acceptance yet. Exact terminal JSON retained.
+
 2026-11-20 M-09 distinct CPU specialist SOURCE implemented, not compiled/browser
 accepted. Latest actual original9 remains389.296875MiB FAIL with unclassified
 late child; never infer its role from a different run. Candidate omits unrelated
@@ -15,6 +24,13 @@ original replay or any service exclusion/rebase. No goal/public completion.
 Full native gate59/59 PASS/0skip/3860.8438ms; initial57/59 caught two source-wiring
 assertions requiring the explicit guarded specialist option and identity. Updated
 assertions retain all prior obligations. No native compile yet; one dispatch next.
+Subsequently dispatched exactly one build44733153901/attempt1, sourceeb482a8f on
+isolated codex/vp9-cpu-specialist-source-20261120-attempt14, main unchanged. Both
+source gates/pinned SDK pass; last observed12:10:14Z compiling, not terminal.
+Specialist collector independently authenticates reduced actual output registry,
+unchanged full input registry, final wrapper/config and packed artifacts; explicit
+asset receipt namespace required, never a baseline engine alias.27related loader/
+HTTP/guard checks and affected lint PASS. Native and browser gates still pending.
 
 2026-11-20 N-08 current hyperlink scaling3x2 + fresh largest1x gate CLOSED for
 the tested fixed1024relationships/64bookmarks pattern. Genuine Word inputs

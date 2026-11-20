@@ -19,10 +19,12 @@ function derive(source,parents,edits) {
 }
 export function makeVp9CpuSpecialistLibraries(source) {
   const before="emconfigure ./configure \\\n";
-  // Retain also the baseline's automatically selected BSFs explicitly: dropping
-  // unused output muxers must not silently remove any existing input helpers.
+  // Retain automatically selected input helpers explicitly. In attempt14 the
+  // removal of unrelated muxers also removed AC3_PARSER; the native inventory
+  // guard correctly rejected it. Do not weaken that guard or input support.
   const after="# Private VP9 output-only specialist; all baseline input components retained.\n"+
     "ENABLED_MUXERS=webm\nENCODER_CONFIGURE_FLAGS=(--enable-encoder=libvpx_vp9)\n"+
+    "ENABLED_PARSERS="+VP9_CPU_SPECIALIST_INPUTS.PARSER.join(",")+"\n"+
     "ENABLED_BSFS="+VP9_CPU_SPECIALIST_INPUTS.BSF.join(",")+"\n"+before;
   return {...derive(source,["daea3a61ffa77d4728517e642773fbd72261a31c79524618088ee491557e2600"],[[before,after]]),
     outputEncoders:["libvpx_vp9"],outputMuxers:["webm"],expectedInputComponents:VP9_CPU_SPECIALIST_INPUTS};

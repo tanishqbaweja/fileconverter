@@ -78,6 +78,18 @@ test("tampered private module bytes are rejected before any browser request", as
   await writeFile(path.join(target, "within-remux.wasm"), "tampered static bytes");
   await assert.rejects(loadVp9DurationCpuAssets(root, runId));
 }));
+test("specialist requires its explicit receipt series, distinct engine and restricted output/profile contract",async()=>loaderFixture(async({root,runId,receipt})=>{
+  receipt.nativeContract={...receipt.nativeContract,engine:"private-vp9-cpu-specialist",enabledEncoders:["libvpx_vp9"],enabledMuxers:["webm"],
+    candidate:{memoryLimitsRaised:false,cpuSpecialist:{allowedProfiles:[10,11],inputSupportChanged:false}}};
+  const file=path.join(root,"evidence","2026-11-20-vp9-cpu-specialist-native-"+runId+".json");
+  await writeFile(file,JSON.stringify(receipt),{flag:"wx"});
+  assert.equal((await loadVp9DurationCpuAssets(root,runId,"cpu-specialist")).runId,runId);
+  for(const mutate of [r=>r.nativeContract.engine="private-vp9-token-packed",r=>r.nativeContract.enabledEncoders=["libvpx_vp8"],
+    r=>r.nativeContract.candidate.cpuSpecialist.allowedProfiles=[0,10,11],r=>r.nativeContract.candidate.cpuSpecialist.inputSupportChanged=true]){
+    const changed=structuredClone(receipt);mutate(changed);await writeFile(file,JSON.stringify(changed));
+    await assert.rejects(loadVp9DurationCpuAssets(root,runId,"cpu-specialist"));
+  }
+}));
 test("loader accepts the authenticated stream-duration/original-width engines but rejects unrecognized engines", async () => {
   for (const engine of ["private-vp9-stream-duration", "private-vp9-original-width", "private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility", "unrecognized-core"]) await loaderFixture(async ({ root, runId, receipt, file }) => {
     await writeFile(file, JSON.stringify({ ...receipt, nativeContract: { ...receipt.nativeContract, engine } }));

@@ -19,6 +19,12 @@ test("specialist configuration changes only output selection and explicitly reta
   assert.ok(r.generated.includes('ENCODER_CONFIGURE_FLAGS=(--enable-encoder=libvpx_vp9)'));
   for(const line of diagnostic.generated.split("\n").filter(line=>/DECODER_CONFIGURE_FLAGS=|ENABLED_DEMUXERS=|ENABLED_PARSERS=|extra-cflags=|extra-ldflags=/.test(line)))assert.ok(r.generated.includes(line),line);
   assert.ok(r.generated.includes("ENABLED_BSFS="+VP9_CPU_SPECIALIST_INPUTS.BSF.join(",")));
+  assert.ok(r.generated.includes("ENABLED_PARSERS="+VP9_CPU_SPECIALIST_INPUTS.PARSER.join(",")));
+  // Verify the final override, not the earlier generic declaration: AC3 was
+  // previously auto-selected only by a now-removed output dependency.
+  const finalParsers=[...r.generated.matchAll(/^ENABLED_PARSERS=([^\n]+)$/gm)].at(-1)[1].split(",");
+  assert.deepEqual(finalParsers.toSorted(),[...VP9_CPU_SPECIALIST_INPUTS.PARSER].sort());
+  assert.ok(finalParsers.includes("ac3"));
   assert.equal(r.inputCodecAndContainerSupportChanged,false);assert.equal(r.actualMemorySavedBytes,null);
   assert.equal(r.codecSettingsChanged,false);assert.equal(r.ioChanged,false);assert.equal(r.memoryLimitsRaised,false);
   assert.equal(r.nativeBuildExecuted,false);assert.equal(r.browserValidated,false);assert.equal(r.publicAcceptance,false);
@@ -67,4 +73,6 @@ test("builder and dispatch fail closed on actual component inventories, limits a
   const control=await read("scripts/vp9-duration-build-control.mjs");
   for(const s of ['Number(attempt) >= 14','codex/vp9-cpu-specialist-source-20261120','WITHIN_VP9_CPU_SPECIALIST: "1"',
     'GIT_INDEX_FILE: path.join(runtime.directory, "isolated.index")','refs/heads/main','mainUnchanged: true'])assert.ok(control.includes(s),s);
+  assert.ok(control.includes('const log = await gh(["api", `repos/${repo}/actions/jobs/${jobRows[0].id}/logs`]'));
+  assert.doesNotMatch(control,/gh\(\["run", "view"/);
 });

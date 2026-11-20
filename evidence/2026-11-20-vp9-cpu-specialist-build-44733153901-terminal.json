@@ -1,0 +1,105 @@
+{
+  "acquiredAt": "2026-11-20T12:23:03.222Z",
+  "runId": 44733153901,
+  "head": "eb482a8fc20ac97728625fb94a47850c939d37f6",
+  "branch": "codex/vp9-cpu-specialist-source-20261120-attempt14",
+  "status": "completed",
+  "conclusion": "failure",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/44733153901",
+  "exactHeadAndStepsVerified": true,
+  "job": {
+    "id": 136277754689,
+    "startedAt": "2026-11-20T12:07:29Z",
+    "completedAt": "2026-11-20T12:15:11Z",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Own all runtime scratch",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Check exact private duration recipes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Check private specialist output surface and unchanged input support",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install build prerequisites",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install pinned SDK locally without Docker",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Compile private VP9 candidate with unchanged input support and memory limits",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "name": "Retain reusable private tools and compact source proofs only",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "Remove disposable owned build and SDK data",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Remove owned runtime scratch",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "workflowDisplayNameNotSelectionProof": true,
+  "publicAcceptance": false,
+  "browserConversions": 0,
+  "cleanupStepsPassed": true,
+  "errorLines": [
+    "2026-11-20T12:08:56.2522289Z {\"scope\":\"Two compile/link-only libvpx VP9 detection controls, NOT codec execution\",\"cases\":[{\"productionAllocator\":false,\"code\":1,\"stderrBytes\":2527,\"stderrSha256\":\"a1387d4599c24ea62ef4e2cb84e1072091d5d0a6d3e2b0a7590a86e2375888e3\",\"errorLines\":[\"wasm-ld: error: /home/runner/work/fileconverter/fileconverter/work/vp9-duration-build/install/lib/libvpx.a(yv12config.c.o): undefined symbol: emmalloc_dynamic_heap_size\",\"wasm-ld: error: /home/runner/work/fileconverter/fileconverter/work/vp9-duration-build/install/lib/libvpx.a(yv12config.c.o): undefined symbol: emmalloc_free_dynamic_memory\",\"wasm-ld: error: /home/runner/work/fileconverter/fileconverter/work/vp9-duration-build/install/lib/libvpx.a(yv12config.c.o): undefined symbol: emmalloc_unclaimed_heap_memory\",\"emcc: error: '/home/runner/work/fileconverter/fileconverter/work/vp9-duration-emsdk/upstream/bin/wasm-ld -o /home/runner/work/fileconverter/fileconverter/work/vp9-allocation-link-u68dFU/default.wasm /home/runner/work/fileconverte",
+    "2026-11-20T12:15:06.2771307Z AssertionError [ERR_ASSERTION]: No narrowing of baseline input support: PARSER",
+    "2026-11-20T12:15:06.2777581Z   code: 'ERR_ASSERTION',"
+  ],
+  "log": {
+    "bytes": 393501,
+    "sha256": "a444bfcf21dfe3dbe5fe51796d6930480141f973f0805e8015254f34feea5087"
+  }
+}

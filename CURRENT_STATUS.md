@@ -6,6 +6,20 @@ specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complet
 
 ## Active implementation: private VP9 CPU specialist
 
+Attempt14 is now TERMINAL FAILED, not live: run44733153901, exact head
+eb482a8fc20ac97728625fb94a47850c939d37f6, completed12:15:11Z. Both cleanup
+steps passed. The unchanged native inventory guard caught missing AC3_PARSER:
+removing unrelated muxers removed its automatic dependency. Fix explicitly
+retains ALL11baseline parsers (as already done for8BSFs), not a weaker guard.
+Corrected full native-source suite59/59PASS,0skip,2438.5451ms; related asset/
+HTTP/source suite34/34PASS,0skip,2548.4623ms; affected lint PASS. No browser run.
+Inspection initially failed because `gh run view --log` cached a ZIP on full C:.
+Controller now uses the direct job-logs API without that persistent cache; no
+unrelated data removed. H: has about698GiB free. Terminal receipt:
+`evidence/2026-11-20-vp9-cpu-specialist-build-44733153901-terminal.json`.
+Next: one corrected-source build attempt15, then artifact authentication. Never
+repeat attempt14 or interpret the historical live-build notes below as current.
+
 The latest retained CPU original9 is389.296875MiB FAIL, not merely the older
 300.87MiB small fallback. Packed-token normal-HTTP small control had passed at
 203.73046875MiB, but original startup later adds an unclassified large child;
@@ -26,7 +40,16 @@ require the guarded specialist option/identity, no safety check removed.
 The private workflow is not registered by its filename on main. The established
 isolated-index builder will put its selected workflow at the already-registered
 reproduction path ONLY on a new codex build branch. Main and the local checkout
-workflow remain untouched. No native job has been dispatched yet.
+workflow remain untouched. One native job was dispatched:44733153901/attempt1,
+exact sourceeb482a8fc20ac97728625fb94a47850c939d37f6, branch
+codex/vp9-cpu-specialist-source-20261120-attempt14. Last observed12:10:14Z:
+in_progress at compilation after both source gates and pinned SDK installation
+passed. Never redispatch from a stale note: inspect this exact job with
+`scripts/vp9-duration-build-control.mjs inspect 14`; after actual success use
+`scripts/collect-vp9-duration-native.mjs 14` to authenticate artifacts. Native
+collection and explicit specialist HTTP loader prepared;27related asset/guard/
+prior-evidence checks and affected lint PASS. No compiled success or browser
+memory/speed result inferred from this live-build checkpoint.
 
 ## Current capability increment: private DOCX hyperlinks
 

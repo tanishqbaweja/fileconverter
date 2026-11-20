@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-11-20T12:07:20.337Z",
+  "branch": "codex/vp9-cpu-specialist-source-20261120-attempt14",
+  "head": "eb482a8fc20ac97728625fb94a47850c939d37f6",
+  "status": "accepted-awaiting-exact-run-discovery",
+  "dispatchMayHaveOccurred": true,
+  "run": {
+    "conclusion": "",
+    "createdAt": "2026-11-20T12:07:26Z",
+    "databaseId": 44733153901,
+    "event": "workflow_dispatch",
+    "headSha": "eb482a8fc20ac97728625fb94a47850c939d37f6",
+    "status": "in_progress",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/44733153901",
+    "workflowName": "Reproduce FFmpeg without Docker"
+  },
+  "publicAcceptance": false,
+  "dispatchedAt": "2026-11-20T12:07:21.539Z",
+  "runDiscoveredAt": "2026-11-20T12:08:03.783Z"
+}

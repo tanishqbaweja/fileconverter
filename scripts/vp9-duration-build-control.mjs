@@ -102,7 +102,9 @@ try {
           const artifact = matches[0]; assert.equal(artifact.workflow_run.head_sha, branch.commit); assert.equal(artifact.expired, false);
           report.artifact = { id: artifact.id, name: artifact.name, bytes: artifact.size_in_bytes, digest: artifact.digest, expiresAt: artifact.expires_at };
         } else {
-          const log = await gh(["run", "view", String(runId), "--repo", repo, "--job", String(jobRows[0].id), "--log"], 16777216);
+          // The jobs/logs endpoint streams text without `gh run view` writing a
+          // persistent run-log ZIP into the user's system-drive cache.
+          const log = await gh(["api", `repos/${repo}/actions/jobs/${jobRows[0].id}/logs`], 16777216);
           report.errorLines = log.split(/\r?\n/).filter(line => /error:|AssertionError|ERR_ASSERTION|curl: \(|ReferenceError|compiler test failed/.test(line)).slice(0, 30).map(line => line.slice(0, 1024));
           report.log = { bytes: Buffer.byteLength(log), sha256: sha(log) };
         }

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "status": "corrected-source-not-native-or-browser-qualified",
+  "failedRunId": 44733153901,
+  "failedHead": "eb482a8fc20ac97728625fb94a47850c939d37f6",
+  "terminalReceipt": "evidence/2026-11-20-vp9-cpu-specialist-build-44733153901-terminal.json",
+  "cause": "Removing unrelated output muxers also removed automatically selected AC3_PARSER; unchanged native input-component equality correctly rejected the build",
+  "correction": "Explicitly enable all 11 baseline parsers, alongside all 8 baseline BSFs; no validation guard or supported input inventory weakened",
+  "nativeSourceTests": {"passed": 59, "failed": 0, "skipped": 0, "durationMs": 2438.5451},
+  "relatedTests": {"passed": 34, "failed": 0, "skipped": 0, "durationMs": 2548.4623},
+  "affectedLintPassed": true,
+  "remoteOwnedCleanupStepsPassed": true,
+  "inspectionFailure": "gh run view --log attempted a persistent run-log ZIP cache on C:, which had zero free bytes",
+  "inspectionCorrection": "Use direct actions/jobs/{job_id}/logs API; bounded text remains in memory and only compact receipt is saved in the repository",
+  "unrelatedFilesRemoved": false,
+  "originalMediaReadOrWritten": false,
+  "browserLaunched": false,
+  "memoryFormulaOrLimitChanged": false,
+  "publicAcceptance": false,
+  "speedGainProven": false,
+  "nextGate": "One corrected-source isolated attempt15, then strict artifact authentication before browser qualification",
+  "wholeGoalComplete": false
+}
