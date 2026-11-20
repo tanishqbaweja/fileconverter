@@ -6,69 +6,52 @@ specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complet
 
 ## Active implementation: private VP9 CPU specialist
 
-Attempt15 COMPILED AND AUTHENTICATED: run44735542199/source980c4a934cd1bdf4f05b
-c957c2bc4440adaabc63, both cleanup steps PASS. Exact ZIP digest, dispatch/source
-pins, reversible final wrapper/config, actual19decoders/18demuxers/11parsers/
-8BSFs, onlylibvpx_vp9+webm, packed4B records and unchanged32/96MiB Wasm limits
-verified by collector. Wasm7,234,214B vs9,877,633B baseline:2,643,419B(26.76%)
-smaller. This is STATIC CODE reduction, not runtime memory or conversion speed.
-Reusable code/proofs9,517,143B in work/vp9-duration-input-44735542199; no media.
+Small specialist browser gate CLOSED, still private. Actual receipt:
+`evidence/2026-11-20-vp9-cpu-specialist-qualification-44735542199.json`, SHA256
+a934fafbbd6f128b2049f39f9476d990394dfc159d86adc19e99213584118ee7.
+Chrome158.0.8127.36 headless, same automatic candidate-attempt -> CPU-fallback,
+same pinned58,389B input/settings, four99,413B outputs all golden82bdfd66…82267b.
+All48frames/PTS/durations/8metadata fields/SSIM0.993273 independently verified.
+Six jobs include real-write cancellation, write failure, three exact recoveries.
+Whole active peak186.7734375MiB over SAME earliest stable blank (326598656B ->
+522444800B),75valid/0missing active samples; max cleanup1.76171875MiB above
+original loaded idle, unchanged250/96MiB gates. Full473sample counts, phase true
+peaks and64bounded graph buckets retained, NOT a complete100ms raw journal.
+38source pins/HTTP headers+full bytes/trace independently checked; trace has
+screenshots/API but no DOM snapshots or response bodies.42observed browser PIDs,
+all3roots absent, exact owned runtime/stages absent; disposable outputs/profile
+removed, test.mkv pre/post fullSHA+size unchanged. No headed/native-picker/full
+original/scaling/other-browser/public/speedup claim.7evidence checks PASS.
+
+Native attempt15 run44735542199/source980c4a934cd1bdf4f05bc957c2bc4440adaabc63
+compiled/authenticated, both remote cleanup steps PASS. Actual19decoders,
+18demuxers,11parsers,8BSFs preserved; onlyVP9/WebM output, same packed4B tokens,
+32/96MiB Wasm, one codec thread/no helper pool, settings/I/O unchanged. Wasm
+7,234,214B vs9,877,633B baseline:26.76% STATIC reduction, not matched runtime
+savings. Reusable code/proofs9,517,143B in work/vp9-duration-input-44735542199.
 Native receipt: evidence/2026-11-20-vp9-cpu-specialist-native-44735542199.json.
+59native-source,34related,25recipe/cleanup and7actual-evidence checks PASS in
+separate overlapping groups, not an additive distinct-test total; affected lint PASS.
+Final27focused checks and unchanged402public evidence audit PASS. New7evidence
+checks explicitly require retained native files/trace and belong to mandatory
+artifact qualification; recipe tests remain portable, all235prior hosted files
+remain portable. No full portable/build/release suite rerun or pass inferred.
 
-New small qualification reuses the exact authenticated packed HTTP automatic
-hardware-attempt -> CPU-fallback, same source/settings/hash/48frames/full clock/
-SSIM,6jobs/recovery, original blank250MiB and cleanup96MiB gates. Only candidate
-identity/receipt/report namespace and stronger all-observed-birth cleanup change.
-3recipe checks and check-only source parse PASS, affected lint PASS; browser not
-yet run at this checkpoint. Command: WITHIN_VP9_ORIGINAL_NATIVE_RUN_ID=44735542199
-node scripts/test-vp9-cpu-specialist.mjs (PowerShell env syntax required).
-Never reuse the old harness without the descendant-birth reconciliation. This
-small prerequisite does NOT replace original-file/scaling/full-spec acceptance.
+Attempt14 terminal44733153901 remains FAILED: removing unrelated muxers removed
+automatic AC3_PARSER; exact native inventory guard caught it. Explicit all11parser
+retention fixed the cause without weakening support/guard. GH logs now use direct
+API, avoiding `gh run view --log` persistent system-drive cache. C: was full,
+only~117MiB free after browser test; no unrelated data deleted. No job is live.
 
-Attempt14 is now TERMINAL FAILED, not live: run44733153901, exact head
-eb482a8fc20ac97728625fb94a47850c939d37f6, completed12:15:11Z. Both cleanup
-steps passed. The unchanged native inventory guard caught missing AC3_PARSER:
-removing unrelated muxers removed its automatic dependency. Fix explicitly
-retains ALL11baseline parsers (as already done for8BSFs), not a weaker guard.
-Corrected full native-source suite59/59PASS,0skip,2438.5451ms; related asset/
-HTTP/source suite34/34PASS,0skip,2548.4623ms; affected lint PASS. No browser run.
-Inspection initially failed because `gh run view --log` cached a ZIP on full C:.
-Controller now uses the direct job-logs API without that persistent cache; no
-unrelated data removed. H: has about698GiB free. Terminal receipt:
-`evidence/2026-11-20-vp9-cpu-specialist-build-44733153901-terminal.json`.
-Next: one corrected-source build attempt15, then artifact authentication. Never
-repeat attempt14 or interpret the historical live-build notes below as current.
-
-The latest retained CPU original9 is389.296875MiB FAIL, not merely the older
-300.87MiB small fallback. Packed-token normal-HTTP small control had passed at
-203.73046875MiB, but original startup later adds an unclassified large child;
-its role cannot be retroactively guessed. Do not replay the unchanged failure.
-
-Distinct source candidate now limits only private profiles10/11 OUTPUT to VP9/
-WebM, rejects unrelated profiles before I/O, and retains ALL baseline19decoders,
-18demuxers,11parsers and8BSFs. All codec settings, pixels, width, threads, packed
-tokens/lazy buffers,96MiB Wasm cap and250MiB whole-tree formula remain unchanged.
-Builder must prove exact actual configured inventories, final source and layout.
-Default packed build recipe remains byte-identical; public sources/assets/routes
-unchanged.18source/build-recipe tests and affected lint PASS, no native/browser
-saving inferred. Plan: evidence/2026-11-20-vp9-cpu-specialist-plan.json.
-Full native recipe gate59/59 PASS,0skip,3860.8438ms, including real host C allocator/
-token controls. First57/59 caught two stale exact wiring assertions; updated to
-require the guarded specialist option/identity, no safety check removed.
-
-The private workflow is not registered by its filename on main. The established
-isolated-index builder will put its selected workflow at the already-registered
-reproduction path ONLY on a new codex build branch. Main and the local checkout
-workflow remain untouched. One native job was dispatched:44733153901/attempt1,
-exact sourceeb482a8fc20ac97728625fb94a47850c939d37f6, branch
-codex/vp9-cpu-specialist-source-20261120-attempt14. Last observed12:10:14Z:
-in_progress at compilation after both source gates and pinned SDK installation
-passed. Never redispatch from a stale note: inspect this exact job with
-`scripts/vp9-duration-build-control.mjs inspect 14`; after actual success use
-`scripts/collect-vp9-duration-native.mjs 14` to authenticate artifacts. Native
-collection and explicit specialist HTTP loader prepared;27related asset/guard/
-prior-evidence checks and affected lint PASS. No compiled success or browser
-memory/speed result inferred from this live-build checkpoint.
+NEXT: one distinct untouched-original startup with this authenticated specialist,
+same1920x804/24fps/4Mbps settings and250MiB originalblank limit; retain full guard,
+HTTP transport, bounded traces, birth-aware cleanup and before/after original
+SHA. Existing original9 with old packed core remains389.296875MiB FAIL with an
+unclassified late child; do not guess its role, disable services or replay old
+bytes. Small control is prerequisite only, not full original/scaling acceptance.
+Do not repeat passed small qualification/build; reuse retained authenticated
+core and receipt. Overall M-09, production integration, fidelity breadth, scaling,
+matched-speed optimization and entire original project remain incomplete.
 
 ## Current capability increment: private DOCX hyperlinks
 

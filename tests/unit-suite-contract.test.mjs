@@ -26,7 +26,7 @@ test("stale, duplicate, invalid, prior-public or production-import exceptions ca
 });
 test("actual manifest retains every one of235 prior hosted files plus current public worker/cache/save checks",async()=>{
   const root=path.resolve(import.meta.dirname,".."),plan=await loadUnitSuitePlan(root);
-  assert.equal(plan.protectedPriorHostedFiles,235);assert.equal(plan.qualification.length,164);
+  assert.equal(plan.protectedPriorHostedFiles,235);assert.equal(plan.qualification.length,165);
   const bframeNative="tests/mkv-bframe-native-source-qualification.test.mjs";
   assert.equal(plan.prerequisites[bframeNative].group,"native-source-inspection");
   assert.ok(plan.qualification.includes(bframeNative));
@@ -38,6 +38,10 @@ test("actual manifest retains every one of235 prior hosted files plus current pu
   const vp9Local="tests/vp9-local-artifact-authentication.test.mjs";
   assert.equal(plan.prerequisites[vp9Local].group,"private-artifacts");
   assert.ok(plan.qualification.includes(vp9Local));assert.ok(!plan.portable.includes(vp9Local));
+  const specialist="tests/vp9-cpu-specialist-evidence.test.mjs";
+  assert.equal(plan.prerequisites[specialist].group,"private-artifacts");
+  assert.ok(plan.qualification.includes(specialist));assert.ok(!plan.portable.includes(specialist));
+  assert.ok(plan.portable.includes("tests/vp9-cpu-specialist-qualification-recipe.test.mjs"));
   for(const name of ["platform-vp9-allocation-evidence","vp9-http-bounded-evidence","vp9-http-first-evidence",
     "vp9-http-recipe","vp9-token-packed-native-evidence","webcodecs-original-allocation"])
     assert.ok(plan.portable.includes(`tests/${name}.test.mjs`),name);

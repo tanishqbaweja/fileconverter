@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-11-20 M-09 specialist SMALL gate CLOSED: actual same automatic-fallback
+sequence, four golden outputs, full48frame timing/8metadata/SSIM0.993273 and real
+cancel/write-failure/recovery pass.186.7734375MiB whole-tree over SAME blank,
+75valid/0missing active; cleanupmax1.76171875MiB over original loaded idle.
+All38pins/HTTP/trace/42observed PIDs/3roots/owned paths/original integrity verified.
+7actual-evidence checks PASS;25recipe/cleanup checks and scoped lint PASS. No
+full100ms rawjournal claim: aggregate counts/true phase peaks/bounded graph kept.
+Actual JSON:2026-11-20-vp9-cpu-specialist-qualification-44735542199. Do not replay
+passed small control/build. Next distinct original startup with newly compiled
+specialist, unchanged1920x804/24fps/4Mbps and250MiB formula; old original9 remains
+389.296875MiB FAIL. Full original fidelity/scaling/matched speedup/integration/
+broader preservation/public and overall project gates remain OPEN.
+Final27focused and402public evidence checks PASS. The7new artifact-dependent
+assertions remain mandatory qualification, not portable CI/release completion.
+
 2026-11-20 M-09 corrected specialist native gate CLOSED (run44735542199), still
 private/browser-unqualified. Full configured input inventory preserved and
 all exact source/config/packed/limit proofs authenticated. Static Wasm26.76%

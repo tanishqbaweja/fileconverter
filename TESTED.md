@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-11-20 VP9 specialist actual headless small automatic-fallback gate PASS,
+NOT full-original/scaling/public/speed acceptance. Receipt44735542199/fullSHA
+a934fafbbd6f128b2049f39f9476d990394dfc159d86adc19e99213584118ee7, executed154864fb.
+Pinned58,389B source -> four99,413B golden82bdfd66…82267b outputs. Full48frames/
+clocks/durations/8metadata fields/SSIM0.993273 pass. Six jobs retain both child
+attempts, real-write cancel/write-failure and three independently exact recoveries.
+Primary186.7734375MiB over SAME earliest stable blank,75valid/0missing active,
+max cleanup1.76171875MiB above original loaded idle, original250/96MiB unchanged.
+473native sample counts/true phase peaks/64one-second graph buckets retained,
+not full raw100ms journal.38source pins/full HTTP bytes+headers/bounded trace
+verified;42observed browser PIDs/all3roots absent, exact runtime/stages absent.
+All disposable media/profile removed; protected original fullSHA/size unchanged.
+Final27focused checks and unchanged402public evidence audit PASS. New evidence
+file explicitly needs retained native/trace prerequisites, not implied portable.
+25recipe/cleanup tests and7actual-evidence tests PASS, affected lint PASS.
+No public asset or route promotion. Do not repeat; next distinct original startup
+uses this core, not old failed packed bytes. Compact final checkpoint retained.
+
 2026-11-20 VP9 specialist attempt15 native build/authentication PASS, private.
 Run44735542199/source980c4a934cd1bdf4f05bc957c2bc4440adaabc63, both remote cleanup
 steps PASS. ZIP/source/finalwrapper/config/inventory/packed4B/memory authenticated.
