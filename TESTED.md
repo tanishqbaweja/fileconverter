@@ -14014,6 +14014,24 @@ Updated 2026-11-16 from the capability registry, retained successful Chrome stre
 - **2026-09-27 bounded archive/package source inspection:** ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB read only the 65,557-byte ZIP tail plus at most a 1 MiB central-directory prefix. TAR performs at most 256 isolated 512-byte header reads while skipping payloads; GZIP/BZIP2/XZ wrappers read at most 64 KiB plus an eight-byte GZIP trailer; 7Z reads its 32-byte start header plus one next-header marker. The panel reports bounded entry/size/compression/encryption/path-safety and package facts without decompressing payloads or displaying names. Eight ZIP-based families, TAR/TAR.GZ/TAR.BZ2/TAR.XZ/7Z, raw GZIP/BZIP2/XZ, unsafe ZIP/TAR, an in-memory 20,000-entry oversized ZIP directory, and a 1,024-entry TAR passed the focused production-Chromium gate 1/1. The ZIP stress stopped at exactly 1,114,133 bytes; TAR stopped at exactly 131,072 header bytes and both qualified incomplete counts. Exact scope and cleanup are in `evidence/package-source-inspection-2026-09-27.json`.
 <!-- BEGIN MANUAL TEST LOG -->
 
+2026-11-20 — M-09 source-only private VP9 output specialist implemented. Removes
+only unrelated output encoders/muxers and rejects non10/11 calls before I/O;
+all existing19input decoders/18demuxers/11parsers/8BSFs retained with fail-closed
+actual-config assertions. Same codec settings/width/pixels/vendor packed/lazy
+changes/one thread/no helpers/96MiB Wasm/250MiB full-tree limits. Default packed
+recipe byte-identical to actual42244170876; public source/linker/assets untouched.
+18source/build recipe tests/0fail0skip and affected lint PASS. No compiled native,
+actual memory savings/speed/browser/public claim. Latest original9 actual389.297
+failure stays failed; late child role unavailable, not guessed. GH404 for the
+private workflow filename exposed the known registration rule; use established
+isolated-index substitution at the already registered reproduction workflow on
+a new build branch, without modifying main or local canonical workflow. Plan:
+evidence/2026-11-20-vp9-cpu-specialist-plan.json. No native job dispatched yet.
+Full declared native recipe gate first57/59: two source-wiring string assertions
+needed explicit cpuSpecialist option/engine identity. No prior obligation removed.
+Final59/59 PASS/0skip/3860.8438ms incl real compiled allocator/packed-token controls;
+affected lint PASS. Native compilation and browser results still unverified.
+
 2026-11-20 — Actual current-model hyperlink scaling3x2/fresh-largest1x PASS for
 fixed1024relationships/64bookmarks, not whole Word/public/browser qualification.
 Receipts11:39:33Z and11:43:44Z; aggregate11:46:04Z JSON/CSV/HTML. Real inputs

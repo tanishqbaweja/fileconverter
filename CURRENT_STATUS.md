@@ -4,6 +4,30 @@ Updated 2026-11-20. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Active implementation: private VP9 CPU specialist
+
+The latest retained CPU original9 is389.296875MiB FAIL, not merely the older
+300.87MiB small fallback. Packed-token normal-HTTP small control had passed at
+203.73046875MiB, but original startup later adds an unclassified large child;
+its role cannot be retroactively guessed. Do not replay the unchanged failure.
+
+Distinct source candidate now limits only private profiles10/11 OUTPUT to VP9/
+WebM, rejects unrelated profiles before I/O, and retains ALL baseline19decoders,
+18demuxers,11parsers and8BSFs. All codec settings, pixels, width, threads, packed
+tokens/lazy buffers,96MiB Wasm cap and250MiB whole-tree formula remain unchanged.
+Builder must prove exact actual configured inventories, final source and layout.
+Default packed build recipe remains byte-identical; public sources/assets/routes
+unchanged.18source/build-recipe tests and affected lint PASS, no native/browser
+saving inferred. Plan: evidence/2026-11-20-vp9-cpu-specialist-plan.json.
+Full native recipe gate59/59 PASS,0skip,3860.8438ms, including real host C allocator/
+token controls. First57/59 caught two stale exact wiring assertions; updated to
+require the guarded specialist option/identity, no safety check removed.
+
+The private workflow is not registered by its filename on main. The established
+isolated-index builder will put its selected workflow at the already-registered
+reproduction path ONLY on a new codex build branch. Main and the local checkout
+workflow remain untouched. No native job has been dispatched yet.
+
 ## Current capability increment: private DOCX hyperlinks
 
 Current-model large hyperlink scaling gate CLOSED for the tested pattern:

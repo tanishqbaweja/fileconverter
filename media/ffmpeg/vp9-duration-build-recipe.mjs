@@ -2,12 +2,13 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 const sha = value => createHash("sha256").update(value).digest("hex");
-export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false, allocationDiagnostics = false, lazyUtility = false, tokenContext = false, tokenPacked = false } = {}) {
+export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false, allocationDiagnostics = false, lazyUtility = false, tokenContext = false, tokenPacked = false, cpuSpecialist = false } = {}) {
   assert.equal(typeof temporalFilterGuard, "boolean");
   assert.equal(typeof allocationDiagnostics, "boolean"); assert.ok(!allocationDiagnostics || temporalFilterGuard);
   assert.equal(typeof lazyUtility,"boolean");assert.ok(!lazyUtility||allocationDiagnostics);
   assert.equal(typeof tokenContext,"boolean");assert.ok(!tokenContext||lazyUtility);
   assert.equal(typeof tokenPacked,"boolean");assert.ok(!tokenPacked||tokenContext);
+  assert.equal(typeof cpuSpecialist,"boolean");assert.ok(!cpuSpecialist||tokenPacked);
   assert.equal(sha(source), "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e");
   const tail = source.slice(source.indexOf("comparison_files=()\n"));
   assert.ok(tail.startsWith("comparison_files=()\n") && tail.endsWith("printf 'Exact non-Docker FFmpeg artifact comparison passed.\\n'\n"));
@@ -69,6 +70,14 @@ export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false
   if(tokenPacked)for(const file of ['vp9-token-vpx-config.h','vp9-token-layout-probe.c','vp9-token-layout-probe.ll'])edits.push([
     'cp -- "${BUILD_ROOT}/'+file+'" "${OUTPUT_ROOT}/'+file+'"\n',
     '# Packed build retains its own actual configured layout, not the six-byte ancestor probe ('+file+').\n']);
+  if(cpuSpecialist)edits.push([
+    '\n./build-libraries.sh\n', '\nnode "${SCRIPT_DIR}/make-vp9-cpu-specialist-source.mjs" configure\n./build-libraries.sh\n'],[
+    '  node "${SCRIPT_DIR}/make-vp9-duration-source.mjs"\n',
+    '  node "${SCRIPT_DIR}/make-vp9-duration-source.mjs"\n  node "${SCRIPT_DIR}/make-vp9-cpu-specialist-source.mjs" wrapper\n'],[
+    '  cp -- "${BUILD_ROOT}/ffmpeg/config_components.h" "${OUTPUT_ROOT}/config_components.h"\n',
+    '  cp -- "${BUILD_ROOT}/ffmpeg/config_components.h" "${OUTPUT_ROOT}/config_components.h"\n'+
+      ['build-libraries.vp9-specialist','within_remux.vp9-specialist'].flatMap(stem=>['base','generated','json'].map(ext=>
+        '  cp -- "${BUILD_ROOT}/'+stem+'.'+ext+'" "${OUTPUT_ROOT}/'+stem+'.'+ext+'"\n')).join('')]);
   let generated = source;
   for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
   let reverse = generated;
@@ -81,5 +90,6 @@ export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false
     lazyUtility,
     tokenContext,
     tokenPacked,
+    cpuSpecialist,
     allCoreBuildSelected: false, publicAcceptance: false };
 }

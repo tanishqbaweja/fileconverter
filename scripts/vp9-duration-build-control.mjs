@@ -12,8 +12,9 @@ assert.ok(["prepare", "dispatch", "inspect"].includes(action)); assert.match(att
 const suffix = attempt === "1" ? "" : "-attempt" + attempt;
 const root = path.resolve(import.meta.dirname, ".."), repo = "tanishqbaweja/fileconverter", execute = promisify(execFile);
 const originalWidth = Number(attempt) >= 5;
-const prefix = originalWidth ? "evidence/2026-11-06-vp9-original-width-build" : "evidence/2026-11-05-vp9-duration-build";
-const branchName = (originalWidth ? "codex/vp9-original-width-source-20261106" : "codex/vp9-duration-source-20261105") + suffix;
+const cpuSpecialist = Number(attempt) >= 14;
+const prefix = cpuSpecialist ? "evidence/2026-11-20-vp9-cpu-specialist-build" : originalWidth ? "evidence/2026-11-06-vp9-original-width-build" : "evidence/2026-11-05-vp9-duration-build";
+const branchName = (cpuSpecialist ? "codex/vp9-cpu-specialist-source-20261120" : originalWidth ? "codex/vp9-original-width-source-20261106" : "codex/vp9-duration-source-20261105") + suffix;
 const branchFile = path.join(root, prefix + "-branch" + suffix + ".json"), dispatchFile = path.join(root, prefix + "-dispatch" + suffix + ".json");
 const workflowPath = ".github/workflows/reproduce-ffmpeg-nondocker.yml", sha = value => createHash("sha256").update(value).digest("hex");
 const runtime = await createOwnedRuntimeScratch("vp9-duration-control-");
@@ -34,7 +35,12 @@ try {
     await assert.rejects(git(["show-ref", "--verify", "refs/heads/" + branchName]));
     assert.equal(await git(["ls-remote", "origin", "refs/heads/" + branchName]), "");
     const parent = await git(["rev-parse", "HEAD"]), main = await git(["ls-remote", "origin", "refs/heads/main"]);
-    const canonical = await readFile(path.join(root, workflowPath)), selected = await readFile(path.join(root, ".github/workflows/vp9-duration-nondocker.yml"));
+    const canonical = await readFile(path.join(root, workflowPath));
+    let selected = await readFile(path.join(root, ".github/workflows/vp9-duration-nondocker.yml"));
+    if(cpuSpecialist){
+      const source=selected.toString(),before="WITHIN_VP9_CPU_SPECIALIST: ${{ inputs.cpu_specialist && '1' || '0' }}";
+      assert.equal(source.split(before).length,2);selected=Buffer.from(source.replace(before,'WITHIN_VP9_CPU_SPECIALIST: "1"'));
+    }
     const indexEnv = { ...env, GIT_INDEX_FILE: path.join(runtime.directory, "isolated.index") };
     await run(gitExe, ["read-tree", parent], indexEnv);
     const hashed = spawnSync(gitExe, ["hash-object", "-w", "--stdin"], { cwd: root, env: indexEnv,
@@ -50,6 +56,7 @@ try {
     assert.equal(await git(["ls-remote", "origin", "refs/heads/main"]), main); assert.equal(sha(await readFile(path.join(root, workflowPath))), sha(canonical));
     const report = { recordedAt: new Date().toISOString(), branch: branchName, parent, commit, tree, remoteVerified: true,
       canonicalWorkflowSha256: sha(canonical), generatedWorkflowSha256: sha(selected), generatedWorkflowSource: selected.toString(),
+      cpuSpecialist,
       mainUnchanged: true, checkoutIndexWorkflowUnchanged: true, mediaCopiesCreated: false, actualBuildStarted: false, publicAcceptance: false };
     await save(branchFile, report); console.log(JSON.stringify({ output: branchFile, branch: branchName, commit, actualBuildStarted: false }));
   } else {
@@ -80,7 +87,7 @@ try {
       const [current, jobs] = await Promise.all([gh(["api", `repos/${repo}/actions/runs/${runId}`]), gh(["api", `repos/${repo}/actions/runs/${runId}/jobs`])]);
       const jobRun = JSON.parse(current), jobRows = JSON.parse(jobs).jobs; assert.equal(jobRun.head_sha, branch.commit);
       assert.equal(jobRun.run_attempt, 1); assert.ok(jobRows.length <= 1);
-      if (jobRows.length) { assert.equal(jobRows[0].name, "build"); assert.ok(jobRows[0].steps.some(row => row.name === "Compile private duration core with unchanged codecs and memory limits")); }
+      if (jobRows.length) { assert.equal(jobRows[0].name, "build"); assert.ok(jobRows[0].steps.some(row => row.name === (cpuSpecialist ? "Compile private VP9 candidate with unchanged input support and memory limits" : "Compile private duration core with unchanged codecs and memory limits"))); }
       const report = { acquiredAt: new Date().toISOString(), runId, head: branch.commit, branch: branchName, status: jobRun.status,
         conclusion: jobRun.conclusion, url: `https://github.com/${repo}/actions/runs/${runId}`, exactHeadAndStepsVerified: jobRows.length === 1,
         job: jobRows[0] ? { id: jobRows[0].id, startedAt: jobRows[0].started_at, completedAt: jobRows[0].completed_at,

@@ -15,6 +15,7 @@ import { makeVp9LazyUtilityEncoder,makeVp9LazyUtilityFilter } from "./vp9-lazy-u
 import {makeVp9TokenContextSources} from "./vp9-token-context-recipe.mjs";
 import {VP9_TOKEN_CONTEXT_LIFETIME_PINS} from "./vp9-token-context-lifetime.mjs";
 import {authenticateVp9PackedArtifacts} from "./vp9-token-packed-artifacts.mjs";
+import {makeVp9CpuSpecialistLibraries,makeVp9CpuSpecialistWrapper,VP9_CPU_SPECIALIST_INPUTS} from "./vp9-cpu-specialist-recipe.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), output = path.join(root, "work/vp9-duration-output");
 const read = file => readFile(path.join(root, file)), sha = value => createHash("sha256").update(value).digest("hex");
 assert.equal(process.argv.length, 2); assert.equal(process.platform, "linux");
@@ -26,7 +27,9 @@ assert.ok([undefined,"0","1"].includes(process.env.WITHIN_VP9_TOKEN_CONTEXT));
 const tokenContext=process.env.WITHIN_VP9_TOKEN_CONTEXT==="1";assert.ok(!tokenContext||lazyUtility);
 assert.ok([undefined,"0","1"].includes(process.env.WITHIN_VP9_TOKEN_PACKED));
 const tokenPacked=process.env.WITHIN_VP9_TOKEN_PACKED==="1";assert.ok(!tokenPacked||tokenContext);
-const privateEngine=tokenPacked?"private-vp9-token-packed":tokenContext?"private-vp9-token-context":lazyUtility?"private-vp9-lazy-utility":allocationDiagnostics?"private-vp9-allocation-diagnostic":"private-vp9-realtime-temporal";
+assert.ok([undefined,"0","1"].includes(process.env.WITHIN_VP9_CPU_SPECIALIST));
+const cpuSpecialist=process.env.WITHIN_VP9_CPU_SPECIALIST==="1";assert.ok(!cpuSpecialist||tokenPacked);
+const privateEngine=cpuSpecialist?"private-vp9-cpu-specialist":tokenPacked?"private-vp9-token-packed":tokenContext?"private-vp9-token-context":lazyUtility?"private-vp9-lazy-utility":allocationDiagnostics?"private-vp9-allocation-diagnostic":"private-vp9-realtime-temporal";
 assert.equal(sha(await read("media/ffmpeg/within_remux.c")), "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068");
 for (const dir of [output, path.join(root, "work/vp9-duration-build")]) await assert.rejects(access(dir), { code: "ENOENT" });
 const sourcePins = {}, artifactPins = {};
@@ -44,10 +47,11 @@ if(tokenContext)sourceFiles.push("media/ffmpeg/vp9-token-context-recipe.mjs","me
 if(tokenPacked)sourceFiles.push("media/ffmpeg/vp9-token-packed-recipe.mjs","media/ffmpeg/vp9-token-packed-audit.mjs",
   "media/ffmpeg/vp9-token-packed-c-unit.mjs","media/ffmpeg/vp9-token-packed-artifacts.mjs","media/ffmpeg/make-vp9-token-packed-source.mjs",
   "evidence/2026-11-06-vp9-token-packed-source-audit.json");
+if(cpuSpecialist)sourceFiles.push("media/ffmpeg/vp9-cpu-specialist-recipe.mjs","media/ffmpeg/make-vp9-cpu-specialist-source.mjs");
 for (const entry of await readdir(path.join(root, "media/ffmpeg"))) if (/^build-.*\.sh$/.test(entry)) sourceFiles.push("media/ffmpeg/" + entry);
 for (const entry of await readdir(path.join(root, "media/ffmpeg/patches"))) if (entry.endsWith(".patch")) sourceFiles.push("media/ffmpeg/patches/" + entry);
 for (const file of sourceFiles) sourcePins[file] = sha(await read(file));
-const recipe = makeVp9DurationBuildRecipe((await read("media/ffmpeg/reproduce-nondocker.sh")).toString(), { temporalFilterGuard: true, allocationDiagnostics, lazyUtility, tokenContext, tokenPacked });
+const recipe = makeVp9DurationBuildRecipe((await read("media/ffmpeg/reproduce-nondocker.sh")).toString(), { temporalFilterGuard: true, allocationDiagnostics, lazyUtility, tokenContext, tokenPacked, cpuSpecialist });
 const runtime = await createOwnedRuntimeScratch("vp9-duration-builder-");
 try {
   // Configure probes live under this TMPDIR, not the separate build root.
@@ -55,10 +59,13 @@ try {
   await writeFile(path.join(runtime.directory, "package.json"), '{"type":"commonjs"}\n', { flag: "wx" });
   const script = path.join(runtime.directory, "recipe.sh"); await writeFile(script, recipe.generated, { flag: "wx" });
   const child = spawn("bash", [script], { cwd: root, windowsHide: true, stdio: "inherit", env: { ...runtime.env,
+    WITHIN_VP9_CPU_SPECIALIST: cpuSpecialist ? "1" : "0",
     WITHIN_BUILD_CORE_FILTER: "within-remux", WITHIN_KEEP_NONDOCKER_OUTPUT: "1", WITHIN_VP9_DURATION_SCRIPT_DIR: path.join(root, "media/ffmpeg") } });
   await new Promise((resolve, reject) => { child.once("error", reject); child.once("close", (code, signal) =>
     code === 0 ? resolve() : reject(new Error(`Private duration build exit ${code}/${signal}`))); });
-  const before = await readFile(path.join(output, "within_remux.base.c"), "utf8"), candidate = makeVp9OriginalWidthSource(before);
+  const before = await readFile(path.join(output, "within_remux.base.c"), "utf8"), widthCandidate = makeVp9OriginalWidthSource(before);
+  const specialistWrapper=cpuSpecialist?makeVp9CpuSpecialistWrapper(widthCandidate.generated):null;
+  const candidate=specialistWrapper?{...widthCandidate,...specialistWrapper,parentSha256:widthCandidate.parentSha256,edits:[...widthCandidate.edits,...specialistWrapper.edits]}:widthCandidate;
   assert.equal(await readFile(path.join(output, "within_remux.duration.c"), "utf8"), candidate.generated);
   const vendor = makeVp9RealtimeTemporalFilterSource(await readFile(path.join(output, "vp9_encoder.temporal.base.c"), "utf8"));
   assert.equal(await readFile(path.join(output, "vp9_encoder.temporal.guard.c"), "utf8"), vendor.generated);
@@ -140,6 +147,21 @@ try {
   const components = await readFile(path.join(output, "config_components.h"), "utf8");
   for (const name of ["H264_DECODER", "HEVC_DECODER", "LIBVPX_VP9_ENCODER", "WEBM_MUXER"]) assert.match(components, new RegExp("^#define CONFIG_" + name + " 1$", "m"));
   const enabled = category => [...components.matchAll(new RegExp("^#define CONFIG_(\\w+)_" + category + " 1$", "gm"))].map(row => row[1].toLowerCase());
+  let specialistContract=null;
+  if(cpuSpecialist){
+    const configBase=await readFile(path.join(output,"build-libraries.vp9-specialist.base"),"utf8"),config=makeVp9CpuSpecialistLibraries(configBase);
+    assert.equal(configBase,await readFile(path.join(output,"build-libraries.allocation.diagnostic.sh"),"utf8"));
+    for(const [stem,proof]of [["build-libraries.vp9-specialist",config],["within_remux.vp9-specialist",specialistWrapper]]){
+      assert.equal(await readFile(path.join(output,stem+".generated"),"utf8"),proof.generated);
+      const retained=JSON.parse(await readFile(path.join(output,stem+".json")));assert.equal(retained.generatedSha256,proof.generatedSha256);assert.deepEqual(retained.edits,proof.edits);
+    }
+    for(const [category,expected]of Object.entries(VP9_CPU_SPECIALIST_INPUTS))assert.deepEqual(enabled(category).toSorted(),[...expected].sort(),"No narrowing of baseline input support: "+category);
+    assert.deepEqual(enabled("ENCODER"),["libvpx_vp9"]);assert.deepEqual(enabled("MUXER"),["webm"]);
+    specialistContract={configureSha256:config.generatedSha256,wrapperSha256:specialistWrapper.generatedSha256,
+      allowedProfiles:[10,11],expectedInputComponents:VP9_CPU_SPECIALIST_INPUTS,outputEncoders:enabled("ENCODER"),outputMuxers:enabled("MUXER"),
+      inputSupportChanged:false,codecSettingsChanged:false,ioChanged:false,memoryLimitsRaised:false,ancestorDurationProofIsNotCompiledSource:true,
+      actualMemorySavedBytes:null,browserValidated:false,speedGainProven:false,publicAcceptance:false};
+  }
   for (const file of await readdir(output)) if (file !== "build-manifest.json") {
     const bytes = await readFile(path.join(output, file)); artifactPins[file] = { bytes: bytes.length, sha256: sha(bytes) };
   }
@@ -158,6 +180,7 @@ try {
       lazyUtility: lazyContract,
       tokenContext: tokenContract,
       tokenPacked:packedContract,
+      cpuSpecialist:specialistContract,
       compiledVendorSources:lazyUtility?{"vp9/encoder/vp9_encoder.c":lazyContract.encoderSha256,
         "vp9/encoder/vp9_picklpf.c":lazyContract.filterSha256,"vpx_scale/generic/yv12config.c":diagnosticContract.allocatorSha256,
         ...(packedContract?.sourceSha256s??tokenContract?.sourceSha256s??{})}:null,

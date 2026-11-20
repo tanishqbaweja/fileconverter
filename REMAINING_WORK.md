@@ -1,5 +1,21 @@
 # Remaining work audit
 
+2026-11-20 M-09 distinct CPU specialist SOURCE implemented, not compiled/browser
+accepted. Latest actual original9 remains389.296875MiB FAIL with unclassified
+late child; never infer its role from a different run. Candidate omits unrelated
+OUTPUT encoders/muxers only, retains all19decoders/18demuxers/11parsers/8BSFs,
+same actual profile10/11 settings, packed-token/lazy vendor changes,1thread/no
+helpers/96MiB Wasm and250MiB complete-tree limits. Wrapper rejects all other jobs
+before media I/O; normal public engines and default packed recipe unchanged.
+18source/build-recipe checks and affected lint PASS; actual configured inventory
+and browser bit-exact/fidelity/recovery/memory/speed still UNPROVEN. Exact plan:
+evidence/2026-11-20-vp9-cpu-specialist-plan.json. Next one isolated registered-
+workflow build with exact-source/config/layout authentication, not another old
+original replay or any service exclusion/rebase. No goal/public completion.
+Full native gate59/59 PASS/0skip/3860.8438ms; initial57/59 caught two source-wiring
+assertions requiring the explicit guarded specialist option and identity. Updated
+assertions retain all prior obligations. No native compile yet; one dispatch next.
+
 2026-11-20 N-08 current hyperlink scaling3x2 + fresh largest1x gate CLOSED for
 the tested fixed1024relationships/64bookmarks pattern. Genuine Word inputs
 9,462,927/148,388,967B ->9,295,737/148,682,577B HTML. Every ordered paragraph,
