@@ -1,0 +1,103 @@
+{
+  "acquiredAt": "2026-11-20T12:31:04.118Z",
+  "runId": 44735542199,
+  "head": "980c4a934cd1bdf4f05bc957c2bc4440adaabc63",
+  "branch": "codex/vp9-cpu-specialist-source-20261120-attempt15",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/44735542199",
+  "exactHeadAndStepsVerified": true,
+  "job": {
+    "id": 136285865321,
+    "startedAt": "2026-11-20T12:24:40Z",
+    "completedAt": "2026-11-20T12:29:56Z",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Own all runtime scratch",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Check exact private duration recipes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Check private specialist output surface and unchanged input support",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install build prerequisites",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install pinned SDK locally without Docker",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Compile private VP9 candidate with unchanged input support and memory limits",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Retain reusable private tools and compact source proofs only",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Remove disposable owned build and SDK data",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Remove owned runtime scratch",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "workflowDisplayNameNotSelectionProof": true,
+  "publicAcceptance": false,
+  "browserConversions": 0,
+  "cleanupStepsPassed": true,
+  "artifact": {
+    "id": 14629225133,
+    "name": "private-vp9-duration-44735542199",
+    "bytes": 2716835,
+    "digest": "sha256:5ca67ac9b821b81b954b0289188e0776639e0563df3be86fbcb87d5329925178",
+    "expiresAt": "2026-11-21T12:29:47Z"
+  }
+}

@@ -6,6 +6,25 @@ specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complet
 
 ## Active implementation: private VP9 CPU specialist
 
+Attempt15 COMPILED AND AUTHENTICATED: run44735542199/source980c4a934cd1bdf4f05b
+c957c2bc4440adaabc63, both cleanup steps PASS. Exact ZIP digest, dispatch/source
+pins, reversible final wrapper/config, actual19decoders/18demuxers/11parsers/
+8BSFs, onlylibvpx_vp9+webm, packed4B records and unchanged32/96MiB Wasm limits
+verified by collector. Wasm7,234,214B vs9,877,633B baseline:2,643,419B(26.76%)
+smaller. This is STATIC CODE reduction, not runtime memory or conversion speed.
+Reusable code/proofs9,517,143B in work/vp9-duration-input-44735542199; no media.
+Native receipt: evidence/2026-11-20-vp9-cpu-specialist-native-44735542199.json.
+
+New small qualification reuses the exact authenticated packed HTTP automatic
+hardware-attempt -> CPU-fallback, same source/settings/hash/48frames/full clock/
+SSIM,6jobs/recovery, original blank250MiB and cleanup96MiB gates. Only candidate
+identity/receipt/report namespace and stronger all-observed-birth cleanup change.
+3recipe checks and check-only source parse PASS, affected lint PASS; browser not
+yet run at this checkpoint. Command: WITHIN_VP9_ORIGINAL_NATIVE_RUN_ID=44735542199
+node scripts/test-vp9-cpu-specialist.mjs (PowerShell env syntax required).
+Never reuse the old harness without the descendant-birth reconciliation. This
+small prerequisite does NOT replace original-file/scaling/full-spec acceptance.
+
 Attempt14 is now TERMINAL FAILED, not live: run44733153901, exact head
 eb482a8fc20ac97728625fb94a47850c939d37f6, completed12:15:11Z. Both cleanup
 steps passed. The unchanged native inventory guard caught missing AC3_PARSER:

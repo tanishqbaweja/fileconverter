@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-11-20 M-09 corrected specialist native gate CLOSED (run44735542199), still
+private/browser-unqualified. Full configured input inventory preserved and
+all exact source/config/packed/limit proofs authenticated. Static Wasm26.76%
+smaller (7,234,214B vs9,877,633B), no runtime-memory/speed inference. New strict
+small control preserves hardware attempt+CPU fallback, all settings/fidelity/
+hash/recovery/originalblank250MiB gates, strengthens all-observed-birth cleanup.
+3recipe tests/check-only parse/scoped lint PASS. Small browser gate NEXT; genuine
+full original/scaling/performance/public integration remain open regardless.
+
 2026-11-20 M-09 attempt14 TERMINAL FAILED at unchanged native PARSER inventory
 guard: removing output muxers also removed automatically enabled AC3_PARSER.
 Run44733153901/sourceeb482a8f, both owned cleanup steps PASS. Corrected recipe

@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-20 VP9 specialist attempt15 native build/authentication PASS, private.
+Run44735542199/source980c4a934cd1bdf4f05bc957c2bc4440adaabc63, both remote cleanup
+steps PASS. ZIP/source/finalwrapper/config/inventory/packed4B/memory authenticated.
+Actual19decoders/18demuxers/11parsers/8BSFs unchanged, onlylibvpx_vp9+webm outputs.
+Wasm7,234,214B vs baseline9,877,633B:26.76% static reduction, NOT runtime/speedproof.
+All reusable code/proofs9,517,143B retained inside repo work; no converted media.
+Exact native JSON:2026-11-20-vp9-cpu-specialist-native-44735542199. New reversible
+same-fallback small qualification adds observed-child birth cleanup without
+weakening original hash/48frames/clocks/fidelity/recovery/250MiB gates;3recipe
+tests/check-only parse/scoped lint PASS, browser not yet run at this checkpoint.
+
 2026-11-20 VP9 specialist attempt14 FAILED, correctly rejected by native guard.
 Run44733153901/head eb482a8fc20ac97728625fb94a47850c939d37f6 completed12:15:11Z.
 Native component inventory lacked AC3_PARSER after unrelated muxers were removed;
