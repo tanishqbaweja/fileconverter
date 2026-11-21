@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-21 Matroska indexed metadata and 4 KiB scout **source-only PASS**.
+Matched real complex MKV/WebM read 65,536 → 4,096 B with the same facts.
+Protected 2,958,573,265 B `test.mkv`: checked late attached-picture/Tags
+headers in 65,524 B total, including just 12 B of tail probes. FFprobe
+independently reports one attached PNG, four tags, zero chapters. Original
+pre/post full SHA-256 match. Target/payload/type-confusion negatives, 80
+focused tests, build, TS, lint, 402 public manifest entries PASS. No generated
+media, conversion, browser or speed/memory pass. C: ~10 GiB after checks.
+[Receipt](evidence/2026-11-21-matroska-indexed-metadata.json).
+
 2026-11-21 private DOCX superscript/subscript **worker preflight PASS**.
 Real python-docx 1.2.0 37,611 B package reopened with intact CRC and styles;
 bundled production engine generated 171,850 B HTML via 65,536/65,536/40,778 B

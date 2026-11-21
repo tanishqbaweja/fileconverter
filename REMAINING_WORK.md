@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-11-21 M-02 / M-03 / P-08 Matroska/WebM bounded preview improvement.
+The reader now checks at most three local indexed chapter/attachment/tag
+headers inside the segment after the first known Cluster. Real `test.mkv`
+attachment and Tags headers now surface; FFprobe reports an attached PNG
+(not a generic attachment stream), four format tags, zero chapters. Exact
+original size/full-hash preserved; 12 tail bytes and 65,524 B total. Two
+leading-track fixtures read 4 KiB from 64 KiB with identical old facts.
+80 tests/build/TS/lint/manifest audit passed. Not metadata preservation/large
+conversion evidence. Storage headroom recovered for small browser gates;
+the existing failed large-memory runs stay failed.
+[Receipt](evidence/2026-11-21-matroska-indexed-metadata.json).
+
 2026-11-21 N-08 private DOCX run vertical formatting implemented and independently
 verified outside Chrome. `w:vertAlign` resolves document defaults, paragraph
 and character style chains, and direct superscript/subscript/baseline values.

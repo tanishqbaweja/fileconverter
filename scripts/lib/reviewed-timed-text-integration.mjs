@@ -14,6 +14,10 @@ const pins = {
 };
 export function preTimedTextIntegration(file, bytes) {
   bytes = preDocxRunVertical(file, bytes);
+  if (file === "lib/media-source-inspection.ts" && sha(bytes) === "98fb9dc08db1d129b6318d715cd1e3883390a4fe7e1b7a377d7826a4bf5d9e85") {
+    bytes = execFileSync("git", ["show", `20f1dc8e924c231019987aa2b5dbcab4417c7c99:${file}`], { windowsHide: true, maxBuffer: 1_048_576 });
+    assert.equal(sha(bytes), pins[file][1], "Reviewed Matroska inspection preimage");
+  }
   if (!Object.hasOwn(pins, file) || sha(bytes) !== pins[file][1]) return bytes;
   const archived = execFileSync("git", ["show", `c02444cfe0098e10c95317723945a1dfc136ca2e:${file}`],
     { windowsHide: true, maxBuffer: 1_048_576 });

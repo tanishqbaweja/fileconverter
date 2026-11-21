@@ -86,7 +86,49 @@ test("a Matroska scan cut within a track avoids claiming a legacy language witho
   );
   const result = await inspectMediaSource(source, "mkv");
   assert.deepEqual(tags(result), ["eng", undefined]);
-  assert.deepEqual(source.reads, [[0, MAX_MATROSKA_INSPECTION_BYTES]]);
+  assert.deepEqual(source.reads, [[0, 4096], [4096, MAX_MATROSKA_INSPECTION_BYTES]]);
+});
+
+const chapterId = "1043a770", tagsId = "1254c367", attachmentId = "1941a469";
+function seek(id, relative, extra = []) {
+  const offset = Buffer.alloc(4); offset.writeUInt32BE(relative);
+  return ebml("4dbb", ebml("53ab", Buffer.from(id, "hex")), ebml("53ac", offset), ...extra);
+}
+function lateMetadata({ badOffset, conflict = false, badSize = false, unknownCluster = false } = {}) {
+  const tracks = ebml("1654ae6b", mkvAudio(legacy("eng"), ebml(attachmentId, Buffer.from([1]))));
+  const realCluster = ebml("1f43b675", Buffer.alloc(70_000));
+  const cluster = unknownCluster ? Buffer.concat([Buffer.from("1f43b675ff", "hex"), realCluster.subarray(7)]) : realCluster;
+  const chapter = badSize ? Buffer.from("1043a770207fff", "hex") : ebml(chapterId, Buffer.alloc(256, 0xee));
+  const tags = ebml(tagsId, Buffer.from([1]));
+  const attachments = ebml(attachmentId, Buffer.from([0xaa]));
+  const head = (a, b, c) => ebml("114d9b74", seek(chapterId, a), seek(tagsId, b), seek(attachmentId, c),
+    ...(conflict ? [seek(chapterId, a + 1)] : []));
+  const start = head(0, 0, 0).length + tracks.length + cluster.length;
+  const chunk = ebml("18538067", head(badOffset ?? start, start + chapter.length, start + chapter.length + tags.length),
+    tracks, cluster, chapter, tags, attachments);
+  const envelope = ebml("1a45dfa3", ebml("4282", Buffer.from("matroska")));
+  return { source: observedBlob(envelope, chunk), start: envelope.length + 7 + start, chapterSize: chapter.length };
+}
+
+test("Matroska checks indexed late chapters, tags and attachments without reading their payloads", async () => {
+  const { source, start, chapterSize } = lateMetadata();
+  const inspection = await inspectMediaSource(source, "mkv");
+  assert.deepEqual(inspection.metadataSignals, ["Indexed chapters header", "Indexed tags header", "Indexed attachments header",
+    "Declared languages of inspected tracks: stream 1: eng"]);
+  assert.deepEqual(source.reads, [[0, 4096], [start, start + 5], [start + 5, start + 6],
+    [start + chapterSize, start + chapterSize + 5], [start + chapterSize + 6, start + chapterSize + 11]]);
+  assert.equal(inspection.inspectedBytes, 4112);
+});
+
+test("Matroska ignores suspect index positions, conflicting hints and mismatched or oversized headers", async () => {
+  const options = [{ badOffset: 0 }, { badOffset: 700 }, { badOffset: 0xffffffff }, { conflict: true }, { badSize: true }, { unknownCluster: true }];
+  for (const option of options) {
+    const { source } = lateMetadata(option);
+    const result = await inspectMediaSource(source, "mkv");
+    assert.ok(!result.metadataSignals.some(signal => /^Chapters$|Indexed chapters/i.test(signal)), JSON.stringify(option));
+    assert.ok(!result.metadataSignals.includes("Attachments"), "nested lookalike must not prove top-level metadata");
+    assert.ok(result.inspectedBytes <= MAX_MATROSKA_INSPECTION_BYTES);
+  }
 });
 
 test("the metadata line bounds the number of displayed tags while keeping their stream association", async () => {

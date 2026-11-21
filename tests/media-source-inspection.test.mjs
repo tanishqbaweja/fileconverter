@@ -345,8 +345,8 @@ test("bounded Matroska inspection reports complex tracks and metadata", async ()
     "Tags",
     "Declared languages of inspected tracks: stream 2: eng; stream 3: spa; stream 4: fra",
   ]);
-  assert.equal(result.inspectedBytes, MAX_MATROSKA_INSPECTION_BYTES);
-  assert.deepEqual(source.reads, [[0, MAX_MATROSKA_INSPECTION_BYTES]]);
+  assert.equal(result.inspectedBytes, 4096);
+  assert.deepEqual(source.reads, [[0, 4096]]);
 });
 
 test("bounded WebM inspection reports genuine VP9 and Opus tracks", async () => {
@@ -364,14 +364,14 @@ test("bounded WebM inspection reports genuine VP9 and Opus tracks", async () => 
   assert.deepEqual(result.streams.map(({ languageTag }) => languageTag), [undefined, "eng"]);
   assert.equal(result.streams[1].sampleRateHz, 48_000);
   assert.equal(result.streams[1].channelLayout, "Mono");
-  assert.equal(result.inspectedBytes, MAX_MATROSKA_INSPECTION_BYTES);
-  assert.deepEqual(source.reads, [[0, MAX_MATROSKA_INSPECTION_BYTES]]);
+  assert.equal(result.inspectedBytes, 4096);
+  assert.deepEqual(source.reads, [[0, 4096]]);
 });
 
 const protectedMkvUrl = new URL("../test.mkv", import.meta.url);
 
 test(
-  "protected multi-gigabyte Matroska inspection reads only 64 KiB",
+  "protected multi-gigabyte Matroska inspection reads at most 64 KiB",
   {
     skip: existsSync(protectedMkvUrl)
       ? false
@@ -421,8 +421,12 @@ test(
       assert.equal(result.streams[1].codec, "AAC");
       assert.equal(result.streams[1].sampleRateHz, 48_000);
       assert.equal(result.streams[1].channels, 6);
-      assert.equal(result.inspectedBytes, MAX_MATROSKA_INSPECTION_BYTES);
-      assert.deepEqual(reads, [[0, MAX_MATROSKA_INSPECTION_BYTES]]);
+      assert.equal(result.inspectedBytes, reads.reduce((sum, [start, end]) => sum + end - start, 0));
+      assert.ok(result.inspectedBytes <= MAX_MATROSKA_INSPECTION_BYTES);
+      assert.ok(reads.slice(2).length >= 2 && reads.slice(2).every(([start, end]) => start > 2 ** 31 && end - start <= 8));
+      assert.ok(result.metadataSignals.includes("Indexed attachments header"));
+      assert.ok(!result.metadataSignals.some(signal => /chapters/i.test(signal)));
+      assert.ok(result.metadataSignals.includes("Indexed tags header"));
     } finally {
       await handle.close();
     }

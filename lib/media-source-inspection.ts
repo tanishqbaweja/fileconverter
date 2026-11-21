@@ -10,6 +10,9 @@ const MAX_AMR_FRAME_WINDOW_BYTES = 8 * 1024;
 export const MAX_AMR_INSPECTION_BYTES = 9 + MAX_AMR_FRAME_WINDOW_BYTES;
 export const MAX_ISO_BMFF_INSPECTION_BYTES = 64 * 1024;
 export const MAX_MATROSKA_INSPECTION_BYTES = 64 * 1024;
+const MATROSKA_SCOUT_BYTES = 4 * 1024;
+const MATROSKA_SEEK_HEADER_BYTES = 12;
+const MATROSKA_METADATA_IDS = new Map([[0x1043a770, "Chapters"], [0x1941a469, "Attachments"], [0x1254c367, "Tags"]]);
 export const MAX_FLV_INSPECTION_BYTES = 64 * 1024;
 const MPEG_TS_WINDOW_BYTES = 64 * 1024;
 const MPEG_TS_ELEMENTARY_PREFIX_BYTES = 32 * 1024;
@@ -1713,18 +1716,21 @@ function matroskaCodec(codecId: string): string {
 }
 
 async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
-  const inspectedBytes = Math.min(file.size, MAX_MATROSKA_INSPECTION_BYTES);
+  let inspectedBytes = Math.min(file.size, MATROSKA_SCOUT_BYTES);
   if (inspectedBytes < 8) {
     throw new Error("The selected file does not contain a valid EBML header.");
   }
-  const bytes = new Uint8Array(await file.slice(0, inspectedBytes).arrayBuffer());
-  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  let bytes = new Uint8Array(await file.slice(0, inspectedBytes).arrayBuffer());
+  let view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   let elementCount = 0;
   let docType: string | null = null;
   let timecodeScaleNs = 1_000_000;
   let durationUnits: number | null = null;
   const metadataSignals = new Set<string>();
   const tracks: MatroskaTrack[] = [];
+  let segment: { start: number; end: number } | undefined;
+  let firstCluster: { start: number; end: number | null } | undefined;
+  const seekHints = new Map<number, number | null>();
 
   const integer = (start: number, length: number): number | null => {
     if (length < 1 || length > 8 || start + length > bytes.byteLength) return null;
@@ -1750,12 +1756,49 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
     return value.replace(/\0+$/u, "");
   };
 
+  const inspectSeekHead = (start: number, end: number) => {
+    const header = (at: number, bound: number) => {
+      if (++elementCount > 1024) throw new Error("The EBML element-count ceiling was exceeded.");
+      const id = ebmlVint(bytes, at, false);
+      if (!id || id.length > 4 || id.value === null) return;
+      const size = ebmlVint(bytes, at + id.length, true);
+      if (!size || size.value === null) return;
+      const data = at + id.length + size.length;
+      if (data > bound || size.value > bound - data) return;
+      return { id: id.value, data, end: data + size.value };
+    };
+    for (let at = start; at < end;) {
+      const entry = header(at, end);
+      if (!entry) return;
+      at = entry.end;
+      if (entry.id !== 0x4dbb) continue;
+      let target: number | undefined, position: number | undefined, valid = true;
+      for (let offset = entry.data; offset < entry.end;) {
+        const field = header(offset, entry.end);
+        if (!field) { valid = false; break; }
+        offset = field.end;
+        if (field.id === 0x53ab) {
+          if (target !== undefined || field.end - field.data !== 4) { valid = false; break; }
+          target = view.getUint32(field.data);
+        } else if (field.id === 0x53ac) {
+          const value = integer(field.data, field.end - field.data);
+          if (position !== undefined || value === null) { valid = false; break; }
+          position = value;
+        }
+      }
+      if (!valid || target === undefined || position === undefined || !MATROSKA_METADATA_IDS.has(target)) continue;
+      if (!seekHints.has(target)) seekHints.set(target, position);
+      else if (seekHints.get(target) !== position) seekHints.set(target, null);
+    }
+  };
+
   const parseChildren = (
     start: number,
     end: number,
     depth: number,
     track: MatroskaTrack | null,
     languageScope?: "tracks" | "complete-track",
+    directSegment = false,
   ): boolean => {
     if (depth > 7) throw new Error("The EBML nesting ceiling was exceeded.");
     let offset = start;
@@ -1777,7 +1820,10 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
       const complete = declaredEnd <= end;
       const elementId = id.value;
 
-      if (elementId === 0x1f43b675) break;
+      if (elementId === 0x1f43b675) {
+        if (directSegment) firstCluster = { start: offset, end: size.value === null ? null : declaredEnd };
+        break;
+      }
       if (elementId === 0xae) {
         const nextTrack: MatroskaTrack = {
           type: null,
@@ -1801,8 +1847,13 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
           elementId,
         )
       ) {
+        const isSegment = elementId === 0x18538067 && depth === 0 && segment === undefined;
+        if (isSegment) {
+          const extent = size.value === null ? file.size : declaredEnd;
+          if (Number.isSafeInteger(extent) && extent <= file.size) segment = { start: dataStart, end: extent };
+        }
         parseChildren(
-          dataStart, dataEnd, depth + 1, track, elementId === 0x1654ae6b ? "tracks" : undefined,
+          dataStart, dataEnd, depth + 1, track, elementId === 0x1654ae6b ? "tracks" : undefined, isSegment && segment !== undefined,
         );
       } else if (complete) {
         const length = declaredEnd - dataStart;
@@ -1811,9 +1862,8 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
           timecodeScaleNs = integer(dataStart, length) ?? timecodeScaleNs;
         } else if (elementId === 0x4489) durationUnits = float(dataStart, length);
         else if (elementId === 0x7ba9) metadataSignals.add("Title");
-        else if (elementId === 0x1254c367) metadataSignals.add("Tags");
-        else if (elementId === 0x1043a770) metadataSignals.add("Chapters");
-        else if (elementId === 0x1941a469) metadataSignals.add("Attachments");
+        else if (directSegment && elementId === 0x114d9b74) inspectSeekHead(dataStart, dataEnd);
+        else if (directSegment && MATROSKA_METADATA_IDS.has(elementId)) metadataSignals.add(MATROSKA_METADATA_IDS.get(elementId)!);
         else if (track) {
           if (languageScope === "complete-track" && (elementId === 0x22b59c || elementId === 0x22b59d)) {
             const field = elementId === 0x22b59c ? "legacyLanguage" : "extendedLanguage";
@@ -1847,6 +1897,60 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
     throw new Error("The selected file does not contain a valid EBML header.");
   }
   parseChildren(0, bytes.byteLength, 0, null);
+  const prefixEnd = Math.min(file.size, MAX_MATROSKA_INSPECTION_BYTES - MATROSKA_SEEK_HEADER_BYTES * seekHints.size);
+  if (prefixEnd > inspectedBytes && (!firstCluster || !tracks.some(track => track.codecId && (track.type === 1 || track.type === 2)))) {
+    // Slow fallback only when the scout did not find the normal leading tracks
+    // and first Cluster boundary. Do not re-read any part of the scout.
+    const prefix = new Uint8Array(prefixEnd);
+    prefix.set(bytes);
+    prefix.set(new Uint8Array(await file.slice(inspectedBytes, prefixEnd).arrayBuffer()), inspectedBytes);
+    bytes = prefix; view = new DataView(bytes.buffer); inspectedBytes = prefixEnd;
+    elementCount = 0; docType = null; timecodeScaleNs = 1_000_000; durationUnits = null;
+    tracks.length = 0; metadataSignals.clear(); seekHints.clear(); segment = undefined; firstCluster = undefined;
+    parseChildren(0, bytes.byteLength, 0, null);
+  }
+  // Only three optional top-level element types, never follow another SeekHead
+  // or inspect metadata content. Treat the index as a hint, not proof.
+  const indexedSegment = segment as { start: number; end: number } | undefined;
+  const cluster = firstCluster as { start: number; end: number | null } | undefined;
+  const readHintBytes = async (start: number, end: number) => {
+    if (end <= bytes.byteLength) return bytes.subarray(start, end);
+    const missingStart = Math.max(start, bytes.byteLength);
+    const length = end - missingStart;
+    if (length > MAX_MATROSKA_INSPECTION_BYTES - inspectedBytes) return;
+    // Count requested bytes even if a nonstandard source returns a short read.
+    inspectedBytes += length;
+    const tail = new Uint8Array(await file.slice(missingStart, end).arrayBuffer());
+    if (tail.byteLength !== length) return;
+    if (start === missingStart) return tail;
+    const span = new Uint8Array(end - start);
+    span.set(bytes.subarray(start, missingStart)); span.set(tail, missingStart - start);
+    return span;
+  };
+  if (indexedSegment && cluster?.end != null && cluster.end <= indexedSegment.end) {
+    for (const [elementId, position] of seekHints) {
+      const label = MATROSKA_METADATA_IDS.get(elementId)!;
+      if (position === null || metadataSignals.has(label) || position > indexedSegment.end - indexedSegment.start - 5) continue;
+      const offset = indexedSegment.start + position;
+      if (offset < cluster.end) continue;
+      const head = await readHintBytes(offset, offset + 5);
+      if (!head || head[4] === 0) continue;
+      const id = ebmlVint(head, 0, false);
+      if (id?.length !== 4 || id.value !== elementId) continue;
+      const sizeWidth = Math.clz32(head[4]) - 23;
+      const sizeEnd = offset + 4 + sizeWidth;
+      if (sizeEnd > indexedSegment.end) continue;
+      const sizeBytes = sizeWidth === 1 ? head.subarray(4) : new Uint8Array(sizeWidth);
+      if (sizeWidth > 1) {
+        const rest = await readHintBytes(offset + 5, sizeEnd);
+        if (!rest) continue;
+        sizeBytes[0] = head[4]; sizeBytes.set(rest, 1);
+      }
+      const size = ebmlVint(sizeBytes, 0, true);
+      if (!size?.value || size.value > indexedSegment.end - sizeEnd) continue;
+      metadataSignals.add(`Indexed ${label.toLowerCase()} header`);
+    }
+  }
   const resolvedDocType = docType as string | null;
   if (
     !resolvedDocType ||

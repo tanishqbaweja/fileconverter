@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "status": "bounded-matroska-indexed-metadata-and-scout-verified-source-only",
+  "requirementIds": [
+    "M-02",
+    "M-03",
+    "P-08"
+  ],
+  "command": "node scripts/check-matroska-indexed-metadata.mjs --protected",
+  "spec": "https://www.rfc-editor.org/rfc/rfc9559.html#section-4.5",
+  "baselineCommit": "20f1dc8e924c231019987aa2b5dbcab4417c7c99",
+  "baselineSha256": "d51fea54af6b29cc26ffc2887b39ec95c4cdd8768f6a56416ba9920e0df698ec",
+  "nativeTool": "ffprobe version N-122712-g7e3781e3ca-20260211 Copyright (c) 2007-2026 the FFmpeg developers",
+  "results": [
+    {
+      "relative": "fixtures/media/complex-remux-source.mkv",
+      "sourceBytes": 780989,
+      "native": {
+        "chapters": 2,
+        "tags": 3,
+        "attachments": 1
+      },
+      "before": {
+        "inspectedBytes": 65536,
+        "metadataSignals": [
+          "Title",
+          "Chapters",
+          "Attachments",
+          "Tags",
+          "Declared languages of inspected tracks: stream 2: eng; stream 3: spa; stream 4: fra"
+        ],
+        "ranges": [
+          [
+            0,
+            65536
+          ]
+        ],
+        "unchangedFactsSha256": "d68f9e6dca4f52eb0fe209dec7f1c985a40bd242c841e77e8e8678f1b968fabb"
+      },
+      "after": {
+        "inspectedBytes": 4096,
+        "metadataSignals": [
+          "Title",
+          "Chapters",
+          "Attachments",
+          "Tags",
+          "Declared languages of inspected tracks: stream 2: eng; stream 3: spa; stream 4: fra"
+        ],
+        "ranges": [
+          [
+            0,
+            4096
+          ]
+        ],
+        "unchangedFactsSha256": "d68f9e6dca4f52eb0fe209dec7f1c985a40bd242c841e77e8e8678f1b968fabb"
+      }
+    },
+    {
+      "relative": "fixtures/media/webm-source.webm",
+      "sourceBytes": 95150,
+      "native": {
+        "chapters": 0,
+        "tags": 1,
+        "attachments": 0
+      },
+      "before": {
+        "inspectedBytes": 65536,
+        "metadataSignals": [
+          "Tags",
+          "Declared languages of inspected tracks: stream 2: eng"
+        ],
+        "ranges": [
+          [
+            0,
+            65536
+          ]
+        ],
+        "unchangedFactsSha256": "89217de19fe70cf33e8840ecb997fae5f27e07a04b1d9e0778c9b854c60e1ac5"
+      },
+      "after": {
+        "inspectedBytes": 4096,
+        "metadataSignals": [
+          "Tags",
+          "Declared languages of inspected tracks: stream 2: eng"
+        ],
+        "ranges": [
+          [
+            0,
+            4096
+          ]
+        ],
+        "unchangedFactsSha256": "89217de19fe70cf33e8840ecb997fae5f27e07a04b1d9e0778c9b854c60e1ac5"
+      }
+    },
+    {
+      "relative": "test.mkv",
+      "sourceBytes": 2958573265,
+      "native": {
+        "chapters": 0,
+        "tags": 4,
+        "attachments": 1
+      },
+      "before": {
+        "inspectedBytes": 65536,
+        "metadataSignals": [
+          "Title",
+          "Declared languages of inspected tracks: stream 2: hi; stream 3: en"
+        ],
+        "ranges": [
+          [
+            0,
+            65536
+          ]
+        ],
+        "unchangedFactsSha256": "92b9e8b8b3142d3c043cfca71f5c9fecbc5cc04f5933276a65564a99bf661230"
+      },
+      "after": {
+        "inspectedBytes": 65524,
+        "metadataSignals": [
+          "Title",
+          "Indexed attachments header",
+          "Indexed tags header",
+          "Declared languages of inspected tracks: stream 2: hi; stream 3: en"
+        ],
+        "ranges": [
+          [
+            0,
+            4096
+          ],
+          [
+            4096,
+            65512
+          ],
+          [
+            2958547184,
+            2958547189
+          ],
+          [
+            2958547189,
+            2958547191
+          ],
+          [
+            2958573169,
+            2958573174
+          ]
+        ],
+        "unchangedFactsSha256": "92b9e8b8b3142d3c043cfca71f5c9fecbc5cc04f5933276a65564a99bf661230"
+      }
+    }
+  ],
+  "browserLaunched": false,
+  "mediaConverted": false,
+  "outputFilesCreated": 0,
+  "sourceSha256": {
+    "lib/media-source-inspection.ts": "98fb9dc08db1d129b6318d715cd1e3883390a4fe7e1b7a377d7826a4bf5d9e85",
+    "scripts/check-matroska-indexed-metadata.mjs": "f09cb7a46cbeaa23bee089a60c106e44c8b85681b060c0ff5952871ac2b4824b",
+    "scripts/lib/reviewed-timed-text-integration.mjs": "2a683fff99918020d7d4357b2d6d7a50568d975517284adafeebcf0847f0e9c1",
+    "tests/media-source-inspection.test.mjs": "d393bb7acfb3924c4aaace28418d158c3f7e37d060db3f7b9d24687992e727a2",
+    "tests/media-track-language.test.mjs": "7303d4b63b42230391f1371f7d71a98a30c0c62f0af8f149c5681772e0068a6e"
+  },
+  "originalIntegrity": {
+    "beforeBytes": 2958573265,
+    "afterBytes": 2958573265,
+    "beforeSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "afterSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "limitations": "Read-only bounded preview, not exhaustive metadata, preserved output, wall-clock speed, or full-tree conversion evidence. Index hints are checked against local headers beyond the known first Cluster, not recursively followed. Does not read attachment/chapter/tag bodies via index.",
+  "firstChecks": "Initial tests expected a full 64KiB prefix and misidentified one tail element as chapters. Actual original has zero chapters; native validation had to count attached_pic as well as attachment codec type. No fixture was modified.",
+  "checks": {
+    "focusedTests": 80,
+    "failed": 0,
+    "typescript": true,
+    "scopedLint": true,
+    "productionBuild": true,
+    "publicManifestEntries": 402,
+    "publicConversionRouteChanged": false
+  }
+}

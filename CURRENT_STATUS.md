@@ -4,6 +4,19 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Verified: bounded Matroska/WebM source preview
+
+The preview now checks local indexed chapter, attachment, and tag headers past
+the first known Cluster. On `test.mkv`, it found an indexed attachment and tags
+near EOF in 65,524 total bytes, below the original 64 KiB ceiling. FFprobe found
+one attached PNG, four format tags, and zero chapters. Source size and full
+SHA-256 matched before/after. Two real leading-track fixtures read 4 KiB
+instead of 64 KiB with identical disclosed facts. 80 focused tests, build,
+TS, lint and 402 public manifest entries passed. No remux, speed, or memory
+acceptance claim. [Receipt](evidence/2026-11-21-matroska-indexed-metadata.json).
+At completion of this inspection C: had ~10 GiB free; check the guard for the
+pending small browser gates. Do not replay the unchanged failed large runs.
+
 ## Verified offline: private DOCX superscript/subscript
 
 DOCX-to-HTML now emits semantic `<sup>`/`<sub>` for direct and inherited run
