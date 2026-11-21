@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-11-21 combined private DOCX color, alignment and vertical formatting
+**headless production PASS**. `--color-alignment-vertical-control`, Python
+with python-docx 1.2.0. Genuine 38,168 B fixture, four exact independently
+parsed 295,634 B physical outputs: 14 run/text/color/baseline segments and six
+paragraph structures each. 19 deliberately altered validator references
+rejected. Three repeats and recovery; payload cancellation observed at
+1,900,544 B, terminal 2,031,616 B, no leftover; injected write rejected with
+0 acknowledged bytes, no leftover. 64 KiB writes/queue, one pending. Normal
+Chrome 158 complete-tree 83.2890625 MiB (518 valid/0 unavailable), cleanup
+1.5546875 MiB max over loaded idle. Replayed all 738 native rows, four case
+memory windows and 34 source pins. 35 requests, zero forbidden. Server and 41
+observed process IDs gone, owned scratch absent; `test.mkv` full original
+SHA and size unchanged. 196 DOCX tests, fresh build, syntax and lint PASS.
+This is not a matched speedup, scaling, native picker, or public promotion.
+[Report](evidence/2026-11-21T17-38-18-177Z-docx-html-qualification.json).
+
 2026-11-21 small private MOV/3GP timed-text **headless production gates PASS**.
 Two independent owned Chrome 158 sessions: genuine `qt  `/`3gp6`, separate
 native track/time/text oracles, ten exact 2,155,445 B real-handle saves. Both

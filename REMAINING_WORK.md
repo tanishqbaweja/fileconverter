@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-21 N-08 combined small color, paragraph-alignment, and run-vertical
+browser gate **closed**. On real async handles in owned OPFS, three repeats
+and recovery independently verify 14 run segments and six paragraphs;
+validator rejects all 19 mutants. Payload cancellation, bounded-write fault,
+exact recovery, zero forbidden requests, verified teardown and original
+integrity. Whole-tree 83.289 MiB and cleanup 1.555 MiB on unchanged 250/96
+MiB gates; lossless 738-row replay. Small headless control only. Latest
+formatting scaling/cold repeats, native picker, and broader DOCX scope
+remain open; do not replay the three small controls unchanged.
+[Report](evidence/2026-11-21T17-38-18-177Z-docx-html-qualification.json).
+
 2026-11-21 M-03 / N-07 small MOV and 3GP timed-text controls **closed**. Each
 uses an independently muxed native brand and separate Chrome baseline. Ten
 exact physical outputs across three repeats and both recoveries per container,

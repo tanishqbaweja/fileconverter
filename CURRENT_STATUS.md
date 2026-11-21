@@ -4,6 +4,19 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Combined DOCX formatting headless production control passed
+
+`node scripts/qualify-docx-html.mjs --color-alignment-vertical-control`:
+four real-handle outputs matched the 295,634 B independent oracle on 14
+color/vertical-formatting segments and six paragraph layouts. Three repeats,
+cancel after 1,900,544 B observed, injected write rejection and exact recovery
+passed. Whole Chrome peaked 83.289 MiB over blank and cleanup peaked 1.555 MiB
+over loaded idle. Zero forbidden requests; no owned leftovers; `test.mkv`
+pre/post size and full SHA-256 unchanged. Replayed all 738 native rows and
+validated all 34 source pins. 196 DOCX tests, fresh build, syntax and lint pass.
+No public, scaling, native-picker or headed claim. Do not replay the three
+small formatting variants unchanged. [Report](evidence/2026-11-21T17-38-18-177Z-docx-html-qualification.json).
+
 ## Small MOV and 3GP timed-text headless production controls passed
 
 Two serial fresh normal-service Chrome 158 sessions independently qualified
@@ -38,8 +51,8 @@ custom `w:position` offsets remain unsupported. A real 37,611 B DOCX produced
 171,850 B HTML in three writes; the independent parser verified 14 segments
 and rejected five mutations. 209 affected tests, production build, TypeScript,
 scoped lint and the 402-entry public manifest audit passed. No browser, public
-route, or `test.mkv` change. Include this fixture in the next browser DOCX
-control after the host guard can pass. [Receipt](evidence/2026-11-21-docx-run-vertical.json).
+route, or `test.mkv` change in this preflight. The combined control above
+now covers this feature in a real browser. [Receipt](evidence/2026-11-21-docx-run-vertical.json).
 
 ## Verified speed improvement: private timed-text file reads
 
@@ -130,9 +143,9 @@ browser, disk, or video throughput claim. All 191 DOCX tests, build, TS,
 scoped lint and the 402-entry evidence audit passed; no browser ran on full C:.
 [Detailed benchmark](evidence/2026-11-21-docx-html-encoding-benchmark.json).
 
-## Next DOCX browser run: combined color and alignment
+## Historical DOCX preflight: combined color and alignment
 
-One headless run now covers both pending small controls:
+The previous worker preflight prepared both small controls for:
 `node scripts/qualify-docx-html.mjs --color-alignment-control`.
 Use Python with python-docx 1.2.0 on PATH or set `WITHIN_DOCX_FIXTURE_PYTHON`.
 The 38,065 B Word fixture produced 295,513 B in worker preflight; independent
@@ -142,7 +155,8 @@ the old receipt. 189 DOCX checks, driver syntax and scoped lint passed.
 The new command actually refused C: with 0 B free before browser/profile or
 `test.mkv` access. The 250 MiB complete-tree, 96 MiB cleanup, three repeats,
 real-write cancellation, write-failure and recovery gates are unchanged.
-No browser result yet; don't rerun either worker preflight unchanged.
+The later three-feature run above covers the pending small browser controls;
+don't rerun this earlier worker preflight unchanged.
 [Receipt](evidence/2026-11-21-docx-color-alignment-fixture-preflight.json).
 
 ## Latest implementation: private DOCX paragraph alignment
@@ -154,9 +168,9 @@ Special spacing modes fall back to the leading edge with one warning.
 An independent parser verified eight paragraphs and rejected four mutations
 on a genuine, deterministically recreated 37,064 B DOCX. Its 1,028 B worker
 output was held only in the bounded test buffer. 188 DOCX tests, production
-build, TS, lint and 402 public evidence entries passed. Browser qualification
-for alignment and color is still pending; C: had 0 B free. No browser or video
-job was launched. [Receipt](evidence/2026-11-21-docx-paragraph-alignment.json).
+build, TS, lint and 402 public evidence entries passed. C: had 0 B free then;
+the combined run above later passed the small browser gate. No browser or
+video job was launched during this preflight. [Receipt](evidence/2026-11-21-docx-paragraph-alignment.json).
 
 ## Verified improvement: MPEG-TS source inspection
 
@@ -184,7 +198,7 @@ Once safe, check the source panel with the existing multilingual fixtures.
 Don't repeat the Node checks or the failed VP9 run unchanged.
 See [the receipt](evidence/2026-11-21-media-track-language-inspection.json).
 
-## Pending browser gate: private DOCX text color
+## Historical private DOCX text-color implementation and preflight
 
 Direct RGB/automatic and inherited document-default, paragraph and character
 run colors now stream to static HTML. Referenced internal theme/settings XML
@@ -210,7 +224,8 @@ mutations failed. Max 65,536 B writes, one pending, owned scratch removed.
 250 MiB whole-tree and 96 MiB cleanup browser gates are wired to
 `node scripts/qualify-docx-html.mjs --color-control` (python-docx 1.2.0 on PATH).
 An actual pre-launch guard check refused C: with 0 bytes free (requires 512 MiB
-system-drive headroom); no browser, test.mkv read, or new browser report.
+system-drive headroom); no browser, test.mkv read, or new browser report then.
+The later combined formatting run at the top of this file passed the small gate.
 Do not replay the preflight unchanged. The combined color/alignment control
 above now covers this small browser gate; preflight is not browser evidence.
 No unchanged video run. See `evidence/2026-11-21-docx-color-fixture-preflight.json`.
