@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-11-21 private DOCX color fixture/oracle preflight PASS: two fresh genuine
+python-docx 1.2.0 packages (fixed ZIP timestamps, CRC and reopen verified)
+match the same 37,948 B SHA and yield identical 295,342 B HTML from the
+worker parser test outside Chrome. Independent oracle verifies all 14
+segments, including post-payload text; one positive and ten rejecting
+mutations (including partial emphasis and CSS injection) pass. 64 KiB
+maximum write, one pending, scratch gone. 191 focused tests and lint pass.
+Headless browser command's new system disk guard refused setup at C: 0 B
+free; no conversion/profile/test.mkv access via that command. No browser,
+scaling, OS picker, speed or public acceptance. Receipt:
+`evidence/2026-11-21-docx-color-fixture-preflight.json`.
+
 2026-11-21 private DOCX run text colors implemented. 188/188 focused DOCX and
 worker lifecycle tests pass, including six new RGB/theme/cascade/invalid-
 metadata/bounded-write checks. TypeScript, affected lint, production build and

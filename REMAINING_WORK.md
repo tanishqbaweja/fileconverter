@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-21 N-08 DOCX color independent fixture gate prepared and verified,
+not yet browser-qualified. Genuine deterministic Word package and
+independent per-run HTML oracle verified outside Chrome; two byte-identical
+preflights, 14 expected segments, 10 rejecting mutations, bounded writes
+and repository-only scratch cleanup. `--color-control` uses existing strict
+production test pipeline (3 repeats, payload cancel, write failure, recovery,
+whole-tree 250 MiB, cleanup 96 MiB). Refused launch when system disk had 0 B
+free. 191 focused checks pass. Next actual headless gate once host is safe;
+broader qualification/overall goal open, no prior failed video replay.
+
 2026-11-21 N-08 private DOCX foreground color implemented: direct/default/
 paragraph/character RGB, theme palette + settings mapping, HSL tint/shade,
 and one-warning fallback to saved RGB or browser text color. Theme/settings

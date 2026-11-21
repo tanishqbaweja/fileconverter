@@ -33,17 +33,19 @@ import { boundedErrorDetails } from "./lib/bounded-error-details.mjs";
 import { createDocxCleanupDiagnostic } from "./lib/docx-cleanup-diagnostic.mjs";
 import { cleanupOwnedChromium, queryObservedPidCensus } from "./lib/owned-chromium-cleanup.mjs";
 import { reconcileChromiumBirths } from "./lib/reconcile-chromium-births.mjs";
+import { DOCX_COLOR_CASES, DOCX_COLOR_SYSTEM_DISK_MINIMUM_BYTES, docxColorOracleCases } from "./lib/docx-color-oracle-controls.mjs";
 
 assert.equal(process.platform, "win32");
 const memoryDiagnostic = process.argv[2] === "--outline-memory-diagnostic";
 const outlineSmall = process.argv[2] === "--outline-small-control";
 const tableVertical = process.argv[2] === "--table-vertical-control";
 const numberingControl = process.argv[2] === "--numbering-control";
+const colorControl = process.argv[2] === "--color-control";
 const hyperlinkControl = process.argv[2] === "--hyperlink-control";
 const hyperlinkFresh = process.argv[2] === "--hyperlink-direct-scaling-fresh";
 const hyperlinkScaling = process.argv[2] === "--hyperlink-direct-scaling" || hyperlinkFresh;
 const hyperlinkFeature = hyperlinkControl || hyperlinkScaling;
-const tableSmall = process.argv[2] === "--table-small-control" || tableVertical || numberingControl || hyperlinkControl;
+const tableSmall = process.argv[2] === "--table-small-control" || tableVertical || numberingControl || hyperlinkControl || colorControl;
 const smallSemantic = tableSmall || hyperlinkScaling;
 const scalingPlan = hyperlinkFresh ? Object.freeze({ ...defaultScalingPlan, paragraphs: Object.freeze([32768]), repeats: 1 }) : defaultScalingPlan;
 const emphasisControl = process.argv[2] === "--emphasis-direct-scaling";
@@ -56,7 +58,7 @@ const cancellationOnly = process.argv[2] === "--cancel-control";
 const payloadControl = scaling || cancellationOnly || outlineSmall || tableSmall;
 assert.ok(process.argv.length === (payloadControl ? 3 : 2));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
-const tableFixtureHelper = path.join(root, hyperlinkFeature ? "scripts/lib/docx-hyperlink-fixtures.py" : numberingControl ? "scripts/lib/docx-numbering-fixtures.py" : tableVertical ? "scripts/lib/docx-row-span-fixtures.py" : "scripts/lib/docx-table-span-fixtures.py");
+const tableFixtureHelper = path.join(root, colorControl ? "scripts/lib/docx-color-fixtures.py" : hyperlinkFeature ? "scripts/lib/docx-hyperlink-fixtures.py" : numberingControl ? "scripts/lib/docx-numbering-fixtures.py" : tableVertical ? "scripts/lib/docx-row-span-fixtures.py" : "scripts/lib/docx-table-span-fixtures.py");
 const scalingFixtureHelper = path.join(root, hyperlinkScaling ? "scripts/lib/docx-hyperlink-scaling-fixtures.py" : "scripts/lib/docx-html-scaling-fixtures.py");
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 262144 })) hash.update(b); return hash.digest("hex"); };
@@ -95,6 +97,7 @@ if (emphasisControl) report.scope = "Changed supported inherited style emphasis:
 if (tableSmall) report.scope = "New native DOCX horizontal span and nested table fixture with repeated async handle writes and recovery; not stress, speed, native picker, full Word layout or promotion";
 if (tableVertical) report.scope = "Native two-by-two Word merge with a nested table, a flushed row-span patch, later output chunks, repeated async handle writes and recovery; not stress, speed, native picker or promotion";
 if (numberingControl) report.scope = "Native Word numbered/bullet/inherited/restarted lists and nested tables through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
+if (colorControl) report.scope = "Native Word RGB, automatic, inherited and theme text color through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
 if (hyperlinkControl) report.scope = "Native Word explicit links, unsafe-target inactivation, forward/backward bookmarks, styled text and nested tables through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
 if (hyperlinkScaling) { report.scope = "Current production DOCX hyperlinks: genuine stored-ZIP content scaling with fixed1024relationships/64bookmarks and every paragraph/link independently validated; same original whole-tree/cleanup limits, no service changes or public acceptance";
   report.hyperlinkScaling = { freshLargestOnly: hyperlinkFresh, firstSessionPlannedRepeats: 3, freshSessionPlannedRepeats: 1, crossSessionComparisonVerified: false }; }
@@ -199,6 +202,14 @@ const stable = async () => {
   }
   throw new Error("Unchanged30s/five-sample/8s/2% stable baseline unavailable");
 };
+if (colorControl) {
+  const systemDrive = process.env.SystemDrive;
+  assert.match(systemDrive ?? "", /^[A-Z]:$/i, "Windows system drive unavailable; no browser launched");
+  const systemDisk = await statfs(systemDrive + path.sep), freeBytes = systemDisk.bavail * systemDisk.bsize;
+  assert.ok(freeBytes >= DOCX_COLOR_SYSTEM_DISK_MINIMUM_BYTES,
+    `System drive has ${freeBytes} free bytes; need ${DOCX_COLOR_SYSTEM_DISK_MINIMUM_BYTES} of host headroom before launching a browser`);
+  report.systemDiskPreflight = { freeBytes, minimumBytes: DOCX_COLOR_SYSTEM_DISK_MINIMUM_BYTES };
+}
 try {
   report.hostMemory = await inspectStressHostMemory(); assert.equal(report.hostMemory.safeToStart, true);
   const disk = await statfs(root); report.diskFreeBytes = disk.bavail * disk.bsize;
@@ -216,6 +227,8 @@ try {
     "workers/docx-outline.ts", "workers/docx-numbering.ts", "workers/docx-hyperlinks.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/docx-emphasis-fixtures.py", "scripts/lib/bounded-error-details.mjs",
     "scripts/lib/docx-cleanup-diagnostic.mjs", "scripts/lib/bounded-dom-counters.mjs", "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "scripts/lib/owned-chromium-cleanup.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
+  for (const file of ["workers/docx-colors.ts", "scripts/lib/docx-color-oracle-controls.mjs"])
+    report.sourcePins[file] = await hashFile(path.join(root, file));
   if (smallSemantic) {
     report.sourcePins[path.relative(root, tableFixtureHelper).replaceAll("\\", "/")] = await hashFile(tableFixtureHelper);
     report.sourcePins["scripts/lib/reconcile-chromium-births.mjs"] = await hashFile(path.join(root, "scripts/lib/reconcile-chromium-births.mjs"));
@@ -225,13 +238,13 @@ try {
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
   report.validatorControls = [];
   const referenceHtml = smallSemantic
-    ? (await execute("python", [tableFixtureHelper, "reference"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: tableVertical || numberingControl || hyperlinkFeature ? 1048576 : 32768 })).stdout
+    ? (await execute("python", [tableFixtureHelper, "reference"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: tableVertical || numberingControl || hyperlinkFeature || colorControl ? 1048576 : 32768 })).stdout
     : '<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="default-src \'none\'"></head><body>' +
     '<p><strong><em>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</em></strong></p>' +
     '<table><tr><td><p>Cell one</p></td><td><p>Cell two</p></td></tr></table><p>Inserted</p></body></html>';
-  const validatorCases = [["positive", referenceHtml, true], ["wrong-text", referenceHtml.replace("Cell two", "wrong"), false],
+  const validatorCases = colorControl ? docxColorOracleCases(referenceHtml) : [["positive", referenceHtml, true], ["wrong-text", referenceHtml.replace("Cell two", "wrong"), false],
     ["active-markup", referenceHtml.replace("</body>", "<script>alert(1)</script></body>"), false]];
-  if (smallSemantic) validatorCases.push(["missing-column-span", referenceHtml.replace(' colspan="2"', ""), false],
+  if (smallSemantic && !colorControl) validatorCases.push(["missing-column-span", referenceHtml.replace(' colspan="2"', ""), false],
     ["lost-nested-table", referenceHtml.replace("<table><tr><td colspan=", "<tr><td colspan="), false]);
   if (tableVertical) validatorCases.push(["unpatched-row-span", referenceHtml.replace('rowspan="00002"', 'rowspan="00001"'), false],
     ["lost-post-patch-tail", referenceHtml.replace("After patch", "Damaged"), false]);
@@ -262,7 +275,11 @@ try {
   // Finite generated cancellation fixture BEFORE browser conversion, never a user-file copy.
   if (hyperlinkScaling) report.hyperlinkCancellationFixture = JSON.parse((await execute("python", [scalingFixtureHelper, "generate", cancellation, "2048"],
     { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
-  else await writeFile(cancellation, packageBytes(p("cancel payload ".repeat(600000)), 0), { flag: "wx" });
+  else {
+    const text = "cancel payload ".repeat(600000);
+    const cancelBody = colorControl ? '<w:p><w:r><w:rPr><w:color w:val="124578"/></w:rPr><w:t>' + text + '</w:t></w:r></w:p>' : p(text);
+    await writeFile(cancellation, packageBytes(cancelBody, 0), { flag: "wx" });
+  }
   report.sourceValidation = [];
   for (const [kind, file] of [["structure", input], ["cancellation", cancellation]]) {
     const proof = JSON.parse((await execute("python", ["-c", sourceValidator, file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
@@ -477,6 +494,13 @@ try {
         assert.ok(state.warnings.some(message => message.startsWith("Unsafe or unsupported DOCX link targets")));
         assert.ok(!state.warnings.some(message => message.includes("absent or excluded bookmarks")));
       }
+      if (colorControl) {
+        assert.equal(validated.semanticCases, DOCX_COLOR_CASES);
+        assert.equal(validated.allRunTextColorAndEmphasisVerified, true);
+        assert.equal(validated.bytes, state.metrics.outputBytes);
+        assert.equal(state.metrics.maxWriteChunkBytes, 65536);
+        assert.equal(state.warnings.filter(message => message.startsWith("A DOCX text theme color could not be resolved")).length, 1);
+      }
       await waitEmpty(); assert.deepEqual(await leftovers(), []);
       const cleanup = await Promise.race([safetyStop, stable()]); await drain();
       caseRow.smallRunMemory = summarizeDocxHtmlRunMemory(samples, started, Date.now(), report.blankBaseline, report.loadedIdle, cleanup);
@@ -665,6 +689,7 @@ try {
   }
   if (scaling) report.completedDocumentScalingControlVerified = true;
   if (numberingControl) report.status = "passed-private-docx-numbering-and-recovery-not-scaling-or-promotion";
+  if (colorControl) report.status = "passed-private-docx-color-and-recovery-not-scaling-or-promotion";
   if (hyperlinkControl) report.status = "passed-private-docx-hyperlinks-and-recovery-not-scaling-or-promotion";
   if (hyperlinkScaling) report.status = hyperlinkFresh ? "passed-private-docx-hyperlink-fresh-largest-control-not-full-route" : "passed-private-docx-hyperlink-scaling-repeats-not-full-route";
   if (hyperlinkFresh) { report.completedDocumentScalingControlVerified = false; report.freshLargestDocumentControlVerified = true; }

@@ -20,9 +20,20 @@ runtime/browser/memory qualification for the new color behavior. Earlier
 hyperlink/numbering receipts still authenticate their exact historical source
 without being treated as proof of current color output. C: reported zero free
 bytes; no browser launched, conversion output created or unrelated data removed.
-Next: genuine colored Word fixture + independent HTML oracle, then headless
-small repeat/adverse-path/memory gate when host is safe. No unchanged video run.
-See `evidence/2026-11-21-docx-colors-source-checkpoint.json`.
+The next fixture/oracle gate is now prepared and checked. Two fresh,
+deterministic python-docx 1.2.0 fixture preflights produced the same 37,948 B
+DOCX (ZIP CRC and Word package reopen checked) and 295,342 B HTML from the
+worker function outside Chrome. The independent parser verified all 14
+color/text/emphasis segments; a positive reference passed and all ten
+mutations failed. Max 65,536 B writes, one pending, owned scratch removed.
+191 focused DOCX/lifecycle checks and affected lint pass. The unchanged
+250 MiB whole-tree and 96 MiB cleanup browser gates are wired to
+`node scripts/qualify-docx-html.mjs --color-control` (python-docx 1.2.0 on PATH).
+An actual pre-launch guard check refused C: with 0 bytes free (requires 512 MiB
+system-drive headroom); no browser, test.mkv read, or new browser report.
+Do not replay the preflight unchanged. When host is safe, run the new headless
+color browser control; do not treat this fixture preflight as browser evidence.
+No unchanged video run. See `evidence/2026-11-21-docx-color-fixture-preflight.json`.
 
 ## Active implementation: private VP9 CPU specialist
 
