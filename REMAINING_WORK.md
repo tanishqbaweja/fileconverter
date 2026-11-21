@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-21 N-08 private DOCX paragraph alignment implemented. Document
+defaults, bounded style inheritance, direct properties and RTL leading/trailing
+edges now reach the static HTML writer without changing text order or writer
+limits. Specialized justification, exact layout and bidi run behavior remain
+unreproduced. 188 DOCX tests and an independent eight-paragraph real-fixture
+oracle pass; build, TS, scoped lint and 402 public evidence entries pass.
+Browser, current memory/recovery/scaling and public acceptance remain open.
+The host had 0 B on C:; no browser was launched. See
+`evidence/2026-11-21-docx-paragraph-alignment.json`.
+
 2026-11-21 P-08 / M-02 MPEG-TS inspection stops allocating unused/repeated
 prefix scratch. Same bytes and facts on the genuine, repeated-map and
 program-map-only controls; 6 → 2, 196 → 2, 2 → 0 allocations of 32 KiB respectively.

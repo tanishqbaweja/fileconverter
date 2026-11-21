@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "status": "implemented-and-independently-verified-outside-browser",
+  "requirementIds": [
+    "N-08"
+  ],
+  "baseCommit": "80ebad431f150634c2d5e2101d160dfc0263107d",
+  "sourceSha256": {
+    "workers/docx-outline.ts": "b8a1c0b9da392a9a9fe157d0c164ebf521ea8291fef5aadbd11c65493bc19f94",
+    "workers/docx-html-conversion.ts": "c69513e33acdaa645c0cccf7ec014065d42eb172387429fdbc75412e13337843",
+    "scripts/check-docx-paragraph-alignment.mjs": "11cc49bf0646143e248c7d20ff383da7bb3d5fe67ee19f749c958318484a3639",
+    "scripts/lib/docx-paragraph-alignment-fixture.py": "a3ea62bed8a4fe292a515d62db2d077e158a92a0876f01a892f7e21ae891e927",
+    "scripts/lib/reviewed-docx-paragraph-alignment.mjs": "4d6428ec5737b8f526fe6f894b20b3184750ebdb7788003c87a8d708d5ce92d6",
+    "tests/docx-paragraph-alignment.test.mjs": "09f0239eb7fe39a1cdcfeaa405ab44cefb26d390464d8238bf150d599fcafd2b"
+  },
+  "change": "Resolve paragraph alignment from document defaults, default/named paragraph styles and direct properties. Resolve leading/trailing edges from the paragraph layout flag without changing inline text order. Nonrepresentable modes use the leading edge and emit one content-free warning if used.",
+  "standardReferences": [
+    "https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.justificationvalues?view=openxml-3.0.1",
+    "https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.bidi?view=openxml-3.0.1",
+    "ISO/IEC 29500-4:2016 §14.11.2"
+  ],
+  "bounds": {
+    "existingStyleMetadataBytes": 1048576,
+    "existingStyleDefinitionLimit": 1024,
+    "existingStyleChainLimit": 64,
+    "maximumUnitWriteBytes": 65536,
+    "pendingUnitWrites": 1
+  },
+  "fixture": {
+    "command": "node scripts/check-docx-paragraph-alignment.mjs",
+    "dependency": "Python 3.11.9 and python-docx 1.2.0",
+    "zipCrcAndWordPackageReopenPassed": true,
+    "docxFixtureBytes": 37064,
+    "docxFixtureSha256": "e2fb5fd54b08a4bf7eb57cfe6b802c4dc0280428c43fdf0f62548f05fe3cf8d8",
+    "repeatedFixtureBytesIdentical": true,
+    "outputBytes": 1028,
+    "outputSha256": "df16ce0a88aa1f94575408c1638587ca6a182c25db39c1982d8624021a6064fa",
+    "maximumWriteBytes": 1028,
+    "checkedParagraphs": 8,
+    "rejectedOracleMutants": [
+      "wrong-heading",
+      "dropped-direct-override",
+      "reordered-rtl-text",
+      "direction-injected"
+    ],
+    "fixtureAndOutputInMemoryOnly": true,
+    "browserLaunched": false
+  },
+  "focusedChecks": {
+    "passed": 188,
+    "failed": 0,
+    "skipped": 0,
+    "command": "node --import ./scripts/lib/hidden-unit-subprocesses.mjs --test <root tests/docx*.test.mjs>"
+  },
+  "productionBuildPassed": true,
+  "typescriptPassed": true,
+  "affectedLintPassed": true,
+  "publicEvidenceEntriesMatched": 402,
+  "systemDriveFreeBytes": 0,
+  "browserLaunched": false,
+  "testMkvAccessed": false,
+  "persistentConvertedCopiesCreated": false,
+  "browserFidelityAndMemoryQualified": false,
+  "publicRoutesChanged": false,
+  "goalComplete": false,
+  "nextAction": "When the host passes its unchanged preflight, qualify the alignment and already-pending DOCX color behavior on the current production browser pipeline. The standalone oracle does not constitute browser, scaling, cleanup or public-route acceptance. Do not rerun the unchanged failed video gate."
+}

@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-21 private DOCX paragraph alignment: genuine 37,064 B package generated
+twice identically with python-docx 1.2.0, CRC and Word reopen passed. Worker
+preflight 1,028 B HTML; independent parser checked all eight paragraphs and
+rejected wrong heading alignment, a dropped override, reordered RTL text
+and an injected direction attribute. 188 DOCX checks include the unchanged
+64 KiB writer/single pending write, defaults, style inheritance, direct
+overrides, hostile markup and archived pins. Build, TS, scoped lint and
+402 public evidence entries pass. All fixture/output bytes stayed in bounded
+test memory; no browser, original-file read or disk conversion copy.
+Receipt: `evidence/2026-11-21-docx-paragraph-alignment.json`.
+
 2026-11-21 MPEG-TS source-inspection allocation reduction: exact matched Node
 A/B against b37ea3ff. Genuine fixture 6 → 2 allocations of 32 KiB; median
 0.186 → 0.137 ms, but p90 0.266 → 0.315 ms. With 96 extra repeated program

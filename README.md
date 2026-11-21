@@ -123,6 +123,15 @@ reproduced. The small headless control verified the patch and subsequent writes
 but is not a full layout, scaling, or public qualification result. See
 `evidence/2026-11-07-docx-vertical-span-verification.json`.
 
+The private DOCX route also preserves supported paragraph alignment from
+document defaults, paragraph styles and direct properties. Leading and
+trailing edges account for right-to-left paragraph layout, without applying
+a new text-order override. Specialized justification falls back to the
+leading edge with a warning. Word line wrapping, justification spacing, list
+tabs and complex-script shaping are not reproduced exactly. The alignment
+oracle and build passed; browser verification of alignment is still pending.
+See `evidence/2026-11-21-docx-paragraph-alignment.json`.
+
 The route's recorded memory evidence is from Chrome tests, not a live memory
 measurement or certification of every current browser/version. The installed
 Edge156.0.4314.58 refresh independently validates five representative small-file

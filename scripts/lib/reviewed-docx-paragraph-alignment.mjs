@@ -1,0 +1,18 @@
+// Exact archived comparison only; not production/browser qualification.
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
+
+const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+const pins = {
+  "workers/docx-outline.ts": ["fe98f539dd176da17e7e29ca6a953a1572ffca1996fbf4a207df59bd2a1f19b6", "b8a1c0b9da392a9a9fe157d0c164ebf521ea8291fef5aadbd11c65493bc19f94"],
+  "workers/docx-html-conversion.ts": ["a90176d2208e176eaa7f7e5e3f3c63c7f745610c6a5767c0da11fc036ee98264", "c69513e33acdaa645c0cccf7ec014065d42eb172387429fdbc75412e13337843"],
+};
+
+export function preDocxParagraphAlignment(file, bytes) {
+  if (!Object.hasOwn(pins, file) || sha(bytes) !== pins[file][1]) return bytes;
+  const archived = execFileSync("git", ["show", `80ebad431f150634c2d5e2101d160dfc0263107d:${file}`],
+    { windowsHide: true, maxBuffer: 1_048_576 });
+  assert.equal(sha(archived), pins[file][0], file);
+  return archived;
+}

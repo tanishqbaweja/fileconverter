@@ -2,7 +2,8 @@ import {
   assertXmlCharacters, decodeXmlEntities, normalizeXmlNewlines, openDocxMainDocument,
   parseEndElement, parseStartElement, readMarkupTokens, type DocxRuntime,
 } from "./docx-conversion";
-import { readDocxOutlineModel, parseDocxOutlineLevel, docxEmphasisKey, parseDocxEmphasisValue, type DocxOutlineModel, type DocxEmphasis } from "./docx-outline";
+import { readDocxOutlineModel, parseDocxOutlineLevel, docxEmphasisKey, parseDocxEmphasisValue, applyDocxParagraphLayoutProperty,
+  type DocxOutlineModel, type DocxEmphasis, type DocxParagraphLayout } from "./docx-outline";
 import { readDocxNumberingModel, parseDocxNumberingInteger, type DocxNumberingModel, type DocxNumberingReference, type DocxListMarker } from "./docx-numbering";
 import { readDocxHyperlinkModel, docxBookmarkId, docxHtmlAttribute, type DocxHyperlinkModel } from "./docx-hyperlinks";
 import { parseDocxColor, type DocxColor } from "./docx-colors";
@@ -19,7 +20,7 @@ type Merge = { width: number; rows: number; position: number };
 type Table = { previous?: Map<number, Merge>; current?: Map<number, Merge>;
   column: number; before?: number; after?: number; rowOpened: boolean; propertiesSeen: boolean };
 type Run = { direct: Partial<DocxEmphasis>; color?: DocxColor; styleId?: string; propertiesSeen: boolean; contentStarted: boolean; opened: boolean; close: string };
-type Paragraph = { opened: boolean; contentStarted: boolean; propertiesSeen: boolean; styleId?: string; outline?: number; tag: string; muted: boolean; numbering?: DocxNumberingReference };
+type Paragraph = { opened: boolean; contentStarted: boolean; propertiesSeen: boolean; styleId?: string; outline?: number; tag: string; muted: boolean; numbering?: DocxNumberingReference; layout?: DocxParagraphLayout };
 type Cell = { opened: boolean; propertiesSeen: boolean; columnSpan?: number; vertical?: "restart" | "continue"; continued?: boolean };
 type Frame = { name: string; local: string | null; declarations: Map<string, string>; namespaceChars: number;
   block?: Block; paragraph?: Paragraph; table?: Table; row?: Table; cell?: Cell; run?: Run; text?: boolean; hyperlinkClose?: string; suppress: boolean };
@@ -33,6 +34,7 @@ type DocxHtmlRuntime = DocxRuntime & { patch(position: number, chunk: Uint8Array
 export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
   runtime.warn("DOCX HTML preserves main-document paragraphs, table rows/cells, horizontal grid spans, and standard vertical merges with empty continuation cells. Omitted edge grid positions use empty HTML cells. Direct bold/italic/underline/strike, tabs, line breaks, Unicode and accepted tracked insertions are preserved. Tracked deletions and moved-from text are excluded.");
   runtime.warn("Named styles (referenced/default paragraph and character) preserve outline hierarchy and supported bold/italic/underline/strike emphasis and text colors with direct overrides. Text colors use bounded RGB and theme mapping; automatic color uses the browser text color, not Word's background-dependent choice. Underline patterns/colors are normalized to a single underline. Legacy horizontal merges, table-style effects, complex-script properties, fonts, shading, borders, page layout, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
+  runtime.warn("Supported DOCX paragraph alignment follows document defaults, paragraph styles and direct overrides, including right-to-left leading and trailing edges. This does not recreate Word's bidirectional run ordering, list tab geometry or exact justification spacing.");
   let outlines: DocxOutlineModel, numbering: DocxNumberingModel, hyperlinks: DocxHyperlinkModel;
   const source = await openDocxMainDocument(runtime, async entries => {
     outlines = await readDocxOutlineModel(runtime, entries); numbering = await readDocxNumberingModel(runtime, entries);
@@ -83,8 +85,13 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
     const marker = numbering.next({ numId: paragraph.numbering?.numId ?? inherited.numId, level: paragraph.numbering?.level }, inherited.styleIds);
     await startListItem(marker);
     paragraph.tag = level !== undefined && level < 6 ? `h${level + 1}` : "p";
-    const attributes = level !== undefined && level < 9
-      ? level >= 6 ? ` role="heading" aria-level="${level + 1}"` : ' style="white-space:pre-wrap"' : "";
+    const semanticHeading = level !== undefined && level < 6;
+    const ariaHeading = level !== undefined && level >= 6 && level < 9
+      ? ` role="heading" aria-level="${level + 1}"` : "";
+    const alignment = outlines.alignment(paragraph.styleId, paragraph.layout);
+    const css = (semanticHeading ? "white-space:pre-wrap" : "") +
+      (alignment ? `${semanticHeading ? ";" : ""}text-align:${alignment}` : "");
+    const attributes = ariaHeading + (css ? ` style="${css}"` : "");
     await writer.markup(`<${paragraph.tag}${attributes}>`); paragraph.opened = true;
     if (marker) {
       await writer.markup('<span class="docx-list-marker" style="white-space:pre-wrap">');
@@ -332,6 +339,9 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
           if (paragraph.outline !== undefined) throw new Error("DOCX paragraph repeats its outline level.");
           paragraph.outline = parseDocxOutlineLevel(value);
         }
+      }
+      if ((local === "jc" || local === "bidi") && stack.at(-1)?.local === "pPr" && stack.at(-2)?.paragraph === paragraph && paragraph) {
+        applyDocxParagraphLayoutProperty(paragraph.layout ??= {}, local, wordValue(element.attributes, declarations, resolve));
       }
       if (local === "r") {
         if (run || blocks.at(-1) !== "p") throw new Error("DOCX HTML contains an invalid paragraph run.");

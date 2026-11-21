@@ -11,10 +11,14 @@ const METADATA_BYTES = 1048576, MAX_STYLES = 1024, MAX_CHAIN = 64;
 export type Element = { name: string; local: string; uri: string; attributes: Map<string, string>; parent?: Element;
   namespaces: Map<string, string>; namespaceChars: number; depth: number };
 export type DocxEmphasis = { bold: boolean; italic: boolean; underline: boolean; strike: boolean };
-type Style = { type: string; base?: string; outline?: number; emphasis: Partial<DocxEmphasis>; numbering?: { numId?: number }; color?: DocxColor };
-type Resolved = { outline: number | undefined; levels: number; toggleMask: number; underline?: boolean; numId?: number; color?: DocxColor };
+type ParagraphAlignment = "start" | "end" | "center" | "justify" | "unsupported";
+type CssAlignment = "left" | "right" | "center" | "justify";
+export type DocxParagraphLayout = { alignment?: ParagraphAlignment; bidi?: boolean };
+type Style = { type: string; base?: string; outline?: number; emphasis: Partial<DocxEmphasis>; numbering?: { numId?: number }; color?: DocxColor; layout?: DocxParagraphLayout };
+type Resolved = { outline: number | undefined; levels: number; toggleMask: number; underline?: boolean; numId?: number; color?: DocxColor; layout: DocxParagraphLayout };
 export type DocxOutlineModel = { definitionCount: number; outline(styleId?: string): number | undefined;
   numbering(styleId?: string): { numId?: number; styleIds: readonly string[] };
+  alignment(styleId?: string, direct?: DocxParagraphLayout): CssAlignment | undefined;
   color(paragraphStyleId?: string, characterStyleId?: string, direct?: DocxColor): string | undefined;
   emphasis(paragraphStyleId?: string, characterStyleId?: string, direct?: Partial<DocxEmphasis>): DocxEmphasis };
 
@@ -38,6 +42,30 @@ export function parseDocxOutlineLevel(value: string | undefined): number {
     throw new Error("DOCX outline level must be an integer from0 through9.");
   return Number(value);
 }
+
+export function applyDocxParagraphLayoutProperty(
+  layout: DocxParagraphLayout, local: "jc" | "bidi", value: string | undefined,
+): void {
+  if (local === "bidi") {
+    if (layout.bidi !== undefined) throw new Error("DOCX paragraph repeats its layout direction.");
+    if (value !== undefined && !["0", "1", "on", "off", "true", "false"].includes(value))
+      throw new Error("DOCX paragraph layout direction has an invalid on/off value.");
+    layout.bidi = value === undefined || ["1", "on", "true"].includes(value);
+    return;
+  }
+  if (layout.alignment !== undefined) throw new Error("DOCX paragraph repeats its alignment.");
+  // Transitional left/right are aliases for leading/trailing respectively.
+  switch (value) {
+    case "left": case "start": layout.alignment = "start"; return;
+    case "right": case "end": layout.alignment = "end"; return;
+    case "center": layout.alignment = "center"; return;
+    case "both": layout.alignment = "justify"; return;
+    case "mediumKashida": case "highKashida": case "lowKashida": case "distribute":
+    case "thaiDistribute": case "numTab": layout.alignment = "unsupported"; return;
+    default: throw new Error("DOCX paragraph alignment value is invalid.");
+  }
+}
+
 const attribute = (element: Element, name: string, uri = WORD) => element.attributes.get(uri + "\0" + name);
 const word = (element: Element | undefined, name: string) => element?.uri === WORD && element.local === name;
 const identifier = (value: string | undefined) => {
@@ -73,6 +101,7 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
   const styles = new Map<string, Style>(), defaults: Partial<DocxEmphasis> = {};
   let defaultStyle: string | undefined, documentOutline: number | undefined, defaultNumbering: { numId?: number } | undefined;
   const defaultRun: { color?: DocxColor } = {};
+  const defaultLayout: DocxParagraphLayout = {};
   if (stylePart !== undefined) {
     const entry = entries.get(stylePart);
     if (!entry || entry.directory) throw new Error("DOCX referenced styles part is missing.");
@@ -128,6 +157,15 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
           if (properties[key] !== undefined) throw new Error("DOCX style/defaults repeats a supported run property.");
           properties[key] = parseDocxEmphasisValue(element.local, attribute(element, "val"));
         }
+      } else if ((element.local === "jc" || element.local === "bidi") && element.uri === WORD && word(element.parent, "pPr")) {
+        let layout: DocxParagraphLayout | undefined;
+        if (current && element.parent?.parent === current.element && current.value.type === "paragraph") {
+          layout = current.value.layout ??= {};
+        } else if (word(element.parent?.parent, "pPrDefault") && word(element.parent?.parent?.parent, "docDefaults") &&
+            element.parent?.parent?.parent?.depth === 2) {
+          layout = defaultLayout;
+        }
+        if (layout) applyDocxParagraphLayoutProperty(layout, element.local, attribute(element, "val"));
       } else if (word(element, "outlineLvl") && word(element.parent, "pPr")) {
         if (current && element.parent?.parent === current.element) {
           if (current.value.outline !== undefined) throw new Error("DOCX style repeats its outline level.");
@@ -152,11 +190,13 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
     if (levels > MAX_CHAIN) throw new Error("DOCX style inheritance is cyclic or exceeds64 levels.");
     const value: Resolved = { outline: style.outline ?? inherited?.outline, levels,
       toggleMask: (inherited?.toggleMask ?? 0) ^ toggleMask(style.emphasis), underline: style.emphasis.underline ?? inherited?.underline,
-      numId: style.numbering?.numId ?? inherited?.numId, color: style.color ?? inherited?.color };
+      numId: style.numbering?.numId ?? inherited?.numId, color: style.color ?? inherited?.color,
+      layout: { alignment: style.layout?.alignment ?? inherited?.layout.alignment,
+        bidi: style.layout?.bidi ?? inherited?.layout.bidi } };
     visiting.delete(id); resolved.set(id, value); return value;
   };
   for (const [id, style] of styles) if (["paragraph", "character"].includes(style.type)) resolve(id);
-  let missingWarning = false, missingCharacterWarning = false;
+  let missingWarning = false, missingCharacterWarning = false, unsupportedAlignmentWarned = false;
   const paragraphStyle = (id?: string) => {
     if (id !== undefined && styles.get(id)?.type !== "paragraph") {
       if (!missingWarning) { runtime.warn("A referenced paragraph style is missing or has another type; default paragraph outline is used."); missingWarning = true; }
@@ -166,6 +206,21 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
   };
   const resolveColor = await readDocxColors(runtime, entries, parts.get("theme"), parts.get("settings"), metadataElements);
   return { definitionCount: styles.size, outline: id => paragraphStyle(id)?.outline ?? documentOutline,
+    alignment(id, direct) {
+      const inherited = paragraphStyle(id)?.layout;
+      const bidi = direct?.bidi ?? inherited?.bidi ?? defaultLayout.bidi;
+      const alignment = direct?.alignment ?? inherited?.alignment ?? defaultLayout.alignment;
+      if (alignment === "center" || alignment === "justify") return alignment;
+      if (alignment === "end") return bidi ? "left" : "right";
+      if (alignment === "start") return bidi ? "right" : "left";
+      if (alignment === "unsupported" && !unsupportedAlignmentWarned) {
+        runtime.warn("Some DOCX paragraph spacing and alignment modes have no equivalent here. Those paragraphs use leading-edge alignment.");
+        unsupportedAlignmentWarned = true;
+      }
+      // Keep Word's layout flag separate from HTML text direction: w:bidi
+      // alone does not change the ordering of text within a Word paragraph.
+      return bidi ? "right" : undefined;
+    },
     color(paragraphId, characterId, direct) {
       return resolveColor(direct ??
         (characterId !== undefined && styles.get(characterId)?.type === "character" ? resolved.get(characterId)?.color : undefined) ??

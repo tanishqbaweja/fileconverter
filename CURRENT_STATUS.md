@@ -4,7 +4,20 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
-## Latest implementation: MPEG-TS source inspection
+## Latest implementation: private DOCX paragraph alignment
+
+DOCX-to-HTML now retains left/right/center/justify and leading/trailing edges
+from document defaults, named/default paragraph styles and direct overrides.
+An RTL paragraph layout affects edge selection without forcing HTML text order.
+Special spacing modes fall back to the leading edge with one warning.
+An independent parser verified eight paragraphs and rejected four mutations
+on a genuine, deterministically recreated 37,064 B DOCX. Its 1,028 B worker
+output was held only in the bounded test buffer. 188 DOCX tests, production
+build, TS, lint and 402 public evidence entries passed. Browser qualification
+for alignment and color is still pending; C: had 0 B free. No browser or video
+job was launched. [Receipt](evidence/2026-11-21-docx-paragraph-alignment.json).
+
+## Verified improvement: MPEG-TS source inspection
 
 Repeated transport program-map entries no longer allocate duplicate 32 KiB
 stream-prefix buffers. Matched Node A/B on the genuine fixture: 6 → 2 prefix
