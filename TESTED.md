@@ -1,5 +1,40 @@
 # Tested conversion ledger
 
+2026-11-21 UTC actual production direct 9.51 GB **headless scale PASS**.
+Real 9,507,509,956 B source and 9,512,261,399 B MP4, zero app stage, fresh
+whole-disk SHA/MP4 structure/edits, 460,800-frame full-content proof
+inherited through exact native/source/output identity. 154.836 s at
+58.588 MiB/s; whole Chrome 221.348 MiB, cleanup 7.379 MiB. Replayed 1,908
+native rows including all 1,421 conversion samples, no unavailable. No
+forbidden requests, disposable media/profile/runtime left, or protected-file
+change. This was one scale job (and a real lossless remux), not a repeat set,
+fresh native decode, native-picker or paired speed acceptance. The prior
+overlay's 91.319 s is unmatched; use targeted timing attribution.
+[JSON](evidence/2026-11-21T18-33-36-740Z-mkv-hevc-header-core-production-direct-scale-near10gb.json),
+[CSV](evidence/2026-11-21T18-33-36-740Z-mkv-hevc-header-core-production-direct-scale-near10gb.csv),
+[HTML](evidence/2026-11-21T18-33-36-740Z-mkv-hevc-header-core-production-direct-scale-near10gb.html).
+
+2026-11-21 UTC actual production direct 5.35 GB **headless scale PASS**.
+Genuine deterministic 5,347,972,392 B input, exact 5,350,648,699 B MP4
+output. Fresh full disk hash, structure and edits; complete packet/video/PCM
+evidence inherited only through exact source/output/native equality. No
+app stage; 256 KiB reads, 1 MiB write/queue, one pending write. 37.495 s
+(136.094 MiB/s); 218.715 MiB full-tree, 4.047 MiB stable cleanup, 667 rows
+replayed with all 344 conversion samples valid. No forbidden requests,
+leftover source/output/profile, or protected-original changes. Not 5.35 GB
+repeats, fresh decode, matched speedup, manual-picker or public qualification.
+[Report](evidence/2026-11-21T18-30-48-338Z-mkv-hevc-header-core-production-direct-scale-5gb.json).
+
+2026-11-21 UTC actual production direct 5.35 GB **first output passed; full
+gate incomplete**. Source hash matched the complete prior decoded proof;
+actual browser output 5,350,648,699 B, matching whole-file SHA, structure
+and edits, 38.098 s and 197.965 MiB full-tree. No app staging, forbidden
+request, retained media or protected-original mutation. A small-case
+cancellation branch ran by mistake after the output was deleted, before
+stable post-cleanup memory was captured. Only retry the fixed scale
+schedule; do not replay complete native decoding on exact byte identity.
+[Report](evidence/2026-11-21T18-27-10-219Z-mkv-hevc-header-core-production-direct-scale-5gb.json).
+
 2026-11-21 corrected production direct MKV-to-MP4 **protected original 3+1
 headless PASS**. Three same-page jobs and one clean normal-service session
 used the full exact 2,958,573,265 B original. Each produced actual

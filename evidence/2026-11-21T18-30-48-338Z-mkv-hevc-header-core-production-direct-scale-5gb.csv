@@ -1,0 +1,2 @@
+scope,inputBytes,outputBytes,seconds,throughputMiBs,peakMiB,cleanupMiB,rawRows,validConversionRows,unavailableConversionRows
+5gb,5347972392,5350648699,37.495,136.094,218.715,4.047,667,344,0

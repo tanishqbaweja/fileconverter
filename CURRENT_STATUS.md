@@ -1,8 +1,56 @@
 # Current project checkpoint
 
-Updated 2026-11-21. Read this first after resuming; then follow the cited receipts.
+Updated 2026-11-22 (local). Read this first after resuming; then follow the cited receipts.
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
+
+## Critical path: actual production direct-save reached 9.51 GB
+
+After the protected original 3+1 and 5.35 GB direct pass, the unchanged
+production worker remuxed a real 9,507,509,956 B MKV into an exact
+9,512,261,399 B MP4. Exact source/output SHA and native build bind the
+prior independently decoded 460,800-frame/PCM/packet result; new disk
+structure/edits passed. Real handle with zero app stage. **154.836 s**
+(58.588 MiB/s); **221.348 MiB** complete Chrome over blank, **7.379 MiB**
+stable cleanup over loaded idle. All 1,908 raw rows replayed, including
+1,421 valid conversion samples with zero unavailable; no forbidden requests
+or disposable files left, and the protected original SHA-256 is unchanged.
+
+Observed worst full-tree peaks: original 3+1 213.074 MiB, single 5.35 GB
+218.715 MiB, single 9.51 GB 221.348 MiB. Do not equate the two single
+scale passes with repeated long-session or public acceptance. The 9.51 GB
+time exceeds the unmatched historical overlay's 91.319 s; investigate
+where the time went before claiming a regression or a speedup. Do not
+rerun unchanged simply to gather another timing: use controlled I/O
+attribution or a planned matched comparison. Release engine delivery,
+full-scale repeats, native picker and other browsers are still open.
+[JSON](evidence/2026-11-21T18-33-36-740Z-mkv-hevc-header-core-production-direct-scale-near10gb.json),
+[CSV](evidence/2026-11-21T18-33-36-740Z-mkv-hevc-header-core-production-direct-scale-near10gb.csv),
+[HTML](evidence/2026-11-21T18-33-36-740Z-mkv-hevc-header-core-production-direct-scale-near10gb.html).
+
+## Production direct-save 5.35 GB scaling passed
+
+The exact regenerated 5,347,972,392 B source and 5,350,648,699 B browser
+MP4 matched the prior full packet/decoded-content evidence on the same
+native build. Fresh whole-output SHA, structure and edits passed. Real
+production handle, zero app staging: **37.495 s** at 136.094 MiB/s,
+**218.715 MiB** full-tree and **4.047 MiB** stable cleanup above idle.
+All 667 native rows replayed (344 valid conversion, zero unavailable).
+Profiles, generated source and output removed; protected original unchanged.
+The separate real 9.51 GB direct production run now passes above. No public
+release or repeat/paired speed claim for the 5.35 GB case.
+[JSON](evidence/2026-11-21T18-30-48-338Z-mkv-hevc-header-core-production-direct-scale-5gb.json),
+[CSV](evidence/2026-11-21T18-30-48-338Z-mkv-hevc-header-core-production-direct-scale-5gb.csv),
+[HTML](evidence/2026-11-21T18-30-48-338Z-mkv-hevc-header-core-production-direct-scale-5gb.html).
+
+### First scaling attempt (retained)
+
+The first unchanged-worker production direct 5.35 GB save made the exact,
+independently validated 5,350,648,699 B MP4 in 38.098 s, at 197.965 MiB
+above blank. The output and scratch were removed. A harness-only fallthrough
+mistakenly invoked small-fixture cancellation after that job; stable idle
+cleanup was not sampled, so the full gate remained failed. The scheduler now
+isolates that control to small mode. [Attempt](evidence/2026-11-21T18-27-10-219Z-mkv-hevc-header-core-production-direct-scale-5gb.json).
 
 ## Critical path: corrected production direct-save passed the full original 3+1
 
@@ -18,10 +66,9 @@ worst full-tree peak **213.074 MiB** versus 250, worst stable cleanup
 stage or forbidden requests. No retained output or owned browser/server
 scratch. Original size and full SHA-256 unchanged.
 
-Next: qualify this **actual production direct-handle path** at progressively
-larger real media sizes and verify release delivery/eligibility before public
-promotion. Do not rerun the protected 3+1 unchanged. The old staged failure
-stands; raw timing here is not proof of a matched speedup.
+The actual production direct-handle scaling passes are above. Verify release
+delivery/eligibility before public promotion. Do not rerun the protected 3+1
+unchanged. The old staged failure stands; raw timing is not a matched speedup.
 [JSON](evidence/2026-11-21T18-17-03-912Z-mkv-hevc-header-core-production-direct-original-repeats.json),
 [CSV](evidence/2026-11-21T18-17-03-912Z-mkv-hevc-header-core-production-direct-original-repeats.csv),
 [HTML](evidence/2026-11-21T18-17-03-912Z-mkv-hevc-header-core-production-direct-original-repeats.html).
