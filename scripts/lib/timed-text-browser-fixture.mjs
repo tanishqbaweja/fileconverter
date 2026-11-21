@@ -50,12 +50,13 @@ function decodedCueOracle(decoded, count, expectedTiming, expectedText) {
 
 // The caller owns scratch, uses only the bundled synthetic media seed, and
 // must close scratch in finally. No native processes perform browser jobs.
-export async function createTimedTextCancellationFixture(scratch, seed) {
+export async function createTimedTextCancellationFixture(scratch, seed, container = "mp4") {
+  assert.ok(["mp4", "mov", "3gp"].includes(container), "Unknown fixture container");
   const ffmpeg = process.env.WITHIN_FFMPEG_EXECUTABLE ?? "ffmpeg";
   const ffprobe = process.env.WITHIN_FFPROBE_EXECUTABLE ?? "ffprobe";
   const common = ["-hide_banner", "-loglevel", "error"];
   const decoy = path.join(scratch.directory, "timed-text-decoy.srt");
-  const input = path.join(scratch.directory, TIMED_TEXT_CANCEL_INPUT_NAME);
+  const input = path.join(scratch.directory, TIMED_TEXT_CANCEL_INPUT_NAME.replace(/\.mp4$/, `.${container}`));
   const decoyTiming = "00:00:00.150 --> 00:00:00.450";
   await writeFile(decoy, `1\n${decoyTiming.replaceAll(".", ",")}\n${DECOY_TEXT}\n\n`, { flag: "wx" });
   const srt = Array.from({ length: CUE_COUNT }, (_, i) => `${i + 1}\n${timing(i).replaceAll(".", ",")}\n${cueText(i)}\n\n`).join("");
@@ -64,11 +65,14 @@ export async function createTimedTextCancellationFixture(scratch, seed) {
     "-map", "0:v:0", "-map", "0:a:0", "-map", "1:s:0", "-map", "2:s:0",
     "-map_chapters", "-1", "-map_metadata", "-1", "-c:v", "copy", "-c:a", "copy", "-c:s", "mov_text",
     "-tag:s:0", "tx3g", "-tag:s:1", "tx3g", "-metadata:s:s:0", "language=fra", "-metadata:s:s:1", "language=spa",
-    "-movflags", "+faststart", "-fs", String(MAX_INPUT_BYTES), input], scratch, srt);
+    "-movflags", "+faststart", "-fs", String(MAX_INPUT_BYTES), "-f", container, input], scratch, srt);
   const info = await lstat(input);
   assert.ok(info.isFile() && info.size > 1_048_576 && info.size <= MAX_INPUT_BYTES);
-  const { streams } = JSON.parse(nativeRun(ffprobe, ["-v", "error", "-show_entries",
-    "stream=codec_name,codec_type,codec_tag_string,id,nb_frames:stream_tags=language", "-of", "json", input], scratch));
+  const { streams, format } = JSON.parse(nativeRun(ffprobe, ["-v", "error", "-show_entries",
+    "stream=codec_name,codec_type,codec_tag_string,id,nb_frames:stream_tags=language:format_tags=major_brand", "-of", "json", input], scratch));
+  const majorBrand = format?.tags?.major_brand;
+  if (container === "3gp") assert.match(majorBrand ?? "", /^3gp[a-z0-9]$/);
+  else assert.equal(majorBrand, container === "mov" ? "qt  " : "isom");
   assert.deepEqual(streams.map(stream => stream.codec_type), ["video", "audio", "subtitle", "subtitle"]);
   const subtitle = streams.slice(2);
   assert.deepEqual(subtitle.map(stream => [stream.codec_name, stream.codec_tag_string, stream.tags?.language]),
@@ -80,7 +84,7 @@ export async function createTimedTextCancellationFixture(scratch, seed) {
   const decoyOracle = decodedCueOracle(decode(0), 1, () => decoyTiming, () => DECOY_TEXT);
   const expected = decodedCueOracle(decode(1), CUE_COUNT, timing, cueText);
   assert.ok(expected.bytes > 1_048_576 && expected.bytes <= MAX_NATIVE_BYTES && expected.sha256 !== decoyOracle.sha256);
-  return { input, inputBytes: info.size, trackIds, selectedTrackId: trackIds[1], expected, decoyOracle,
+  return { input, inputBytes: info.size, container, majorBrand, trackIds, selectedTrackId: trackIds[1], expected, decoyOracle,
     selectedPacketCount: Number(subtitle[1].nb_frames),
     nativeTool: nativeRun(ffprobe, ["-version"], scratch).split(/\r?\n/)[0] };
 }

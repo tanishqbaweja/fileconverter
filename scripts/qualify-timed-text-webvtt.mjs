@@ -1,4 +1,4 @@
-// Production-browser MP4 timed-text control. Not route promotion or a scaling test.
+// One ISO-BMFF container per production-browser control. No release/scale claim.
 import "./lib/hidden-unit-subprocesses.mjs";
 import assert from "node:assert/strict";
 import { execFile, spawn } from "node:child_process";
@@ -26,15 +26,14 @@ import { reconcileChromiumBirths } from "./lib/reconcile-chromium-births.mjs";
 import { queryReliableProcessIdentity } from "./lib/reliable-owned-identity.mjs";
 import { selectOwnedLocalBrowserFile } from "./lib/select-owned-local-browser-file.mjs";
 import { assertTimedTextLaunch, assertTimedTextTerminal, classifyTimedTextBrowserRequest, collectTimedTextStaticPaths, CLEANUP_MIB_LIMIT,
-  observeTimedTextLaunches, PRIVATE_MIB_LIMIT, summarizeTimedTextMemory, validateTimedTextPhysicalOutput } from "./lib/timed-text-browser-control.mjs";
+  observeTimedTextLaunches, PRIVATE_MIB_LIMIT, resolveTimedTextBrowserRun, summarizeTimedTextMemory, validateTimedTextPhysicalOutput } from "./lib/timed-text-browser-control.mjs";
 import { createTimedTextCancellationFixture, TIMED_TEXT_CANCEL_OUTPUT_NAME as outputName } from "./lib/timed-text-browser-fixture.mjs";
 
 const repo = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile), mib = 1048576;
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const systemDrive = process.env.SystemDrive;
 const minimumDiskBytes = 512 * mib;
-const preflightOnly = process.argv[2] === "--preflight";
-assert.equal(process.argv.length, preflightOnly ? 3 : 2);
+const { container, profileId, preflightOnly } = resolveTimedTextBrowserRun(process.argv.slice(2));
 assert.equal(process.platform, "win32", "Windows Chrome whole-tree observer required");
 assert.match(systemDrive ?? "", /^[A-Z]:$/i, "Windows system drive unavailable");
 const disk = await statfs(systemDrive + path.sep);
@@ -51,7 +50,8 @@ if (preflightOnly) {
 }
 
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), samples = [];
-const report = { status: "not-completed", stamp, scope: "private-headless-mp4-timed-text-direct-handle-control", hostMemory,
+const basename = container === "mp4" ? `${stamp}-timed-text` : `${stamp}-timed-text-${container}`;
+const report = { status: "not-completed", stamp, scope: `private-headless-${container}-timed-text-direct-handle-control`, container, profileId, hostMemory,
   sourcePins: {}, cases: [], forbiddenRequests: [], requestCount: 0, realmSamples: [], failures: [],
   systemFreeBytes: disk.bavail * disk.bsize, repositoryFreeBytes: repositoryDisk.bavail * repositoryDisk.bsize,
   privateMiBLimit: PRIVATE_MIB_LIMIT, cleanupMiBLimit: CLEANUP_MIB_LIMIT,
@@ -114,7 +114,7 @@ try {
     { cwd: repo, env, windowsHide: true, timeout: 120000, maxBuffer: 262144 });
   const staticPaths = await collectTimedTextStaticPaths(path.join(repo, "dist/client"));
   report.allowedProductionAssetCount = staticPaths.size;
-  const { input, ...fixture } = await createTimedTextCancellationFixture(runtime, path.join(repo, "fixtures/media/quicktime-source.mov"));
+  const { input, ...fixture } = await createTimedTextCancellationFixture(runtime, path.join(repo, "fixtures/media/quicktime-source.mov"), container);
   report.fixture = fixture;
   report.browserPin = await inspectInstalledChromePin();
   const port = await new Promise((resolve, reject) => {
@@ -195,7 +195,7 @@ try {
   // The app's real file input is used without CDP uploading the fixture contents.
   const select = async () => {
     await guard(selectOwnedLocalBrowserFile(page, input, runtime.directory));
-    await guard(page.getByTestId("format-select").selectOption("mp4-to-vtt"));
+    await guard(page.getByTestId("format-select").selectOption(profileId));
     const track = page.getByTestId("timed-text-track-select");
     await guard(track.locator(`option[value="${fixture.selectedTrackId}"]`).waitFor({ state: "attached" }));
     const ids = await guard(track.locator("option").evaluateAll(opts => opts.map(option => option.value).filter(Boolean).map(Number)));
@@ -254,7 +254,7 @@ try {
     assertTimedTextLaunch(result.launch, fixture, fixture.selectedTrackId, fault);
     assert.ok(!seen.has(result.launch.jobId), "Repeated jobs require distinct launches");
     seen.add(result.launch.jobId);
-    assertTimedTextTerminal(result.state, kind, fixture.expected.bytes);
+    assertTimedTextTerminal(result.state, kind, fixture.expected.bytes, profileId);
     if (kind === "complete") {
       assert.deepEqual(result.state.batchOutputNames, [outputName]);
       const binding = await guard(bindOpfsOutputValidationBacking(page, profile, outputName, fixture.expected.bytes));
@@ -325,6 +325,7 @@ finally {
     if (report.browserPin) assertInstalledChromePinsEqual(report.browserPin, await inspectInstalledChromePin());
   });
   if (controlStart !== undefined) await cleanup(async () => {
+    report.controlWindow = { startedAtMs: controlStart, endedAtMs: controlEnd };
     report.memory = summarizeTimedTextMemory(samples, controlStart, controlEnd, report.blank, report.loaded);
     assert.ok(report.memory.incrementalPrivateMiB <= PRIVATE_MIB_LIMIT);
     assert.ok(report.memory.maxSampleGapMs <= 1000, "Insufficient Chrome sampling coverage");
@@ -334,15 +335,15 @@ finally {
       assert.ok(row.memory.maxSampleGapMs <= 1000, "Insufficient active job sampling coverage");
     }
   });
-  report.status = failed ? "failed-not-qualification" : "passed-private-headless-mp4-control-not-public-qualification";
+  report.status = failed ? "failed-not-qualification" : `passed-private-headless-${container}-control-not-public-qualification`;
   const directory = path.join(repo, "output/playwright");
   await mkdir(directory, { recursive: true });
   assert.equal((await realpath(directory)).toLowerCase(), directory.toLowerCase(), "Reports must remain in the repository");
   const raw = gzipSync(Buffer.from(JSON.stringify(samples)));
-  report.rawMemoryFile = `${stamp}-timed-text-native-memory.json.gz`;
+  report.rawMemoryFile = `${basename}-native-memory.json.gz`;
   report.rawMemorySha256 = sha(raw);
   await writeFile(path.join(directory, report.rawMemoryFile), raw, { flag: "wx" });
-  const reportFile = path.join(directory, `${stamp}-timed-text.json`);
+  const reportFile = path.join(directory, `${basename}.json`);
   await writeFile(reportFile, JSON.stringify(report, null, 2) + "\n", { flag: "wx" });
   console.log(`${report.status}: ${reportFile}`);
   if (failed) process.exitCode = 1;

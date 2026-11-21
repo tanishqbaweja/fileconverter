@@ -9,6 +9,15 @@ export const PRIVATE_MIB_LIMIT = 250;
 export const CLEANUP_MIB_LIMIT = 96;
 const MIB = 1048576;
 
+export function resolveTimedTextBrowserRun(args) {
+  assert.ok(args.length <= 1, "Choose one isolated container or --preflight");
+  const preflightOnly = args[0] === "--preflight";
+  const match = /^--container=(mp4|mov|3gp)$/.exec(args[0] ?? "");
+  assert.ok(!args.length || preflightOnly || match, "Use --container=mp4, --container=mov or --container=3gp");
+  const container = match?.[1] ?? "mp4";
+  return { container, profileId: `${container}-to-vtt`, preflightOnly };
+}
+
 // This inspection wraps only the real Worker boundary and never changes the
 // original arguments, retains file/handle references or reads payload bytes.
 export function observeTimedTextLaunches() {
@@ -16,10 +25,10 @@ export function observeTimedTextLaunches() {
   window.__WITHIN_TIMED_TEXT_LAUNCHES__ = rows;
   Worker.prototype.postMessage = function (...args) {
     const message = args[0];
-    if (message?.type === "start" && message.profileId === "mp4-to-vtt") {
+    if (message?.type === "start" && /^(mp4|mov|3gp)-to-vtt$/.test(message.profileId)) {
       if (rows.length === 8) throw new Error("Timed-text launch observation limit");
       const { destination } = message;
-      rows.push({ jobId: message.jobId, sourceBytes: message.file?.size ?? null,
+      rows.push({ jobId: message.jobId, profileId: message.profileId, sourceBytes: message.file?.size ?? null,
         trackId: message.timedTextTrackId ?? null, mode: destination?.mode ?? null,
         actualFileHandle: typeof FileSystemFileHandle === "function" && destination?.handle instanceof FileSystemFileHandle,
         fault: message.testFault ?? null });
@@ -30,6 +39,7 @@ export function observeTimedTextLaunches() {
 
 export function assertTimedTextLaunch(observation, fixture, trackId, fault = null) {
   assert.equal(typeof observation?.jobId, "string");
+  assert.equal(observation.profileId, `${fixture.container}-to-vtt`);
   assert.equal(observation.sourceBytes, fixture.inputBytes);
   assert.equal(observation.trackId, trackId);
   assert.equal(observation.fault, fault);
@@ -37,9 +47,9 @@ export function assertTimedTextLaunch(observation, fixture, trackId, fault = nul
   assert.equal(observation.actualFileHandle, true);
 }
 
-export function assertTimedTextTerminal(state, kind, expectedBytes) {
+export function assertTimedTextTerminal(state, kind, expectedBytes, profileId = "mp4-to-vtt") {
   assert.equal(state.jobState, kind);
-  assert.equal(state.selectedProfileId, "mp4-to-vtt");
+  assert.equal(state.selectedProfileId, profileId);
   assert.equal(state.opfsName, null, "Selected handle, not an intermediate OPFS conversion job");
   const m = state.metrics;
   for (const key of ["inputBytes", "maxReadChunkBytes", "maxWriteChunkBytes", "peakQueuedBytes", "peakPendingOperations"]) {

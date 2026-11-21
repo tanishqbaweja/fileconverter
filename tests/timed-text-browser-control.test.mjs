@@ -5,7 +5,18 @@ import path from "node:path";
 import test from "node:test";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 import { assertTimedTextLaunch, assertTimedTextTerminal, classifyTimedTextBrowserRequest, collectTimedTextStaticPaths,
-  summarizeTimedTextMemory, validateTimedTextPhysicalOutput } from "../scripts/lib/timed-text-browser-control.mjs";
+  resolveTimedTextBrowserRun, summarizeTimedTextMemory, validateTimedTextPhysicalOutput } from "../scripts/lib/timed-text-browser-control.mjs";
+
+test("one explicit supported ISO-BMFF container per measured Chrome session", () => {
+  for (const container of ["mp4", "mov", "3gp"]) {
+    assert.deepEqual(resolveTimedTextBrowserRun([`--container=${container}`]), { container, profileId: `${container}-to-vtt`, preflightOnly: false });
+  }
+  assert.equal(resolveTimedTextBrowserRun([]).profileId, "mp4-to-vtt");
+  assert.equal(resolveTimedTextBrowserRun(["--preflight"]).preflightOnly, true);
+  for (const args of [["--container=mkv"], ["--container=mov", "--container=3gp"], ["--preflight", "--container=mov"]]) {
+    assert.throws(() => resolveTimedTextBrowserRun(args));
+  }
+});
 
 test("request guard permits only shipped assets and exact loopback test navigations", async () => {
   const scratch = await createOwnedRuntimeScratch("timed-text-requests-");
@@ -49,15 +60,17 @@ test("physical output validator rejects same-size byte changes, truncation and e
 });
 
 test("browser proof rejects a wrong track, staged handle and optimistic terminal metrics", () => {
-  const fixture = { inputBytes: 2848610 };
-  const launch = { jobId: "genuine-1", sourceBytes: fixture.inputBytes, trackId: 4, mode: "handle", actualFileHandle: true, fault: null };
+  const fixture = { inputBytes: 2848610, container: "mp4" };
+  const launch = { jobId: "genuine-1", profileId: "mp4-to-vtt", sourceBytes: fixture.inputBytes, trackId: 4, mode: "handle", actualFileHandle: true, fault: null };
   assert.doesNotThrow(() => assertTimedTextLaunch(launch, fixture, 4));
   assert.throws(() => assertTimedTextLaunch({ ...launch, trackId: 3 }, fixture, 4));
   assert.throws(() => assertTimedTextLaunch({ ...launch, mode: "staged-handle" }, fixture, 4));
+  assert.throws(() => assertTimedTextLaunch({ ...launch, profileId: "mov-to-vtt" }, fixture, 4));
   const metrics = { inputBytes: 1910727, outputBytes: 2155445, maxReadChunkBytes: 16384, maxWriteChunkBytes: 65536,
     peakQueuedBytes: 65536, peakPendingOperations: 1, pendingOperations: 0, queuedBytes: 0, peakWasmMemoryBytes: 0 };
   const state = { jobState: "complete", selectedProfileId: "mp4-to-vtt", opfsName: null, error: null, metrics };
   assert.doesNotThrow(() => assertTimedTextTerminal(state, "complete", metrics.outputBytes));
+  assert.throws(() => assertTimedTextTerminal(state, "complete", metrics.outputBytes, "3gp-to-vtt"));
   assert.throws(() => assertTimedTextTerminal({ ...state, metrics: { ...metrics, pendingOperations: 1 } }, "complete", metrics.outputBytes));
   assert.throws(() => assertTimedTextTerminal({ ...state, metrics: { ...metrics, maxWriteChunkBytes: 65537 } }, "complete", metrics.outputBytes));
   assert.throws(() => assertTimedTextTerminal({ ...state, jobState: "cancelled" }, "cancelled", metrics.outputBytes));
