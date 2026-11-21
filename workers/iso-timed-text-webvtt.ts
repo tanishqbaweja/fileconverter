@@ -3,6 +3,8 @@
 export const TIMED_TEXT_READ_BYTES = 128 * 1024;
 export const TIMED_TEXT_WRITE_BYTES = 64 * 1024;
 const TABLE_WINDOW_BYTES = 16 * 1024;
+const PAYLOAD_WINDOW_BYTES = 16 * 1024;
+const PAYLOAD_WINDOW_SAMPLES = 64;
 const MAX_BOX_HEADERS = 4_096;
 const MAX_DATA_REGIONS = 128;
 const ZERO = BigInt(0), EMPTY_EDIT = BigInt(-1), TWO = BigInt(2);
@@ -274,28 +276,57 @@ export async function runIsoTimedTextToWebVtt(runtime: IsoTimedTextRuntime, trac
   runtime.warn("WebVTT preserves the selected timed-text track's cue text and timing. Styles, fonts, positioning, highlights and other modifiers are omitted. Line endings are normalized; empty cue lines become visibly blank nonbreaking-space lines.");
   await writer.write("WEBVTT\n\n");
   let sampleIndex = 0, timeIndex = 0, remainingTimeSamples = 0, delta = ZERO, time = ZERO, cues = 0;
-  let previousChunkEnd = 0;
+  const sampleLengths = new Uint32Array(PAYLOAD_WINDOW_SAMPLES);
+  const chunkStart = async (index: number) => {
+    const offset = await offsets.row(index);
+    return co64 ? safeNumber(offset.getBigUint64(0)) : offset.getUint32(0);
+  };
+  let nextChunkAt = await chunkStart(0);
   for (let chunk = 1; chunk <= offsets.count; chunk++) {
     if (next && next.first <= rule.first) fail("unordered chunk mapping.");
     if (next?.first === chunk) {
       rule = next;
       next = ++ruleIndex < mapping.count ? await chunkRule(ruleIndex) : undefined;
     }
-    const chunkOffset = await offsets.row(chunk - 1);
-    let at = co64 ? safeNumber(chunkOffset.getBigUint64(0)) : chunkOffset.getUint32(0);
+    let at = nextChunkAt;
+    nextChunkAt = chunk < offsets.count ? await chunkStart(chunk) : runtime.size;
     const region = data.find(box => at >= box.data && at < box.end);
     if (!region || rule.count > sizes.count - sampleIndex) return fail("chunk offset or sample count is outside the track's media data.");
-    if (at < previousChunkEnd) fail("only non-overlapping chunks in file order are supported.");
+    if (nextChunkAt <= at) fail("only non-overlapping chunks in file order are supported.");
+    let payload: DataView | undefined;
+    let windowIndex = 0, windowCount = 0, consumed = 0;
     for (let index = 0; index < rule.count; index++) {
+      runtime.assertActive();
       if (!remainingTimeSamples) {
         const row = await times.row(timeIndex++);
         remainingTimeSamples = row.getUint32(0); delta = BigInt(row.getUint32(4));
         if (!remainingTimeSamples || remainingTimeSamples > sizes.count - sampleIndex) fail("invalid timing sample count.");
       }
-      const length = sizes.fixed || (await sizes.row(sampleIndex)).getUint32(0);
-      if (length < 2 || length > TIMED_TEXT_READ_BYTES || length > region.end - at)
-        fail("subtitle sample exceeds its media data or the bounded sample limit.");
-      const cue = decodeSample(await read(at, length));
+      if (windowIndex === windowCount) {
+        // Adjacent samples in one selected-track chunk are contiguous. Never
+        // prefetch across chunks (where audio/video or another track may sit).
+        // Consume the old view before acquiring another. A large single sample
+        // keeps the existing exact-read path and the original 128 KiB cap.
+        payload = undefined;
+        windowIndex = 0; windowCount = 0; consumed = 0;
+        let bytes = 0;
+        const limit = Math.min(PAYLOAD_WINDOW_SAMPLES, rule.count - index);
+        while (windowCount < limit) {
+          const length = sizes.fixed || (await sizes.row(sampleIndex + windowCount)).getUint32(0);
+          if (bytes && bytes + length > PAYLOAD_WINDOW_BYTES) break;
+          if (length < 2 || length > TIMED_TEXT_READ_BYTES || length > region.end - at - bytes)
+            fail("subtitle sample exceeds its media data or the bounded sample limit.");
+          if (length > nextChunkAt - at - bytes) fail("only non-overlapping chunks in file order are supported.");
+          sampleLengths[windowCount++] = length;
+          bytes += length;
+          if (bytes >= PAYLOAD_WINDOW_BYTES) break;
+        }
+        payload = await read(at, bytes);
+      }
+      const length = sampleLengths[windowIndex++];
+      const current = payload!;
+      const cue = decodeSample(new DataView(current.buffer, current.byteOffset + consumed, length));
+      consumed += length;
       if (cue !== null) {
         const range = presentation(time, time + delta, timescale, edit);
         if (range) {
@@ -305,7 +336,6 @@ export async function runIsoTimedTextToWebVtt(runtime: IsoTimedTextRuntime, trac
       }
       time += delta; remainingTimeSamples--; sampleIndex++; at += length;
     }
-    previousChunkEnd = at;
   }
   if (sampleIndex !== sizes.count || remainingTimeSamples || timeIndex !== times.count || next)
     fail("sample, chunk and timing table totals disagree.");

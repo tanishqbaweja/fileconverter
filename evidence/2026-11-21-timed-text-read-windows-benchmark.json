@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "status": "private-timed-text-read-coalescing-retained-node-ab-browser-pending",
+  "requirementIds": [
+    "P-08",
+    "M-03",
+    "N-07"
+  ],
+  "command": "node scripts/benchmark-timed-text-read-windows.mjs",
+  "sourceSha256": {
+    "workers/iso-timed-text-webvtt.ts": "ccae00848da9f6f93af9c4e8b770136b9870d7ea6b7d291cf4cacdfc5bc726ec",
+    "scripts/benchmark-timed-text-read-windows.mjs": "d4f285b7fee3106f0534265c6611601155453cae2aaab3b5edf7f49420a72ede",
+    "tests/iso-timed-text-webvtt.test.mjs": "e4bdd95c923882dccc462dc3787f2e9e0f4c3cf4b5139a465b59a0d9c3d3d5a5",
+    "scripts/lib/timed-text-browser-fixture.mjs": "9881e405e4f7f353e7c4cf4c793dd7d3ab958a96837a9457e06ed97ac6e1307c",
+    "fixtures/media/quicktime-source.mov": "9ac80798a1f55fa3f39f43bb579e8e1271c5895d76d6db8b87e923160626d62f"
+  },
+  "scope": "Same newly generated MP4 and file-backed Blob, same track, native cue oracle, and streaming hash sink. Eight interleaved timings each after one warmup per method per track. No browser or native application conversion.",
+  "baselineCommit": "e4a6fddc2c4e109b8f29fdff17261601ee89a629",
+  "baselineSha256": "ffd961199ef0e306d5723ba618a96cfca3e410ded33d88b67e57780f81944150",
+  "candidateSha256": "ccae00848da9f6f93af9c4e8b770136b9870d7ea6b7d291cf4cacdfc5bc726ec",
+  "fixture": {
+    "inputBytes": 2848588,
+    "trackIds": [
+      3,
+      4
+    ],
+    "selectedTrackId": 4,
+    "expected": {
+      "cues": 6144,
+      "bytes": 2155445,
+      "sha256": "1eff4945944e8d3f88e8210567dedcb1f42c38afef48f36f947aacdc13620f12"
+    },
+    "decoyOracle": {
+      "cues": 1,
+      "bytes": 79,
+      "sha256": "84d2abcae152abdb9839d69be48b7099352b0ca2210b3df1bc44ef38d52a051a"
+    },
+    "selectedPacketCount": 12289,
+    "nativeTool": "ffprobe version N-122712-g7e3781e3ca-20260211 Copyright (c) 2007-2026 the FFmpeg developers"
+  },
+  "data": [
+    {
+      "track": 3,
+      "expected": {
+        "cues": 1,
+        "bytes": 79,
+        "sha256": "84d2abcae152abdb9839d69be48b7099352b0ca2210b3df1bc44ef38d52a051a"
+      },
+      "baseline": {
+        "readCount": 94,
+        "readBytes": 925,
+        "maxRead": 41,
+        "outputBytes": 79,
+        "sha256": "84d2abcae152abdb9839d69be48b7099352b0ca2210b3df1bc44ef38d52a051a",
+        "writeSizes": [
+          79
+        ],
+        "peakWrites": 1,
+        "warnings": [
+          "WebVTT preserves the selected timed-text track's cue text and timing. Styles, fonts, positioning, highlights and other modifiers are omitted. Line endings are normalized; empty cue lines become visibly blank nonbreaking-space lines."
+        ],
+        "counts": {
+          "trackId": 3,
+          "samples": 3,
+          "cues": 1
+        },
+        "cancelled": false,
+        "medianMs": 4.494299999999953,
+        "milliseconds": [
+          5.932099999999991,
+          5.0656999999999925,
+          4.38919999999996,
+          4.492599999999925,
+          4.495999999999981,
+          4.407000000000039,
+          4.378999999999905,
+          4.5031999999999925
+        ]
+      },
+      "candidate": {
+        "readCount": 94,
+        "readBytes": 925,
+        "maxRead": 41,
+        "outputBytes": 79,
+        "sha256": "84d2abcae152abdb9839d69be48b7099352b0ca2210b3df1bc44ef38d52a051a",
+        "writeSizes": [
+          79
+        ],
+        "peakWrites": 1,
+        "warnings": [
+          "WebVTT preserves the selected timed-text track's cue text and timing. Styles, fonts, positioning, highlights and other modifiers are omitted. Line endings are normalized; empty cue lines become visibly blank nonbreaking-space lines."
+        ],
+        "counts": {
+          "trackId": 3,
+          "samples": 3,
+          "cues": 1
+        },
+        "cancelled": false,
+        "medianMs": 4.548850000000016,
+        "milliseconds": [
+          5.396100000000047,
+          5.221300000000042,
+          4.6965000000000146,
+          4.613899999999944,
+          4.481199999999944,
+          4.3478999999999814,
+          4.4838000000000875,
+          4.440900000000056
+        ]
+      }
+    },
+    {
+      "track": 4,
+      "expected": {
+        "cues": 6144,
+        "bytes": 2155445,
+        "sha256": "1eff4945944e8d3f88e8210567dedcb1f42c38afef48f36f947aacdc13620f12"
+      },
+      "baseline": {
+        "readCount": 12389,
+        "readBytes": 1910727,
+        "maxRead": 16384,
+        "outputBytes": 2155445,
+        "sha256": "1eff4945944e8d3f88e8210567dedcb1f42c38afef48f36f947aacdc13620f12",
+        "writeSizes": [
+          65535,
+          65536,
+          65536,
+          65536,
+          65536,
+          65535,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          65533,
+          65534,
+          65536,
+          65536,
+          65536,
+          65536,
+          65534,
+          65535,
+          65536,
+          65535,
+          65536,
+          65534,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          58306
+        ],
+        "peakWrites": 1,
+        "warnings": [
+          "WebVTT preserves the selected timed-text track's cue text and timing. Styles, fonts, positioning, highlights and other modifiers are omitted. Line endings are normalized; empty cue lines become visibly blank nonbreaking-space lines."
+        ],
+        "counts": {
+          "trackId": 4,
+          "samples": 12289,
+          "cues": 6144
+        },
+        "cancelled": false,
+        "medianMs": 1125.3922499999999,
+        "milliseconds": [
+          674.0028000000002,
+          851.4944999999998,
+          1236.1960999999997,
+          1374.1439,
+          1235.7151999999996,
+          1111.8477000000003,
+          883.9480000000003,
+          1138.9367999999995
+        ]
+      },
+      "candidate": {
+        "readCount": 332,
+        "readBytes": 1910727,
+        "maxRead": 16384,
+        "outputBytes": 2155445,
+        "sha256": "1eff4945944e8d3f88e8210567dedcb1f42c38afef48f36f947aacdc13620f12",
+        "writeSizes": [
+          65535,
+          65536,
+          65536,
+          65536,
+          65536,
+          65535,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          65533,
+          65534,
+          65536,
+          65536,
+          65536,
+          65536,
+          65534,
+          65535,
+          65536,
+          65535,
+          65536,
+          65534,
+          65536,
+          65536,
+          65536,
+          65536,
+          65536,
+          58306
+        ],
+        "peakWrites": 1,
+        "warnings": [
+          "WebVTT preserves the selected timed-text track's cue text and timing. Styles, fonts, positioning, highlights and other modifiers are omitted. Line endings are normalized; empty cue lines become visibly blank nonbreaking-space lines."
+        ],
+        "counts": {
+          "trackId": 4,
+          "samples": 12289,
+          "cues": 6144
+        },
+        "cancelled": false,
+        "medianMs": 84.82364999999982,
+        "milliseconds": [
+          57.696500000000015,
+          52.54880000000003,
+          98.0009,
+          96.25340000000051,
+          84.67829999999958,
+          84.96900000000005,
+          89.119200000001,
+          81.48810000000049
+        ]
+      }
+    }
+  ],
+  "beforeCancel": {
+    "elapsedMs": 82.51579999999922,
+    "readCount": 841,
+    "readBytes": 140946,
+    "maxRead": 16384,
+    "outputBytes": 131071,
+    "sha256": "c91555d43d98e562eb091472f82ba96c8d9820256a794f71e8a0b4a3d9229e52",
+    "writeSizes": [
+      65535,
+      65536
+    ],
+    "peakWrites": 1,
+    "warnings": [
+      "WebVTT preserves the selected timed-text track's cue text and timing. Styles, fonts, positioning, highlights and other modifiers are omitted. Line endings are normalized; empty cue lines become visibly blank nonbreaking-space lines."
+    ],
+    "cancelled": true
+  },
+  "afterCancel": {
+    "elapsedMs": 16.26009999999951,
+    "readCount": 142,
+    "readBytes": 145522,
+    "maxRead": 16384,
+    "outputBytes": 131071,
+    "sha256": "c91555d43d98e562eb091472f82ba96c8d9820256a794f71e8a0b4a3d9229e52",
+    "writeSizes": [
+      65535,
+      65536
+    ],
+    "peakWrites": 1,
+    "warnings": [
+      "WebVTT preserves the selected timed-text track's cue text and timing. Styles, fonts, positioning, highlights and other modifiers are omitted. Line endings are normalized; empty cue lines become visibly blank nonbreaking-space lines."
+    ],
+    "cancelled": true
+  },
+  "scratchRemoved": true,
+  "browserLaunched": false,
+  "browserSpeedMeasured": false,
+  "browserMemoryMeasured": false,
+  "protectedOriginalRead": false,
+  "speed": {
+    "fileReadsReducedPct": 97.32020340624747,
+    "medianElapsedReducedPct": 92.46274798853467,
+    "medianRelativeSpeed": 13.267434848653675,
+    "shortTrackClaim": "94 reads either way. 4.494 to 4.549 ms; no short-track speed improvement claimed."
+  },
+  "candidateBounds": {
+    "selectedTrackOnly": true,
+    "onePayloadReadAtATime": true,
+    "maximumCoalescedBytes": 16384,
+    "maximumSamplesPerWindow": 64,
+    "lengthScratchBytes": 256,
+    "onlyWithinChunk": true,
+    "largeSampleReadCapBytes": 131072,
+    "outputWriteCapBytes": 65536,
+    "maximumPendingWrites": 1,
+    "extraReadBytesObservedAtCancellation": 4576
+  },
+  "verified": {
+    "focusedTests": 37,
+    "typescript": true,
+    "scopedLint": true,
+    "productionBuild": true,
+    "publicEvidenceProfilesAudited": 402,
+    "publicRouteChanged": false
+  },
+  "systemDriveFreeBytes": 0,
+  "nextAction": "Run the existing headless MP4 control upon host guard pass. The faster path may make its live cancellation/sample visibility harder; do not relax the gate or assume a browser speedup."
+}

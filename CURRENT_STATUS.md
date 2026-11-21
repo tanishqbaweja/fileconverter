@@ -4,6 +4,19 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Verified speed improvement: private timed-text file reads
+
+The extractor now coalesces consecutive samples only within a selected-track
+chunk (up to 16 KiB or 64 samples). A larger sample keeps its original exact
+128 KiB limit. Same genuine MP4, eight interleaved file-backed Node runs per
+variant: 12,389 → 332 reads and 1,125.392 → 84.824 ms median for 6,144 cues.
+Bytes read, output hash, 33 write sizes, one pending write and warnings match.
+The tiny track stayed at 94 reads and about 4.5 ms. Cancellation control
+kept the same output prefix with 4,576 extra lookahead bytes. 37 focused tests,
+TypeScript, scoped lint, production build and 402 public evidence checks passed.
+This is not browser speed/memory evidence. C: still 0 B; no replay of the old
+fixture-only gate. [Benchmark](evidence/2026-11-21-timed-text-read-windows-benchmark.json).
+
 ## Next MP4 timed-text browser run: driver ready, launch blocked by disk
 
 `node scripts/qualify-timed-text-webvtt.mjs` is the new headless production

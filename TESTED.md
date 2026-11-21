@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-11-21 timed-text read batching **retained on matched offline A/B**.
+Same 2,848,588 B genuine MP4, same selected cue track, eight interleaved
+measurements per method. Baseline 12,389 reads/1,125.392 ms median vs candidate
+332 reads/84.824 ms (97.3% fewer reads; 92.5% lower engine time). The tiny
+track made 94 reads either way (4.494 → 4.549 ms). Both have exact full
+native-oracle WebVTT hashes/cue counts, identical bytes read, write-size
+sequence and warning, and one pending write. Selection coalesces only within
+the current chunk, max 16 KiB or 64 samples, and keeps 128 KiB single-read
+and 64 KiB output caps. Cancellation stopped after the identical 131,071 B
+prefix; candidate read 4,576 extra bytes below the one-window ceiling.
+37 focused checks, production build, lint, TS and 402 public entries passed.
+Scratch removed, no browser/test.mkv access or public promotion. Browser
+speed, memory, and cancellation observability remain unverified.
+[Benchmark](evidence/2026-11-21-timed-text-read-windows-benchmark.json).
+
 2026-11-21 MP4 timed-text headless production driver **implemented, not run
 past host preflight**. 16/16 offline tests pass, including exact asset-path
 request control, altered/truncated/extended output rejection, track and

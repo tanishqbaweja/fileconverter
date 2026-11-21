@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-21 P-08 / M-03 / N-07 private timed-text reads coalesced **within each
+selected chunk**. Same input/oracle/output boundaries: 12,389 → 332 native-file
+Blob reads, 1,125.392 → 84.824 ms median in eight runs per variant; no speed
+claim for the short track or Chrome. Unchanged 128 KiB read/64 KiB write hard
+caps; one bounded 16 KiB or 64-sample payload window, no interleaving gaps read.
+Exact cancellation prefix with 4,576 extra lookahead bytes. 37 focused tests,
+TS, build, lint and 402 public audit entries passed. No change to route status.
+Next: existing browser command when host guards pass. Faster extraction may
+shorten the cancellation observation window; if observed, fix the proof without
+weakening it. [Benchmark](evidence/2026-11-21-timed-text-read-windows-benchmark.json).
+
 2026-11-21 M-03 / N-07 private MP4 browser qualification driver **prepared**.
 Wired the independent oracle to physical file validation, real owned OPFS
 handle evidence, three repeats, real-payload cancellation, injected write

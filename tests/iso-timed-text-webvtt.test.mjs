@@ -48,8 +48,8 @@ function fixture(samples, options = {}) {
   return Buffer.concat([ftyp, bg("mdat", ...samples), bg("moov", scaleBox("mvhd", movieScale), ...tracks), ...extraBoxes]);
 }
 
-async function convert(input, { track, abort, cancelAfterWrites, failWrite } = {}) {
-  const readSizes = [], writeSizes = [], chunks = [], warnings = [];
+async function convert(input, { track, abort, cancelAfterWrites, failWrite, onRead } = {}) {
+  const readSizes = [], readRanges = [], writeSizes = [], chunks = [], warnings = [];
   let pending = 0;
   const runtime = {
     size: input.length,
@@ -60,6 +60,7 @@ async function convert(input, { track, abort, cancelAfterWrites, failWrite } = {
     async read(start, length) {
       assert.ok(length <= TIMED_TEXT_READ_BYTES);
       readSizes.push(length);
+      readRanges.push([start, length]); onRead?.(start, length);
       return Uint8Array.from(input.subarray(start, start + length));
     },
     async write(bytes) {
@@ -72,7 +73,7 @@ async function convert(input, { track, abort, cancelAfterWrites, failWrite } = {
     },
   };
   const result = await runIsoTimedTextToWebVtt(runtime, track);
-  return { result, text: Buffer.concat(chunks).toString("utf8"), readSizes, writeSizes, warnings };
+  return { result, text: Buffer.concat(chunks).toString("utf8"), readSizes, readRanges, writeSizes, warnings };
 }
 
 test("decodes UTF-8 and BOM-tagged UTF-16 while ignoring clear samples and escaping cue syntax", async () => {
@@ -149,7 +150,36 @@ test("sample-size and timing tables are read in fixed windows across thousands o
   assert.equal(r.result.samples, 4_300);
   assert.ok(r.readSizes.filter(length => length === 16_384).length >= 3);
   assert.equal(Math.max(...r.readSizes), 16_384);
+  assert.ok(r.readSizes.length < 125, "Thousands of tiny samples must not trigger individual reads");
   assert.equal(r.text, "WEBVTT\n\n00:00:04.299 --> 00:00:04.300\nAfter both table boundaries\n\n");
+});
+
+test("coalesces selected samples within each chunk without reading interleaved bytes", async () => {
+  const samples = [sample("One"), sample(""), sample("Two"), sample("Three"), sample(""), sample("Four")];
+  const left = Buffer.concat(samples.slice(0, 3)), right = Buffer.concat(samples.slice(3));
+  const gap = Buffer.alloc(8192, 0x9f);
+  const start = ftyp.length + 8, second = start + left.length + gap.length, end = second + right.length;
+  const make = offsets => Buffer.concat([ftyp, bg("mdat", left, gap, right),
+    bg("moov", makeTrack({ samples, offsets, rule: [1, 3, 1] }))]);
+  const actual = await convert(make([start, second]));
+  assert.deepEqual(actual.readRanges.filter(([offset]) => offset >= start && offset < end), [[start, left.length], [second, right.length]]);
+  assert.equal(actual.result.cues, 4);
+  assert.ok(actual.text.includes("00:00:05.000 --> 00:00:06.000\nFour\n\n"));
+  const invalidNext = start + left.length - 1;
+  await assert.rejects(convert(make([start, invalidNext]), { onRead(offset) {
+    assert.ok(offset < start || offset >= end, "Do not read a chunk known to overlap the next one");
+  } }), /non-overlapping/);
+});
+
+test("larger samples are read once in isolation and never raise the 128 KiB cap", async () => {
+  const aboveWindow = sample("Large sample with decorations", Buffer.alloc(90000));
+  const small = sample("After large sample");
+  const actual = await convert(fixture([aboveWindow, small]));
+  const start = ftyp.length + 8;
+  assert.deepEqual(actual.readRanges.filter(([offset]) => offset >= start && offset < start + aboveWindow.length + small.length),
+    [[start, aboveWindow.length], [start + aboveWindow.length, small.length]]);
+  assert.equal(actual.result.cues, 2);
+  await assert.rejects(convert(fixture([sample("Out of bounds", Buffer.alloc(TIMED_TEXT_READ_BYTES))])), /bounded sample limit/);
 });
 
 test("rejects nonlocal, unindexed, mis-timed, malformed and fragmented samples", async () => {
