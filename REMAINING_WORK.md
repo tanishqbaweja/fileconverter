@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-21 M-03 / N-07 first live MP4 timed-text browser call failed in the
+physical validator after one reported completion. No repeat/failure/memory
+qualification; browser/server and scratch removed. Missing bounded probe
+encoder init corrected, unchanged 250 MiB and native cue oracle. Exact failed
+[receipt](evidence/2026-11-21-timed-text-first-browser-harness-failure.json).
+
 2026-11-21 M-02 / M-03 / P-08 Matroska/WebM bounded preview improvement.
 The reader now checks at most three local indexed chapter/attachment/tag
 headers inside the segment after the first known Cluster. Real `test.mkv`

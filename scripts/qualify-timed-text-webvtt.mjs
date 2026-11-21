@@ -11,6 +11,7 @@ import { setTimeout as pause } from "node:timers/promises";
 import { promisify } from "node:util";
 import { gzipSync } from "node:zlib";
 import { startClassifiedChromiumMemoryMonitor } from "./lib/birth-type-capture.mjs";
+import { encodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { cancelAfterRealBrowserPayload } from "./lib/browser-payload-cancellation.mjs";
 import { cancelBrowserConversionBeforeCleanup } from "./lib/cancel-browser-conversion-before-cleanup.mjs";
 import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
@@ -152,6 +153,7 @@ try {
   report.blank = await stable();
   const debuggerInfo = await (await fetch(`${debuggerUrl}/json/version`, { signal: AbortSignal.timeout(3000) })).json();
   realm = await connectRealmSampler(debuggerInfo.webSocketDebuggerUrl, server.baseURL);
+  await context.addInitScript(`window.__WITHIN_AUDIO_VALIDATION_CHUNK__=(${encodeBoundedValidationChunk.toString()});`);
   await context.addInitScript(`(${observeTimedTextLaunches.toString()})(); window.__WITHIN_TIMED_TEXT_CANCEL__=(${cancelAfterRealBrowserPayload.toString()});`);
   await context.route("**/*", async route => {
     const req = route.request();

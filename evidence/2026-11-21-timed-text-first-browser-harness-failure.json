@@ -1,0 +1,14 @@
+{
+  "status": "failed-output-verifier-setup-not-qualification",
+  "commit": "9c6c87053300001a5aee1b952cafdc90c8b7f45d",
+  "chrome": "158.0.8127.36",
+  "report": "output/playwright/2026-11-21T17-21-20-947Z-timed-text.json",
+  "reportSha256": "10a5bbb48b71ea9091f029bc2b11c330ce597f508ca14d80d9818453c92fef4e",
+  "rawMemorySha256": "e5a92d888083885ff72f850e6f5e44c1bc4d2da140a59e7d3506bd6dd2aedabe",
+  "case": { "trackId": 4, "reportedTerminal": "complete", "directRealHandle": true, "reportedOutputBytes": 2155445, "elapsedMs": 327.22000002861023, "independentOutputValidationCompleted": false },
+  "partialControlMemory": { "incrementalPrivateMiB": 63.5, "validSamples": 148, "unavailableSamples": 0 },
+  "cleanup": { "observedBrowsersAbsent": true, "observedPids": 38, "serverAbsent": true, "scratchRemoved": true },
+  "failure": "Existing physical OPFS validator expected the bounded probe encoder in the test page; this runner missed the init script. Added the existing encoder, without changing the actual conversion, Chrome process metrics, bound or output oracle.",
+  "repeatCancelFaultRecoveryVerified": false,
+  "publicPromotion": false
+}

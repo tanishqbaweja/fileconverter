@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-11-21 first live private MP4 timed-text browser attempt **FAILED at
+validation setup**. Worker reports a genuine complete 2,155,445 B direct
+handle output, but physical binding stopped before validation. Existing
+bounded probe encoder init was missing and is now wired. Partial-control
+peak 63.5 MiB is not qualification. Browser/server/scratch removed. Corrected
+verification may run; no unchanged replay.
+[Receipt](evidence/2026-11-21-timed-text-first-browser-harness-failure.json).
+
 2026-11-21 Matroska indexed metadata and 4 KiB scout **source-only PASS**.
 Matched real complex MKV/WebM read 65,536 → 4,096 B with the same facts.
 Protected 2,958,573,265 B `test.mkv`: checked late attached-picture/Tags
