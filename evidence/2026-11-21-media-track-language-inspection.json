@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "status": "source-disclosure-implemented-verified-in-node-and-built-browser-confirmation-pending",
+  "baseCommit": "0435b33091ce5915de8b08b6f7ddb929d3b1e784",
+  "requirementIds": ["M-02", "M-03"],
+  "sourceSha256": {
+    "lib/media-source-inspection.ts": "f792101cd2896c910aa8238f89935c47e14dcb3859362faed370ab892120a372",
+    "tests/media-track-language.test.mjs": "ab3df320954e6157be369b2e0cbb00b6f0f5370d5879597cf551eef4f1d1b89d",
+    "tests/media-source-inspection.test.mjs": "abf993ef9ae39e3090cb16f072a98c318703af6dc2c6a4ccf127cf9005448772"
+  },
+  "hypothesis": "Existing bounded local container header reads can disclose declared track languages without changing routing or the read ceilings.",
+  "limits": {
+    "matroskaWindowBytes": 65536,
+    "isoAggregateBytes": 65536,
+    "maximumElngPayloadBytes": 68,
+    "maximumTagBytes": 63,
+    "maximumDisplayedTags": 16
+  },
+  "independentProbe": {
+    "version": "N-122712-g7e3781e3ca-20260211",
+    "command": "ffprobe -v error -show_entries stream=index,codec_type:stream_tags=language -of json <repo fixture>",
+    "fixtureLanguages": {
+      "complex-remux-source.mkv": [null, "eng", "spa", "fra", null],
+      "webm-source.webm": [null, "eng"],
+      "quicktime-source.mov": [null, "eng"],
+      "mobile-video-source.3gp": ["und", "eng"],
+      "remux-source.mkv": [null, "eng"],
+      "audio-source.m4a": ["eng"]
+    },
+    "movNumericEnglishDisplayedAs": "en",
+    "threeGpUndeterminedOmitted": true
+  },
+  "focusedChecks": {
+    "passed": 67,
+    "failed": 0,
+    "files": ["media-track-language", "media-source-inspection", "media-conversion-plan", "aiff-tail-inspection"],
+    "firstAttempt": "59 of 60 passed; independently confirmed the AAC M4A fixture declares eng, then updated the former metadata-signal-only expectation to check both the previous signal and the actual language."
+  },
+  "productionBuildPassed": true,
+  "typescriptPassed": true,
+  "affectedLintPassed": true,
+  "publicEvidenceEntriesMatched": 402,
+  "systemDriveFreeBeforeBrowserDecisionBytes": 0,
+  "browserLaunched": false,
+  "conversionLaunched": false,
+  "convertedOutputOrBrowserProfileCreated": false,
+  "protectedInput": {
+    "sizeBeforeAndAfterBytes": 2958573265,
+    "sha256BeforeAndAfter": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "applicationReadOnlyTestBytes": 65536
+  },
+  "decision": "Retain source disclosure. No routing, destination language preservation, conversion speed, registry or memory acceptance change.",
+  "nextAction": "When system-drive preflight is safe, confirm the current production browser source panel with genuine multilingual fixtures. Do not repeat this Node gate or previously failed video runs unchanged.",
+  "goalComplete": false
+}

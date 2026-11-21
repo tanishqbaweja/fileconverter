@@ -224,6 +224,21 @@ Detecting a tag is not a claim that the selected destination preserves it;
 destination limitations still apply. This check is not conversion, throughput,
 multi-gigabyte scaling or process-memory qualification.
 
+## Track languages in source inspection
+
+The source panel lists declared languages by inspected stream. Matroska and
+WebM expose languages for the video, audio and subtitles found in the first
+64 KiB. MP4, M4A, 3GP and QuickTime expose them for inspected audio and video
+tracks within a total read budget of 64 KiB. Extended tags take precedence:
+[Matroska LanguageBCP47](https://www.rfc-editor.org/rfc/rfc9559.html#section-5.1.4.1.20)
+and [QuickTime/ISO-BMFF elng](https://developer.apple.com/documentation/quicktime-file-format/extended_language_tag_atom).
+QuickTime numeric codes are mapped only for the QuickTime brand. If the
+scanner cannot read an overriding tag within its limits, it does not guess
+from the fallback field. Missing and unspecified languages are not displayed.
+The preview shows at most 16 tags plus an overflow count. It describes the
+source; it does not select an output track or guarantee language preservation
+in the destination.
+
 ## Tested storage-error recovery
 
 A real production-browser FLAC-to-Opus test exhausted a deliberately limited

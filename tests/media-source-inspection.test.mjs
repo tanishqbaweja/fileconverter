@@ -250,7 +250,11 @@ test("bounded ISO-BMFF inspection handles AAC and fragmented ALAC M4A", async ()
   assert.equal(aac.bitrateBps, 125_324);
   assert.equal(aac.sampleRateHz, 48_000);
   assert.equal(aac.channelLayout, "Mono");
-  assert.deepEqual(aac.metadataSignals, ["User metadata box"]);
+  assert.equal(aac.streams[0].languageTag, "eng");
+  assert.deepEqual(aac.metadataSignals, [
+    "User metadata box",
+    "Declared languages of inspected tracks: stream 1: eng",
+  ]);
   assert.equal(aac.inspectedBytes, 1_122);
 
   const alacSource = await trackedNamedFixture("audio-source-alac.m4a");
@@ -263,14 +267,15 @@ test("bounded ISO-BMFF inspection handles AAC and fragmented ALAC M4A", async ()
   assert.equal(alac.sampleRateHz, 48_000);
   assert.equal(alac.channelLayout, "Stereo");
   assert.equal(alac.bitsPerSample, 16);
+  assert.equal(alac.streams[0].languageTag, "eng");
   assert.equal(alac.inspectedBytes, 780);
   assert.ok(alacSource.reads.every(([start, end]) => end - start <= 396));
 });
 
 test("bounded ISO-BMFF inspection reports genuine MOV and 3GP video plus audio tracks", async () => {
-  for (const [name, format, container, inspectedBytes] of [
-    ["quicktime-source.mov", "mov", "QuickTime / MOV", 1_784],
-    ["mobile-video-source.3gp", "3gp", "3GP / ISO-BMFF", 1_782],
+  for (const [name, format, container, inspectedBytes, audioLanguage] of [
+    ["quicktime-source.mov", "mov", "QuickTime / MOV", 1_784, "en"],
+    ["mobile-video-source.3gp", "3gp", "3GP / ISO-BMFF", 1_782, "eng"],
   ]) {
     const source = await trackedNamedFixture(name);
     const result = await inspectMediaSource(source, format);
@@ -294,6 +299,7 @@ test("bounded ISO-BMFF inspection reports genuine MOV and 3GP video plus audio t
     assert.equal(audio.bitrateBps, 125_008);
     assert.equal(audio.sampleRateHz, 48_000);
     assert.equal(audio.channelLayout, "Mono");
+    assert.deepEqual(result.streams.map(({ languageTag }) => languageTag), [undefined, audioLanguage]);
     assert.equal(result.inspectedBytes, inspectedBytes);
     assert.equal(result.maximumInspectionBytes, MAX_ISO_BMFF_INSPECTION_BYTES);
     assert.ok(result.inspectedBytes < 2_000);
@@ -329,11 +335,15 @@ test("bounded Matroska inspection reports complex tracks and metadata", async ()
   assert.equal(result.streams[1].sampleRateHz, 48_000);
   assert.equal(result.streams[1].channelLayout, "Mono");
   assert.equal(result.streams[3].codec, "SubRip subtitle");
+  assert.deepEqual(result.streams.map(({ languageTag }) => languageTag), [
+    undefined, "eng", "spa", "fra",
+  ]);
   assert.deepEqual(result.metadataSignals, [
     "Title",
     "Chapters",
     "Attachments",
     "Tags",
+    "Declared languages of inspected tracks: stream 2: eng; stream 3: spa; stream 4: fra",
   ]);
   assert.equal(result.inspectedBytes, MAX_MATROSKA_INSPECTION_BYTES);
   assert.deepEqual(source.reads, [[0, MAX_MATROSKA_INSPECTION_BYTES]]);
@@ -351,6 +361,7 @@ test("bounded WebM inspection reports genuine VP9 and Opus tracks", async () => 
   assert.equal(result.height, 180);
   assert.ok(Math.abs(result.frameRate - 24) < 0.000001);
   assert.deepEqual(result.streams.map((stream) => stream.codec), ["VP9", "Opus"]);
+  assert.deepEqual(result.streams.map(({ languageTag }) => languageTag), [undefined, "eng"]);
   assert.equal(result.streams[1].sampleRateHz, 48_000);
   assert.equal(result.streams[1].channelLayout, "Mono");
   assert.equal(result.inspectedBytes, MAX_MATROSKA_INSPECTION_BYTES);

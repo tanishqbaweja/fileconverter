@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-11-21 M-02 / M-03 source language disclosure implemented for inspected
+Matroska/WebM video, audio and subtitle tracks and ISO-BMFF audio/video tracks.
+Source facts now reach the existing metadata panel; do not infer destination
+retention. Matroska/WebM uses the same 64 KiB read; ISO-BMFF reads only bounded
+optional `elng` payloads after existing required reads, within the existing
+64 KiB aggregate cap. Real fixtures, handcrafted boundary cases, 67 focused
+checks, production build, TS, scoped lint and the 402-entry public audit
+passed. Browser source-panel confirmation, broader container coverage and full
+preservation/exclusion qualification remain open. No registry or conversion
+engine change, and no replay of the failed original VP9 experiment.
+See `evidence/2026-11-21-media-track-language-inspection.json`.
+
 2026-11-21 N-08 DOCX color independent fixture gate prepared and verified,
 not yet browser-qualified. Genuine deterministic Word package and
 independent per-run HTML oracle verified outside Chrome; two byte-identical

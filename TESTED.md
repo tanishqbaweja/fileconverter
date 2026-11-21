@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-11-21 bounded track-language source disclosure: 67 focused checks pass
+with protected `test.mkv` size/full SHA-256 unchanged before and after. FFprobe
+independently confirmed the existing complex MKV audio English/Spanish and
+subtitle French, plus the WebM, MOV, 3GP and AAC M4A fixtures' English audio.
+Current tests keep prior reads unchanged for those fixtures. Eight new
+header tests exercise precedence, truncation, invalid/duplicate declarations,
+QuickTime-only legacy codes, display bounds and optional read budgeting.
+First pass was 59/60: an old signal assertion omitted the now-visible
+English M4A tag; the independent probe confirmed it and the assertion now
+checks the language as well as the prior signal. Build, TS, lint and 402
+public evidence entries pass. C: had 0 B free; no browser, converted copy,
+performance benchmark or expanded acceptance. Next: actual browser panel
+check when the host is safe. Receipt:
+`evidence/2026-11-21-media-track-language-inspection.json`.
+
 2026-11-21 private DOCX color fixture/oracle preflight PASS: two fresh genuine
 python-docx 1.2.0 packages (fixed ZIP timestamps, CRC and reopen verified)
 match the same 37,948 B SHA and yield identical 295,342 B HTML from the

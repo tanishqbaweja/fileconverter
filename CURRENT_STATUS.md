@@ -4,7 +4,21 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
-## Latest implementation: private DOCX text color
+## Latest implementation: source track languages
+
+The source panel now reports declared track languages for Matroska/WebM and
+inspected ISO-BMFF audio/video tracks, including packed codes, QuickTime legacy
+codes, and extended-tag overrides. It uses the existing 64 KiB ceilings and
+never assumes absent or unspecified tags are English. Track selection, native
+muxing and the supported registry are unchanged. 67 focused checks, production
+build, TS, scoped lint and the 402-entry public evidence audit passed.
+`test.mkv` size/full SHA-256 were unchanged across the read-only checks.
+C: still reported zero free bytes; no browser or conversion was launched.
+Once safe, check the source panel with the existing multilingual fixtures.
+Don't repeat the Node checks or the failed VP9 run unchanged.
+See [the receipt](evidence/2026-11-21-media-track-language-inspection.json).
+
+## Pending browser gate: private DOCX text color
 
 Direct RGB/automatic and inherited document-default, paragraph and character
 run colors now stream to static HTML. Referenced internal theme/settings XML

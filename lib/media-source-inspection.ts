@@ -18,9 +18,14 @@ export const MAX_OGV_INSPECTION_BYTES = 64 * 1024 + MAX_OGG_TAIL_BYTES;
 export const MAX_ASF_INSPECTION_BYTES = 64 * 1024;
 export const MAX_IVF_INSPECTION_BYTES = 44;
 
+const MAX_TRACK_LANGUAGE_BYTES = 63;
+const MAX_TRACK_LANGUAGES_IN_SUMMARY = 16;
+
 export interface SourceStreamInspection {
   mediaType: "audio" | "video" | "subtitle";
   codec: string;
+  /** Declared header language, when available; not an output-preservation guarantee. */
+  languageTag?: string;
   durationSeconds: number | null;
   bitrateBps: number | null;
   sampleRateHz: number | null;
@@ -61,6 +66,32 @@ function ascii(view: DataView, offset: number, length: number): string {
     value += String.fromCharCode(view.getUint8(offset + index));
   }
   return value;
+}
+
+function declaredLanguageTag(value: string, legacyMatroska = false): string | null {
+  if (value.length > MAX_TRACK_LANGUAGE_BYTES || /[^a-z0-9-]/i.test(value)) return null;
+  // Bound the display to ASCII subtags; do not canonicalize or consult a registry.
+  const shape = legacyMatroska
+    ? /^[a-z]{3}(?:-[a-z]{2})?$/i
+    : /^(?:[a-z]{2,8}(?:-[a-z0-9]{1,8})*|[ix](?:-[a-z0-9]{1,8})+)$/i;
+  return value.toLowerCase() !== "und" && shape.test(value) ? value : null;
+}
+
+function addTrackLanguageSummary(
+  signals: Set<string>,
+  streams: readonly SourceStreamInspection[],
+): void {
+  const shown: string[] = [];
+  let total = 0;
+  for (const [index, stream] of streams.entries()) {
+    if (!stream.languageTag) continue;
+    total += 1;
+    if (shown.length < MAX_TRACK_LANGUAGES_IN_SUMMARY) {
+      shown.push(`stream ${index + 1}: ${stream.languageTag}`);
+    }
+  }
+  if (total > shown.length) shown.push(`${total - shown.length} more`);
+  if (total) signals.add(`Declared languages of inspected tracks: ${shown.join("; ")}`);
 }
 
 function channelLayout(channels: number | null): string | null {
@@ -998,6 +1029,37 @@ interface IsoTrack {
   sampleCount: number | null;
   width: number | null;
   height: number | null;
+  mediaLanguageWord?: number | null;
+  extendedLanguageBox?: IsoBox | null;
+  multipleMediaBoxes?: boolean;
+}
+
+// Apple QuickTime File Format, "Language code values": only the documented
+// Script Manager codes, indexed by their on-disk value (0–94 and 128–138).
+const QUICKTIME_LANGUAGE_TAGS = (
+  "en fr de it nl sv es da pt no " + // 0
+  "he ja ar fi el is mt tr hr zh-Hant " +
+  "ur hi th ko lt pl hu et lv se " +
+  "fo fa ru zh-Hans nl ga sq ro cs sk " +
+  "sl yi sr mk bg uk be uz kk az " +
+  "az-Arab hy ka ro ky tg tk mn mn-Cyrl ps " +
+  "ku ks sd bo ne sa mr bn as gu " +
+  "pa or ml kn ta te si my km lo " +
+  "vi id tl ms-Latn ms-Arab am - om so sw " +
+  "rw rn ny mg eo"
+).split(" ");
+const QUICKTIME_HIGH_LANGUAGE_TAGS = "cy eu ca la qu gn ay tt ug dz jv-Latn".split(" ");
+
+function decodeMediaLanguage(raw: number | null | undefined, quickTime: boolean): string | null {
+  if (raw == null) return null;
+  if (quickTime && raw < 0x400) {
+    const tag = raw < 128 ? QUICKTIME_LANGUAGE_TAGS[raw] : QUICKTIME_HIGH_LANGUAGE_TAGS[raw - 128];
+    return tag && tag !== "-" ? tag : null;
+  }
+  if (raw & 0x8000) return null;
+  const letters = [(raw >> 10) & 31, (raw >> 5) & 31, raw & 31];
+  if (letters.some((letter) => letter < 1 || letter > 26)) return null;
+  return declaredLanguageTag(String.fromCharCode(...letters.map((letter) => letter + 0x60)));
 }
 
 function safeUint64Be(view: DataView, offset: number): number | null {
@@ -1221,8 +1283,10 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
     end: number,
     depth: number,
     track: IsoTrack | null,
+    languageScope?: "track" | "media",
   ): Promise<void> => {
     if (depth > 8) throw new Error("The ISO-BMFF nesting ceiling was exceeded.");
+    let directMediaSeen = false;
     for (let offset = start; offset + 8 <= end; ) {
       const box = await readBox(offset, end);
       if (box.type === "trak") {
@@ -1241,10 +1305,15 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
           width: null,
           height: null,
         };
-        await parseChildren(box.dataStart, box.end, depth + 1, nextTrack);
+        await parseChildren(box.dataStart, box.end, depth + 1, nextTrack, "track");
         tracks.push(nextTrack);
       } else if (["moov", "mdia", "minf", "stbl", "mvex"].includes(box.type)) {
-        await parseChildren(box.dataStart, box.end, depth + 1, track);
+        const directMedia = Boolean(track && box.type === "mdia" && languageScope === "track");
+        if (directMedia && track) {
+          if (directMediaSeen) track.multipleMediaBoxes = true;
+          directMediaSeen = true;
+        }
+        await parseChildren(box.dataStart, box.end, depth + 1, track, directMedia ? "media" : undefined);
       } else if (box.type === "moof") {
         await parseMoof(box);
       } else if (box.type === "ftyp" && box.end - box.dataStart >= 4) {
@@ -1276,17 +1345,26 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
         if (["soun", "vide"].includes(handlerType)) track.handler = handlerType;
       } else if (box.type === "mdhd" && track) {
         const length = Math.min(36, box.end - box.dataStart);
+        const firstMediaHeader = languageScope === "media" && track.mediaLanguageWord === undefined;
+        if (languageScope === "media") track.mediaLanguageWord = null;
         if (length >= 24) {
           const mdhd = await read(box.dataStart, length);
           const version = mdhd.getUint8(0);
           if (version === 0 && length >= 24) {
             track.timescale = mdhd.getUint32(12, false);
             track.durationUnits = mdhd.getUint32(16, false);
+            if (firstMediaHeader) track.mediaLanguageWord = mdhd.getUint16(20, false);
           } else if (version === 1 && length >= 32) {
             track.timescale = mdhd.getUint32(20, false);
             track.durationUnits = safeUint64Be(mdhd, 24);
+            if (firstMediaHeader && length >= 36) {
+              track.mediaLanguageWord = mdhd.getUint16(32, false);
+            }
           }
         }
+      } else if (box.type === "elng" && track && languageScope === "media") {
+        // Retain only one location, then resolve it after mandatory header reads.
+        track.extendedLanguageBox = track.extendedLanguageBox === undefined ? box : null;
       } else if (box.type === "stsd" && track && box.end - box.dataStart >= 16) {
         const stsd = await read(box.dataStart, 8);
         const entryCount = stsd.getUint32(4, false);
@@ -1402,10 +1480,28 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
         : mvhd.getUint32(12, false);
     }
   }
-  const streams: SourceStreamInspection[] = tracks.flatMap((track) => {
-    if (!track.codec || !["soun", "vide"].includes(track.handler ?? "")) return [];
-    if (track.handler === "soun" && (!track.sampleRateHz || !track.channels)) return [];
-    if (track.handler === "vide" && (!track.width || !track.height)) return [];
+  const streams: SourceStreamInspection[] = [];
+  for (const track of tracks) {
+    if (!track.codec || !["soun", "vide"].includes(track.handler ?? "")) continue;
+    if (track.handler === "soun" && (!track.sampleRateHz || !track.channels)) continue;
+    if (track.handler === "vide" && (!track.width || !track.height)) continue;
+
+    let languageTag: string | null | undefined;
+    if (!track.multipleMediaBoxes) {
+      const extended = track.extendedLanguageBox;
+      if (extended === undefined) {
+        languageTag = decodeMediaLanguage(track.mediaLanguageWord, majorBrand === "qt  ");
+      } else if (extended) {
+        const length = extended.end - extended.dataStart;
+        if (length >= 6 && length <= 4 + MAX_TRACK_LANGUAGE_BYTES + 1 &&
+            inspectedBytes + length <= MAX_ISO_BMFF_INSPECTION_BYTES) {
+          const elng = await read(extended.dataStart, length);
+          if (elng.getUint32(0, false) === 0 && elng.getUint8(length - 1) === 0) {
+            languageTag = declaredLanguageTag(ascii(elng, 4, length - 5));
+          }
+        }
+      }
+    }
 
     const durationUnits =
       track.durationUnits ||
@@ -1452,9 +1548,10 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
           ]
         : null;
     const mediaType = track.handler === "vide" ? "video" : "audio";
-    return [{
+    streams.push({
       mediaType,
       codec: isoCodec(track.codec),
+      ...(languageTag ? { languageTag } : {}),
       durationSeconds,
       bitrateBps: finitePositive(amrModeBitrate ?? 0) ?? encodedBitrate,
       sampleRateHz: mediaType === "audio" ? resolvedSampleRate : null,
@@ -1467,8 +1564,9 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
         mediaType === "video" && durationSeconds && track.sampleCount
           ? finitePositive(track.sampleCount / durationSeconds)
           : null,
-    } satisfies SourceStreamInspection];
-  });
+    });
+  }
+  addTrackLanguageSummary(metadataSignals, streams);
   const primary = streams.find((stream) => stream.mediaType === "video") ?? streams[0];
   if (!primary) {
     throw new Error("The bounded ISO-BMFF scan did not find a complete audio or video track.");
@@ -1526,6 +1624,8 @@ interface MatroskaTrack {
   bitsPerSample: number | null;
   width: number | null;
   height: number | null;
+  legacyLanguage?: string | null;
+  extendedLanguage?: string | null;
 }
 
 function ebmlVint(
@@ -1620,9 +1720,12 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
     end: number,
     depth: number,
     track: MatroskaTrack | null,
-  ): void => {
+    languageScope?: "tracks" | "complete-track",
+  ): boolean => {
     if (depth > 7) throw new Error("The EBML nesting ceiling was exceeded.");
-    for (let offset = start; offset < end; ) {
+    let offset = start;
+    let knownSizes = true;
+    for (; offset < end; ) {
       elementCount += 1;
       if (elementCount > 1_024) {
         throw new Error("The EBML element-count ceiling was exceeded.");
@@ -1631,6 +1734,7 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
       if (!id || id.length > 4 || id.value === null) break;
       const size = ebmlVint(bytes, offset + id.length, true);
       if (!size) break;
+      if (size.value === null) knownSizes = false;
       const dataStart = offset + id.length + size.length;
       if (dataStart > end) break;
       const declaredEnd = size.value === null ? end : dataStart + size.value;
@@ -1651,14 +1755,20 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
           width: null,
           height: null,
         };
-        parseChildren(dataStart, dataEnd, depth + 1, nextTrack);
+        const completeTrack = languageScope === "tracks" && complete && size.value !== null;
+        const cleanEnd = parseChildren(
+          dataStart, dataEnd, depth + 1, nextTrack, completeTrack ? "complete-track" : undefined,
+        );
+        if (!cleanEnd) nextTrack.extendedLanguage = null;
         tracks.push(nextTrack);
       } else if (
         [0x1a45dfa3, 0x18538067, 0x1549a966, 0x1654ae6b, 0xe0, 0xe1].includes(
           elementId,
         )
       ) {
-        parseChildren(dataStart, dataEnd, depth + 1, track);
+        parseChildren(
+          dataStart, dataEnd, depth + 1, track, elementId === 0x1654ae6b ? "tracks" : undefined,
+        );
       } else if (complete) {
         const length = declaredEnd - dataStart;
         if (elementId === 0x4282) docType = textValue(dataStart, length);
@@ -1670,7 +1780,12 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
         else if (elementId === 0x1043a770) metadataSignals.add("Chapters");
         else if (elementId === 0x1941a469) metadataSignals.add("Attachments");
         else if (track) {
-          if (elementId === 0x83) track.type = integer(dataStart, length);
+          if (languageScope === "complete-track" && (elementId === 0x22b59c || elementId === 0x22b59d)) {
+            const field = elementId === 0x22b59c ? "legacyLanguage" : "extendedLanguage";
+            track[field] = track[field] === undefined && size.value !== null && length <= MAX_TRACK_LANGUAGE_BYTES
+              ? declaredLanguageTag(textValue(dataStart, length), field === "legacyLanguage")
+              : null;
+          } else if (elementId === 0x83) track.type = integer(dataStart, length);
           else if (elementId === 0x86) track.codecId = textValue(dataStart, length);
           else if (elementId === 0x23e383) {
             track.defaultDurationNs = integer(dataStart, length);
@@ -1689,6 +1804,7 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
       if (!complete || declaredEnd <= offset) break;
       offset = declaredEnd;
     }
+    return offset === end && knownSizes;
   };
 
   const rootId = ebmlVint(bytes, 0, false);
@@ -1714,9 +1830,11 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
         ? "audio"
         : "subtitle";
     const resolvedChannels = mediaType === "audio" ? track.channels : null;
+    const languageTag = track.extendedLanguage === undefined ? track.legacyLanguage : track.extendedLanguage;
     return [{
       mediaType,
       codec: matroskaCodec(track.codecId),
+      ...(languageTag ? { languageTag } : {}),
       durationSeconds,
       bitrateBps: null,
       sampleRateHz:
@@ -1737,6 +1855,7 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
           : null,
     } satisfies SourceStreamInspection];
   });
+  addTrackLanguageSummary(metadataSignals, streams);
   const primary =
     streams.find((stream) => stream.mediaType === "video") ??
     streams.find((stream) => stream.mediaType === "audio");
