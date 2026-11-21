@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-21 combined DOCX color/alignment production control prepared, **not
+run in a browser**. Genuine 38,065 B Word fixture / 295,513 B worker-preflight
+HTML; independent oracle checked 14 color/text/emphasis segments, six
+alignment/structure cases and rejected all 15 altered outputs. Old color-only
+fixture and output hashes exactly match. Both scratch directories were
+removed; existing 64 KiB max writes and one pending write verified. 189 DOCX
+tests, runner syntax and scoped lint pass. Actual new mode refused launch at
+C: 0 B, no test.mkv read. No eligibility or browser memory/recovery claim.
+Next: one `--color-alignment-control` run on a safe host.
+Receipt: `evidence/2026-11-21-docx-color-alignment-fixture-preflight.json`.
+
 2026-11-21 private DOCX paragraph alignment: genuine 37,064 B package generated
 twice identically with python-docx 1.2.0, CRC and Word reopen passed. Worker
 preflight 1,028 B HTML; independent parser checked all eight paragraphs and

@@ -4,6 +4,21 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Next DOCX browser run: combined color and alignment
+
+One headless run now covers both pending small controls:
+`node scripts/qualify-docx-html.mjs --color-alignment-control`.
+Use Python with python-docx 1.2.0 on PATH or set `WITHIN_DOCX_FIXTURE_PYTHON`.
+The 38,065 B Word fixture produced 295,513 B in worker preflight; independent
+checks found all 14 color/text/emphasis segments and six alignment/structure
+cases, and rejected all 15 mutations. Color-only fixture/output hashes match
+the old receipt. 189 DOCX checks, driver syntax and scoped lint passed.
+The new command actually refused C: with 0 B free before browser/profile or
+`test.mkv` access. The 250 MiB complete-tree, 96 MiB cleanup, three repeats,
+real-write cancellation, write-failure and recovery gates are unchanged.
+No browser result yet; don't rerun either worker preflight unchanged.
+[Receipt](evidence/2026-11-21-docx-color-alignment-fixture-preflight.json).
+
 ## Latest implementation: private DOCX paragraph alignment
 
 DOCX-to-HTML now retains left/right/center/justify and leading/trailing edges
@@ -70,8 +85,8 @@ mutations failed. Max 65,536 B writes, one pending, owned scratch removed.
 `node scripts/qualify-docx-html.mjs --color-control` (python-docx 1.2.0 on PATH).
 An actual pre-launch guard check refused C: with 0 bytes free (requires 512 MiB
 system-drive headroom); no browser, test.mkv read, or new browser report.
-Do not replay the preflight unchanged. When host is safe, run the new headless
-color browser control; do not treat this fixture preflight as browser evidence.
+Do not replay the preflight unchanged. The combined color/alignment control
+above now covers this small browser gate; preflight is not browser evidence.
 No unchanged video run. See `evidence/2026-11-21-docx-color-fixture-preflight.json`.
 
 ## Active implementation: private VP9 CPU specialist

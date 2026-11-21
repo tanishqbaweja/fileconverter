@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-21 N-08 combined color/alignment small browser gate is wired and its
+genuine fixture/independent oracle verified outside Chrome. 14 color and six
+alignment cases pass, 15 mutations reject, old color-only hashes match, and
+189 DOCX checks pass. The unchanged headless Windows 250 MiB process-tree,
+96 MiB cleanup and adverse recovery gates remain open: actual preflight
+refused 0 B on C: before launch. Run combined mode when safe; no reason to
+run separate unchanged small color/alignment sessions. No source-converter,
+registry, scaling or public acceptance change.
+See `evidence/2026-11-21-docx-color-alignment-fixture-preflight.json`.
+
 2026-11-21 N-08 private DOCX paragraph alignment implemented. Document
 defaults, bounded style inheritance, direct properties and RTL leading/trailing
 edges now reach the static HTML writer without changing text order or writer

@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "status": "combined-color-and-paragraph-alignment-fixture-oracle-verified-browser-not-run",
+  "requirementIds": [
+    "N-08"
+  ],
+  "baseCommit": "648e9c90d3f0617fd60cd0c8df84caf1224a15b0",
+  "sourceSha256": {
+    "scripts/qualify-docx-html.mjs": "9feffae36b6747b337a11ba43870437cd16590ce688607d2a4766857467e195d",
+    "scripts/check-docx-color-fixture.mjs": "19a63ba0e1bfc277a41655729bb4a5c9855868c0b4a77162c2dd0bbb87e3aee7",
+    "scripts/lib/docx-color-fixtures.py": "0ed9e50b8ee80f115d737699c1eb577a7ddf9ad387b6d79533fd9f9805a0acf2",
+    "scripts/lib/docx-color-oracle-controls.mjs": "36fd79ecc8b74b0976be583665035566dcfb8774ca7a4d6bc5b16da046ae6bb6",
+    "scripts/lib/reviewed-docx-color-driver.mjs": "54ecda58b6bb099f7439bd51f165615767fb2359164b7e818ccf718ad9e37f3c",
+    "tests/docx-color-control.test.mjs": "1f52a226d6768395414aa94c3b9760c76861eb3498d1aaeff6700f662f46d0ff",
+    "workers/docx-html-conversion.ts": "c69513e33acdaa645c0cccf7ec014065d42eb172387429fdbc75412e13337843",
+    "workers/docx-outline.ts": "b8a1c0b9da392a9a9fe157d0c164ebf521ea8291fef5aadbd11c65493bc19f94"
+  },
+  "workerPreflightCommand": "node scripts/check-docx-color-fixture.mjs --paragraph-alignment",
+  "browserCommand": "node scripts/qualify-docx-html.mjs --color-alignment-control",
+  "interpreterOverride": "WITHIN_DOCX_FIXTURE_PYTHON",
+  "combined": {
+    "generated": {
+      "generator": "python-docx",
+      "version": "1.2.0",
+      "semanticCases": 14,
+      "anchorContentBytes": 224000,
+      "referencedThemeAndSettings": true,
+      "fixedZipTimestamps": true,
+      "zipCrcAndWordReopenVerified": true,
+      "expectedAlignedParagraphs": 6
+    },
+    "fixture": {
+      "bytes": 38065,
+      "sha256": "43780ac38b356a0c15e662ba912d43c8d09eeb6c460a855a2185e14c6761c45d"
+    },
+    "validated": {
+      "bytes": 295513,
+      "sha256": "0a49ceff83a1347228f4abf7725f957db714223a6f5e9951abe22e3f8d1fb085",
+      "semanticCases": 14,
+      "allRunTextColorAndEmphasisVerified": true,
+      "independentHardcodedOracle": true,
+      "alignmentCases": 6,
+      "allParagraphAlignmentAndStructureVerified": true
+    },
+    "control": [
+      {
+        "name": "positive",
+        "exitCode": 0
+      },
+      {
+        "name": "changed-unicode-text",
+        "exitCode": 1
+      },
+      {
+        "name": "lost-emphasis",
+        "exitCode": 1
+      },
+      {
+        "name": "partial-emphasis",
+        "exitCode": 1
+      },
+      {
+        "name": "wrong-theme-rgb",
+        "exitCode": 1
+      },
+      {
+        "name": "lost-auto-reset",
+        "exitCode": 1
+      },
+      {
+        "name": "wrong-tint",
+        "exitCode": 1
+      },
+      {
+        "name": "swapped-color-placement",
+        "exitCode": 1
+      },
+      {
+        "name": "lost-post-payload-text",
+        "exitCode": 1
+      },
+      {
+        "name": "active-markup",
+        "exitCode": 1
+      },
+      {
+        "name": "css-injection",
+        "exitCode": 1
+      },
+      {
+        "name": "lost-inherited-alignment",
+        "exitCode": 1
+      },
+      {
+        "name": "wrong-rtl-trailing-edge",
+        "exitCode": 1
+      },
+      {
+        "name": "wrong-heading-alignment",
+        "exitCode": 1
+      },
+      {
+        "name": "reordered-post-payload-rtl-text",
+        "exitCode": 1
+      },
+      {
+        "name": "direction-override-injection",
+        "exitCode": 1
+      }
+    ],
+    "maxChunk": 65536,
+    "peakPending": 1,
+    "browserLaunched": false,
+    "browserQualified": false,
+    "ownedScratchRemoved": true
+  },
+  "legacyCompatibility": {
+    "receipt": "evidence/2026-11-21-docx-color-fixture-preflight.json",
+    "generatedFixtureSha256": "6ae8e9b26e4087eb1f5058b255f25ee548bfeb6a355a16f1245bda7cef188635",
+    "validatedOutputSha256": "be51d6dbd724117fd4028aafdb0c0215e1b02e68ecc091e6257505aa8c85fe87",
+    "colorOnlyOracleCases": 10,
+    "legacyDigestsAndCasesMatch": true,
+    "ownedScratchRemoved": true
+  },
+  "focusedChecks": {
+    "passed": 189,
+    "failed": 0,
+    "skipped": 0
+  },
+  "affectedLintPassed": true,
+  "driverSyntaxCheckPassed": true,
+  "productionSourcesChanged": false,
+  "registryChanged": false,
+  "browserAcceptance": {
+    "wholeProcessTreeLimitMiB": 250,
+    "cleanupDeltaFromOriginalLoadedIdleLimitMiB": 96,
+    "sameEarliestStableBlank": true,
+    "servicesDisabled": false,
+    "requiredSamePageRepeats": 3,
+    "realPayloadCancellationRequired": true,
+    "writeFailureAndRecoveryRequired": true,
+    "bytesReadCap": 262144,
+    "bytesWrittenAndQueuedCap": 65536,
+    "maxPendingWrites": 1
+  },
+  "actualGuardCheck": {
+    "systemDriveFreeBytes": 0,
+    "minimumFreeBytes": 536870912,
+    "exitCode": 1,
+    "refusedBeforeRuntimeScratchProfileOrProtectedOriginalRead": true
+  },
+  "browserLaunched": false,
+  "testMkvAccessed": false,
+  "browserQualified": false,
+  "publicPromotion": false,
+  "goalComplete": false,
+  "decision": "Use the combined mode for the next safe small DOCX browser run rather than two separate color/alignment sessions. Keep prior color and hyperlink receipts immutable. Do not rerun this preflight or unrelated failed video configurations unchanged."
+}

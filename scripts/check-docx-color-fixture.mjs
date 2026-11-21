@@ -9,16 +9,17 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { build } from "esbuild";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
-import { DOCX_COLOR_CASES, docxColorOracleCases } from "./lib/docx-color-oracle-controls.mjs";
+import { DOCX_COLOR_CASES, DOCX_PARAGRAPH_ALIGNMENT_CASES, DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG, docxColorOracleCases } from "./lib/docx-color-oracle-controls.mjs";
 
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
-assert.equal(process.argv.length, 2);
+const checkAlignment = process.argv[2] === DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG;
+assert.equal(process.argv.length, checkAlignment ? 3 : 2);
 const runtime = await createOwnedRuntimeScratch("docx-color-preflight-");
 let report;
 try {
   const python = process.env.WITHIN_DOCX_FIXTURE_PYTHON ?? "python";
   const helper = path.join(root, "scripts/lib/docx-color-fixtures.py");
-  const run = (...args) => execute(python, ["-I", "-B", helper, ...args], {
+  const run = (...args) => execute(python, ["-I", "-B", helper, ...args, ...(checkAlignment ? [DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG] : [])], {
     cwd: root, env: runtime.env, windowsHide: true, timeout: 15000, maxBuffer: 1048576,
   });
   const input = path.join(runtime.directory, "color.docx");
@@ -28,9 +29,10 @@ try {
   assert.equal(generated.zipCrcAndWordReopenVerified, true);
   assert.equal(generated.fixedZipTimestamps, true);
   assert.equal(generated.semanticCases, DOCX_COLOR_CASES);
+  if (checkAlignment) assert.equal(generated.expectedAlignedParagraphs, DOCX_PARAGRAPH_ALIGNMENT_CASES);
   assert.ok(generated.anchorContentBytes > 2 * 65536);
   const control = [];
-  for (const [name, html, accepts] of docxColorOracleCases((await run("reference")).stdout)) {
+  for (const [name, html, accepts] of docxColorOracleCases((await run("reference")).stdout, { checkAlignment })) {
     const file = path.join(runtime.directory, name + ".html");
     await writeFile(file, html, { flag: "wx" });
     let exitCode = 0;
@@ -65,6 +67,11 @@ try {
   assert.equal(validated.bytes, size);
   assert.equal(validated.allRunTextColorAndEmphasisVerified, true);
   assert.equal(validated.semanticCases, DOCX_COLOR_CASES);
+  if (checkAlignment) {
+    assert.equal(validated.alignmentCases, DOCX_PARAGRAPH_ALIGNMENT_CASES);
+    assert.equal(validated.allParagraphAlignmentAndStructureVerified, true);
+    assert.equal(warnings.filter(w => w.includes("have no equivalent")).length, 1);
+  }
   assert.equal(metrics.inputBytes, inputBytes.length);
   assert.equal(maxChunk, 65536); assert.equal(peakPending, 1); assert.equal(pending, 0);
   assert.equal(warnings.filter(w => w.startsWith("A DOCX text theme color could not be resolved")).length, 1);

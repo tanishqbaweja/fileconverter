@@ -33,14 +33,15 @@ import { boundedErrorDetails } from "./lib/bounded-error-details.mjs";
 import { createDocxCleanupDiagnostic } from "./lib/docx-cleanup-diagnostic.mjs";
 import { cleanupOwnedChromium, queryObservedPidCensus } from "./lib/owned-chromium-cleanup.mjs";
 import { reconcileChromiumBirths } from "./lib/reconcile-chromium-births.mjs";
-import { DOCX_COLOR_CASES, DOCX_COLOR_SYSTEM_DISK_MINIMUM_BYTES, docxColorOracleCases } from "./lib/docx-color-oracle-controls.mjs";
+import { DOCX_COLOR_CASES, DOCX_PARAGRAPH_ALIGNMENT_CASES, DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG, DOCX_COLOR_SYSTEM_DISK_MINIMUM_BYTES, docxColorOracleCases } from "./lib/docx-color-oracle-controls.mjs";
 
 assert.equal(process.platform, "win32");
 const memoryDiagnostic = process.argv[2] === "--outline-memory-diagnostic";
 const outlineSmall = process.argv[2] === "--outline-small-control";
 const tableVertical = process.argv[2] === "--table-vertical-control";
 const numberingControl = process.argv[2] === "--numbering-control";
-const colorControl = process.argv[2] === "--color-control";
+const colorAlignmentControl = process.argv[2] === "--color-alignment-control";
+const colorControl = process.argv[2] === "--color-control" || colorAlignmentControl;
 const hyperlinkControl = process.argv[2] === "--hyperlink-control";
 const hyperlinkFresh = process.argv[2] === "--hyperlink-direct-scaling-fresh";
 const hyperlinkScaling = process.argv[2] === "--hyperlink-direct-scaling" || hyperlinkFresh;
@@ -58,6 +59,7 @@ const cancellationOnly = process.argv[2] === "--cancel-control";
 const payloadControl = scaling || cancellationOnly || outlineSmall || tableSmall;
 assert.ok(process.argv.length === (payloadControl ? 3 : 2));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
+const python = process.env.WITHIN_DOCX_FIXTURE_PYTHON ?? "python";
 const tableFixtureHelper = path.join(root, colorControl ? "scripts/lib/docx-color-fixtures.py" : hyperlinkFeature ? "scripts/lib/docx-hyperlink-fixtures.py" : numberingControl ? "scripts/lib/docx-numbering-fixtures.py" : tableVertical ? "scripts/lib/docx-row-span-fixtures.py" : "scripts/lib/docx-table-span-fixtures.py");
 const scalingFixtureHelper = path.join(root, hyperlinkScaling ? "scripts/lib/docx-hyperlink-scaling-fixtures.py" : "scripts/lib/docx-html-scaling-fixtures.py");
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), sha = bytes => createHash("sha256").update(bytes).digest("hex");
@@ -98,6 +100,7 @@ if (tableSmall) report.scope = "New native DOCX horizontal span and nested table
 if (tableVertical) report.scope = "Native two-by-two Word merge with a nested table, a flushed row-span patch, later output chunks, repeated async handle writes and recovery; not stress, speed, native picker or promotion";
 if (numberingControl) report.scope = "Native Word numbered/bullet/inherited/restarted lists and nested tables through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
 if (colorControl) report.scope = "Native Word RGB, automatic, inherited and theme text color through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
+if (colorAlignmentControl) report.scope = "Combined native DOCX colors, inherited/direct paragraph alignment and RTL layout edges with independently validated headings, repeated async selected-handle writes and adverse recovery; not scaling, native picker, full Word layout or public qualification";
 if (hyperlinkControl) report.scope = "Native Word explicit links, unsafe-target inactivation, forward/backward bookmarks, styled text and nested tables through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
 if (hyperlinkScaling) { report.scope = "Current production DOCX hyperlinks: genuine stored-ZIP content scaling with fixed1024relationships/64bookmarks and every paragraph/link independently validated; same original whole-tree/cleanup limits, no service changes or public acceptance";
   report.hyperlinkScaling = { freshLargestOnly: hyperlinkFresh, firstSessionPlannedRepeats: 3, freshSessionPlannedRepeats: 1, crossSessionComparisonVerified: false }; }
@@ -172,7 +175,9 @@ assert parser.tags['strong']==1 and parser.tags['em']==1 and parser.tags['table'
 assert parser.csp and parser.current is None
 print(json.dumps({'sha256':h.hexdigest(),'paragraphs':len(parser.paragraphs),'tableCells':parser.tags['td'],'strong':parser.tags['strong'],'italic':parser.tags['em'],'csp':parser.csp,'validator':'independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts'}))
 `;
-const validateArgs = file => smallSemantic ? [tableFixtureHelper, "validate", file] : ["-c", validator, file];
+const semanticFixtureArgs = (...args) => [tableFixtureHelper, ...args,
+  ...(colorAlignmentControl ? [DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG] : [])];
+const validateArgs = file => smallSemantic ? semanticFixtureArgs("validate", file) : ["-c", validator, file];
 let runtime, server, chrome, chromeBirth, browser, page, context, monitor, timer, pending = null, observerError = null, traceStarted = false;
 let realmSampler, realmPending = null, rejectSafetyStop;
 let cleanupDiagnostic;
@@ -214,7 +219,7 @@ try {
   report.hostMemory = await inspectStressHostMemory(); assert.equal(report.hostMemory.safeToStart, true);
   const disk = await statfs(root); report.diskFreeBytes = disk.bavail * disk.bsize;
   assert.ok(report.diskFreeBytes >= (scaling ? scalingPlan.requiredDiskBytes : 512 * 1024 ** 2));
-  report.python = (await execute("python", ["--version"], { windowsHide: true, timeout: 10000 })).stdout.trim();
+  report.python = (await execute(python, ["--version"], { windowsHide: true, timeout: 10000 })).stdout.trim();
   report.protectedOriginalBefore = await original(); assert.deepEqual(report.protectedOriginalBefore,
     { bytes: 2958573265, sha256: "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" });
   report.browserBefore = await inspectInstalledChromePin();
@@ -238,11 +243,11 @@ try {
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
   report.validatorControls = [];
   const referenceHtml = smallSemantic
-    ? (await execute("python", [tableFixtureHelper, "reference"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: tableVertical || numberingControl || hyperlinkFeature || colorControl ? 1048576 : 32768 })).stdout
+    ? (await execute(python, semanticFixtureArgs("reference"), { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: tableVertical || numberingControl || hyperlinkFeature || colorControl ? 1048576 : 32768 })).stdout
     : '<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="default-src \'none\'"></head><body>' +
     '<p><strong><em>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</em></strong></p>' +
     '<table><tr><td><p>Cell one</p></td><td><p>Cell two</p></td></tr></table><p>Inserted</p></body></html>';
-  const validatorCases = colorControl ? docxColorOracleCases(referenceHtml) : [["positive", referenceHtml, true], ["wrong-text", referenceHtml.replace("Cell two", "wrong"), false],
+  const validatorCases = colorControl ? docxColorOracleCases(referenceHtml, { checkAlignment: colorAlignmentControl }) : [["positive", referenceHtml, true], ["wrong-text", referenceHtml.replace("Cell two", "wrong"), false],
     ["active-markup", referenceHtml.replace("</body>", "<script>alert(1)</script></body>"), false]];
   if (smallSemantic && !colorControl) validatorCases.push(["missing-column-span", referenceHtml.replace(' colspan="2"', ""), false],
     ["lost-nested-table", referenceHtml.replace("<table><tr><td colspan=", "<tr><td colspan="), false]);
@@ -259,7 +264,7 @@ try {
   for (const [name, html, accepted] of validatorCases) {
     const file = path.join(runtime.directory, `validator-${name}.html`); await writeFile(file, html, { flag: "wx" });
     let exitCode = 0;
-    try { await execute("python", validateArgs(file), { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
+    try { await execute(python, validateArgs(file), { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
     catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
     assert.equal(exitCode === 0, accepted, "Independent validator preflight: " + name);
     report.validatorControls.push({ name, expectedAccepted: accepted, exitCode });
@@ -269,11 +274,12 @@ try {
   const body = '<w:p><w:r><w:rPr><w:b/><w:i/></w:rPr><w:t>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</w:t></w:r></w:p>' +
     `<w:tbl><w:tblPr/><w:tblGrid><w:gridCol w:w="2400"/><w:gridCol w:w="2400"/></w:tblGrid><w:tr><w:tc>${p("Cell one")}</w:tc><w:tc>${p("Cell two")}</w:tc></w:tr></w:tbl>` +
     '<w:p><w:del w:id="1" w:author="fixture"><w:r><w:delText>Deleted</w:delText></w:r></w:del><w:ins w:id="2" w:author="fixture"><w:r><w:t>Inserted</w:t></w:r></w:ins></w:p>';
-  if (smallSemantic) report.tableFixture = JSON.parse((await execute("python", [tableFixtureHelper, "generate", input],
+  if (smallSemantic) report.tableFixture = JSON.parse((await execute(python, semanticFixtureArgs("generate", input),
     { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
   else await writeFile(input, packageBytes(body), { flag: "wx" });
+  if (colorAlignmentControl) assert.equal(report.tableFixture.expectedAlignedParagraphs, DOCX_PARAGRAPH_ALIGNMENT_CASES);
   // Finite generated cancellation fixture BEFORE browser conversion, never a user-file copy.
-  if (hyperlinkScaling) report.hyperlinkCancellationFixture = JSON.parse((await execute("python", [scalingFixtureHelper, "generate", cancellation, "2048"],
+  if (hyperlinkScaling) report.hyperlinkCancellationFixture = JSON.parse((await execute(python, [scalingFixtureHelper, "generate", cancellation, "2048"],
     { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
   else {
     const text = "cancel payload ".repeat(600000);
@@ -282,11 +288,11 @@ try {
   }
   report.sourceValidation = [];
   for (const [kind, file] of [["structure", input], ["cancellation", cancellation]]) {
-    const proof = JSON.parse((await execute("python", ["-c", sourceValidator, file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
+    const proof = JSON.parse((await execute(python, ["-c", sourceValidator, file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
     report.sourceValidation.push({ kind, ...proof });
   }
   const invalidPackage = path.join(runtime.directory, "invalid-package.docx"); await writeFile(invalidPackage, packageBytes(p("invalid package"), 6, true), { flag: "wx" });
-  await assert.rejects(execute("python", ["-c", sourceValidator, invalidPackage], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }), error => error.code === 1);
+  await assert.rejects(execute(python, ["-c", sourceValidator, invalidPackage], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }), error => error.code === 1);
   report.invalidPackageControlRejected = true;
   report.fixture = { bytes: (await stat(input)).size, sha256: await hashFile(input), cancelBytes: (await stat(cancellation)).size };
   const scalingInputs = [];
@@ -294,9 +300,9 @@ try {
     const helper = scalingFixtureHelper;
     for (const paragraphs of scalingPlan.paragraphs) {
       const file = path.join(runtime.directory, direct ? `${ownedPrefix}${paragraphs}.docx` : `scaling-${paragraphs}.docx`);
-      const generated = JSON.parse((await execute("python", [helper, outlineControl ? "generate-styled" : "generate", file, String(paragraphs)],
+      const generated = JSON.parse((await execute(python, [helper, outlineControl ? "generate-styled" : "generate", file, String(paragraphs)],
         { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 32768 })).stdout);
-      const validated = JSON.parse((await execute("python", ["-c", sourceValidator, file],
+      const validated = JSON.parse((await execute(python, ["-c", sourceValidator, file],
         { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 32768 })).stdout);
       assert.equal(validated.paragraphs, paragraphs);
       const bytes = (await stat(file)).size;
@@ -321,7 +327,7 @@ try {
     // Test the separate streaming large-output validator BEFORE conversion.
     const fixture = path.join(runtime.directory, "validator-scaling.html");
     const text = number => String(number).padStart(8, "0") + "|" + "bounded-stream-".repeat(280) + "|β 😀 &amp; &lt;script&gt;safe&lt;/script&gt;";
-    const positive = hyperlinkScaling ? (await execute("python", [helper,"reference"], {cwd:root,env,windowsHide:true,timeout:10000,maxBuffer:32768})).stdout
+    const positive = hyperlinkScaling ? (await execute(python, [helper,"reference"], {cwd:root,env,windowsHide:true,timeout:10000,maxBuffer:32768})).stdout
       : `<html><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'"></head><body><p>${text(0)}</p><p>${text(1)}</p></body></html>`;
     report.scalingValidatorControls = [];
     const scalingValidatorCases = [["positive", positive, true], ["wrong-ordinal", positive.replace("00000001|", "00000007|"), false],
@@ -332,7 +338,7 @@ try {
       ["lost-bookmark",positive.replace('id="docx-bookmark-', 'data-dropped="docx-bookmark-'),false]);
     for (const [name, value, accepted] of scalingValidatorCases) {
       await writeFile(fixture, value); let exitCode = 0;
-      try { await execute("python", [helper, "validate", fixture, "2"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
+      try { await execute(python, [helper, "validate", fixture, "2"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
       catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
       assert.equal(exitCode === 0, accepted); report.scalingValidatorControls.push({ name, exitCode, expectedAccepted: accepted });
     }
@@ -341,8 +347,8 @@ try {
   if (outlineControl) {
     const helper = path.join(root, "scripts/lib/docx-outline-fixtures.py");
     outlineFixture = path.join(runtime.directory, ownedPrefix + "outline.docx");
-    const generated = JSON.parse((await execute("python", [helper, "generate", outlineFixture], { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
-    const sourceValidation = JSON.parse((await execute("python", ["-c", sourceValidator, outlineFixture], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
+    const generated = JSON.parse((await execute(python, [helper, "generate", outlineFixture], { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
+    const sourceValidation = JSON.parse((await execute(python, ["-c", sourceValidator, outlineFixture], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
     report.outlineControl = { fixtureBytes: (await stat(outlineFixture)).size, fixtureSha256: await hashFile(outlineFixture), generated, sourceValidation,
       validatorControls: [], cases: [], fullWordRenderingVerified: false };
     const reference = '<html><head><meta http-equiv="Content-Security-Policy" content="default-src \'none\'"></head><body>' +
@@ -353,7 +359,7 @@ try {
       ["wrong-text", reference.replace("Cell two", "bad"), false], ["active-markup", reference.replace("</body>", "<script>bad</script></body>"), false],
       ["unclosed", reference.replace("</html>", ""), false]]) {
       await writeFile(file, html); let exitCode = 0;
-      try { await execute("python", [helper, "validate", file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
+      try { await execute(python, [helper, "validate", file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
       catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
       assert.equal(exitCode === 0, accepted); report.outlineControl.validatorControls.push({ name, exitCode, expectedAccepted: accepted });
     }
@@ -362,17 +368,17 @@ try {
   if (emphasisControl) {
     const helper = path.join(root, "scripts/lib/docx-emphasis-fixtures.py");
     emphasisFixture = path.join(runtime.directory, ownedPrefix + "emphasis.docx");
-    const generated = JSON.parse((await execute("python", [helper, "generate", emphasisFixture], { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
-    const validated = JSON.parse((await execute("python", ["-c", sourceValidator, emphasisFixture], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
+    const generated = JSON.parse((await execute(python, [helper, "generate", emphasisFixture], { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
+    const validated = JSON.parse((await execute(python, ["-c", sourceValidator, emphasisFixture], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
     report.emphasisControl = { generated, sourceValidation: validated, fixtureBytes: (await stat(emphasisFixture)).size,
       fixtureSha256: await hashFile(emphasisFixture), validatorControls: [], cases: [], fullWordRenderingVerified: false };
-    const reference = (await execute("python", [helper, "reference"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout;
+    const reference = (await execute(python, [helper, "reference"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout;
     const file = path.join(runtime.directory, "emphasis-validator.html");
     for (const [name, value, accepted] of [["positive", reference, true], ["wrong-toggle", reference.replace("<strong>Direct override</strong>", "Direct override"), false],
       ["wrong-text", reference.replace("Mixed second", "bad"), false], ["active-markup", reference.replace("</body>", "<script>bad</script></body>"), false],
       ["unclosed", reference.replace("</html>", ""), false]]) {
       await writeFile(file, value); let exitCode = 0;
-      try { await execute("python", [helper, "validate", file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
+      try { await execute(python, [helper, "validate", file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
       catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
       assert.equal(exitCode === 0, accepted); report.emphasisControl.validatorControls.push({ name, expectedAccepted: accepted, exitCode });
     }
@@ -468,7 +474,7 @@ try {
     const caseRow = { kind: "complete-unvalidated", outputBytes: state.metrics.outputBytes, metrics: state.metrics, binding: binding.proof };
     if (direct) caseRow.destinationObservation = observation;
     report.cases.push(caseRow);
-    const validated = JSON.parse((await execute("python", validateArgs(binding.file), { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
+    const validated = JSON.parse((await execute(python, validateArgs(binding.file), { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
     await assertOpfsOutputValidationBackingUnchanged(binding);
     caseRow.validated = validated; caseRow.kind = "complete";
     await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
@@ -500,6 +506,11 @@ try {
         assert.equal(validated.bytes, state.metrics.outputBytes);
         assert.equal(state.metrics.maxWriteChunkBytes, 65536);
         assert.equal(state.warnings.filter(message => message.startsWith("A DOCX text theme color could not be resolved")).length, 1);
+        if (colorAlignmentControl) {
+          assert.equal(validated.alignmentCases, DOCX_PARAGRAPH_ALIGNMENT_CASES);
+          assert.equal(validated.allParagraphAlignmentAndStructureVerified, true);
+          assert.equal(state.warnings.filter(message => message.includes("have no equivalent")).length, 1);
+        }
       }
       await waitEmpty(); assert.deepEqual(await leftovers(), []);
       const cleanup = await Promise.race([safetyStop, stable()]); await drain();
@@ -523,7 +534,7 @@ try {
         const row = { repeat, outputBytes: state.metrics.outputBytes, metrics: state.metrics, destinationObservation: observation, binding: binding.proof, warnings: state.warnings };
         report.emphasisControl.cases.push(row);
         assert.ok(state.warnings.includes(`DOCX outline metadata read ${report.emphasisControl.generated.styleDefinitions} style definitions from a referenced internal package part.`));
-        row.validated = JSON.parse((await execute("python", [path.join(root, "scripts/lib/docx-emphasis-fixtures.py"), "validate", binding.file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
+        row.validated = JSON.parse((await execute(python, [path.join(root, "scripts/lib/docx-emphasis-fixtures.py"), "validate", binding.file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
         await assertOpfsOutputValidationBackingUnchanged(binding);
         await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
         await waitEmpty(); assert.deepEqual(await leftovers(), []);
@@ -569,7 +580,7 @@ try {
         const binding = await bindLargeDocumentOutputValidationBacking(page, profile, name, state.metrics.outputBytes);
         row.binding = binding.proof;
         if (diagnoseLarge) await cleanupDiagnostic.sample("bound");
-        row.validated = JSON.parse((await execute("python", [scalingFixtureHelper, "validate", binding.file, String(fixture.paragraphs)],
+        row.validated = JSON.parse((await execute(python, [scalingFixtureHelper, "validate", binding.file, String(fixture.paragraphs)],
           { cwd: root, env, windowsHide: true, timeout: scalingPlan.validatorTimeoutMs, maxBuffer: 32768 })).stdout);
         await assertOpfsOutputValidationBackingUnchanged(binding);
         if (diagnoseLarge) await cleanupDiagnostic.sample("validated");
@@ -623,7 +634,7 @@ try {
       row.outlineWarnings = state.warnings;
       assert.ok(state.warnings.includes(`DOCX outline metadata read ${report.outlineControl.generated.styleDefinitions} style definitions from a referenced internal package part.`));
       report.outlineControl.cases.push(row);
-      row.validated = JSON.parse((await execute("python", [path.join(root, "scripts/lib/docx-outline-fixtures.py"), "validate", binding.file],
+      row.validated = JSON.parse((await execute(python, [path.join(root, "scripts/lib/docx-outline-fixtures.py"), "validate", binding.file],
         { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
       await assertOpfsOutputValidationBackingUnchanged(binding);
       await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
@@ -690,6 +701,7 @@ try {
   if (scaling) report.completedDocumentScalingControlVerified = true;
   if (numberingControl) report.status = "passed-private-docx-numbering-and-recovery-not-scaling-or-promotion";
   if (colorControl) report.status = "passed-private-docx-color-and-recovery-not-scaling-or-promotion";
+  if (colorAlignmentControl) report.status = "passed-private-docx-color-alignment-and-recovery-not-scaling-or-promotion";
   if (hyperlinkControl) report.status = "passed-private-docx-hyperlinks-and-recovery-not-scaling-or-promotion";
   if (hyperlinkScaling) report.status = hyperlinkFresh ? "passed-private-docx-hyperlink-fresh-largest-control-not-full-route" : "passed-private-docx-hyperlink-scaling-repeats-not-full-route";
   if (hyperlinkFresh) { report.completedDocumentScalingControlVerified = false; report.freshLargestDocumentControlVerified = true; }
