@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-21 P-08 / M-02 MPEG-TS inspection stops allocating unused/repeated
+prefix scratch. Same bytes and facts on the genuine, repeated-map and
+program-map-only controls; 6 → 2, 196 → 2, 2 → 0 allocations of 32 KiB respectively.
+Genuine Node median improved but p90 did not. This is source inspection, not
+conversion throughput or memory acceptance. 40 focused checks, production
+build, TS, lint and the unchanged 402-entry public audit passed. No route
+promotion. Full-file conversion speed and Chrome safety gates remain open.
+The matched Node benchmark need not be repeated unchanged. See
+`evidence/2026-11-21-transport-inspection-allocation.json`.
+
 2026-11-21 M-02 / M-03 source language disclosure implemented for inspected
 Matroska/WebM video, audio and subtitle tracks and ISO-BMFF audio/video tracks.
 Source facts now reach the existing metadata panel; do not infer destination

@@ -1,0 +1,293 @@
+{
+  "schemaVersion": 1,
+  "status": "reduced-mpeg-ts-source-inspection-allocation-retained-no-conversion-speed-claim",
+  "requirementIds": [
+    "P-08",
+    "M-02"
+  ],
+  "command": "node scripts/benchmark-transport-inspection.mjs",
+  "sourceSha256": {
+    "lib/media-source-inspection.ts": "b78332c4eacc7db1e51fa16fa9218d6f18e3e6b90e143eb4dfe6f74d97d0e39c",
+    "scripts/benchmark-transport-inspection.mjs": "75e206bebfeae56f37da75709ad944f7d910c2af8f26adc90cccab545181afde",
+    "scripts/lib/transport-inspection-fixtures.mjs": "14e36980d6df4c14b054eebf8d5209fca692c370045047b2a86f665422868ac5",
+    "tests/transport-inspection-allocation.test.mjs": "64ef35c944b664828892bbbbbbc80946b855511009ced434df70b82d6bae12d5"
+  },
+  "hypothesis": "Repeated program-map entries allocate identical 32 KiB stream-prefix arrays before payload collection. Reuse same-PID/type state and allocate only for streams with head payload that a codec parser will consume.",
+  "fixtureDesign": "Current genuine transport-source.mpegts; derived in-memory copy with 96 extra repeated PMT packets and adjusted continuity counters; a 564-byte PAT/PMT-only slice. Compare each input against exactly the same input on the pinned baseline, not between layouts.",
+  "measuredAllocationBytes": [
+    {
+      "name": "genuine",
+      "baseline": 196608,
+      "candidate": 65536,
+      "metric": "cumulative typed-array storage allocated by prefix allocator over one scan, not simultaneous live or process private bytes"
+    },
+    {
+      "name": "many-repeated-program-maps",
+      "baseline": 6422528,
+      "candidate": 65536,
+      "metric": "cumulative typed-array storage allocated by prefix allocator over one scan, not simultaneous live or process private bytes"
+    },
+    {
+      "name": "program-map-without-elementary-packets",
+      "baseline": 65536,
+      "candidate": 0,
+      "metric": "cumulative typed-array storage allocated by prefix allocator over one scan, not simultaneous live or process private bytes"
+    }
+  ],
+  "testResults": {
+    "focused": 40,
+    "passed": 40,
+    "productionBuildPassed": true,
+    "typescriptPassed": true,
+    "affectedLintPassed": true,
+    "publicEvidenceEntriesMatched": 402,
+    "initialErrors": [
+      "128 repeated packets moved the fixture's first AAC payload outside the 64 KiB head; changed to 96 to exercise consumption by both streams.",
+      "Comparison between genuine and rearranged fixtures incorrectly required identical sampling clocks. Retained exact A/B equality on each layout and assert its actual 24 or 23.976 fps estimate in unit coverage."
+    ]
+  },
+  "systemDriveFreeBytes": 0,
+  "browserLaunched": false,
+  "conversionLaunched": false,
+  "protectedOriginalRead": false,
+  "generatedMediaWrittenToDisk": false,
+  "registryChanged": false,
+  "interpretation": "The genuine sample's median decreased but its p90 increased; report both and do not imply uniform latency improvement. The deliberately dense PMT control is not representative conversion workload. No end-to-end speed, Chromium private memory, or full-original acceptance.",
+  "decision": "Retain deterministic allocation reduction, identical results and identical I/O. Do not repeat the same Node benchmark or failed VP9 browser configuration unchanged.",
+  "goalComplete": false,
+  "benchmark": {
+    "scope": "matched Node source-inspection only; no browser conversion, memory gate, or end-to-end speed claim",
+    "node": "v24.7.0",
+    "platform": "win32",
+    "arch": "x64",
+    "baselineHead": "b37ea3ffed9e8bf838468409f117d2dd33365a58",
+    "baselineSourceSha256": "f792101cd2896c910aa8238f89935c47e14dcb3859362faed370ab892120a372",
+    "candidateSourceSha256": "b78332c4eacc7db1e51fa16fa9218d6f18e3e6b90e143eb4dfe6f74d97d0e39c",
+    "samples": 20,
+    "warmup": 32,
+    "iterations": 24,
+    "results": [
+      {
+        "name": "genuine",
+        "bytes": 982864,
+        "sha256": "e05479cf54e44e69024bc70e2c85d33bef4b6d746d7eaf474ea5212cb43f9cda",
+        "readRanges": [
+          [
+            0,
+            65536
+          ],
+          [
+            917328,
+            982864
+          ]
+        ],
+        "identicalInspection": true,
+        "inspectionSha256": "eb90c99ba10f4e549b59047ca75f33d798198db95f2cf719b6bb0e3a576e69ce",
+        "scratchPrefixAllocations": {
+          "baseline": 6,
+          "candidate": 2
+        },
+        "msPerInspection": {
+          "baseline": {
+            "median": 0.18582083333333324,
+            "p90": 0.2664208333333337,
+            "batches": [
+              0.1899375000000004,
+              0.23953749999999965,
+              0.16689583333333383,
+              0.2664208333333337,
+              0.1305458333333339,
+              0.17838333333333267,
+              0.18415416666666692,
+              0.244745833333333,
+              0.20579583333333437,
+              0.18582083333333324,
+              0.17935416666666626,
+              0.22169166666666604,
+              0.13979583333333542,
+              0.15623333333333278,
+              0.14370833333333385,
+              0.2499291666666655,
+              0.18777499999999966,
+              0.32933750000000117,
+              0.16567083333333463,
+              0.279654166666667
+            ]
+          },
+          "candidate": {
+            "median": 0.13714166666666708,
+            "p90": 0.3152458333333333,
+            "batches": [
+              0.21824999999999997,
+              0.13557083333333372,
+              0.22294999999999968,
+              0.13288333333333333,
+              0.19084166666666627,
+              0.12033333333333236,
+              0.13714166666666708,
+              0.3211708333333334,
+              0.13642083333333352,
+              0.3459375000000004,
+              0.11873750000000054,
+              0.2838666666666671,
+              0.19454999999999956,
+              0.2401791666666663,
+              0.12616666666666512,
+              0.3152458333333333,
+              0.18105416666666704,
+              0.1314583333333322,
+              0.11473750000000156,
+              0.12077499999999948
+            ]
+          }
+        }
+      },
+      {
+        "name": "many-repeated-program-maps",
+        "bytes": 1000912,
+        "sha256": "53d51709ebab27b55481a94df3ed3ebd84229920f065b18b2c6e2c75899868b5",
+        "readRanges": [
+          [
+            0,
+            65536
+          ],
+          [
+            935376,
+            1000912
+          ]
+        ],
+        "identicalInspection": true,
+        "inspectionSha256": "c6a382a67d34660ba4840aabedf81770656206a3fb3a84f03aa7f4d7d4a899fa",
+        "scratchPrefixAllocations": {
+          "baseline": 196,
+          "candidate": 2
+        },
+        "msPerInspection": {
+          "baseline": {
+            "median": 2.2212874999999976,
+            "p90": 2.7035624999999945,
+            "batches": [
+              2.5192499999999995,
+              2.364516666666667,
+              2.6118708333333367,
+              2.490470833333333,
+              2.55731666666667,
+              2.134708333333336,
+              2.7672958333333306,
+              2.7286,
+              1.7257875000000003,
+              2.0831708333333316,
+              2.2212874999999976,
+              2.7035624999999945,
+              2.2764624999999987,
+              2.0324416666666707,
+              1.892599999999997,
+              2.134708333333331,
+              2.6253375000000005,
+              2.168091666666669,
+              1.9825166666666594,
+              1.8294458333333334
+            ]
+          },
+          "candidate": {
+            "median": 0.13709583333333342,
+            "p90": 0.25113333333333304,
+            "batches": [
+              0.12920416666666767,
+              0.2536500000000004,
+              0.2640458333333318,
+              0.1234416666666694,
+              0.15981249999999628,
+              0.13709583333333342,
+              0.1584541666666676,
+              0.24815833333333615,
+              0.1342124999999991,
+              0.1286333333333308,
+              0.0558083333333362,
+              0.16383749999999964,
+              0.25113333333333304,
+              0.13335416666666333,
+              0.14523333333333235,
+              0.12515416666666587,
+              0.13741666666666674,
+              0.062412500000003014,
+              0.12212916666666729,
+              0.14282499999999723
+            ]
+          }
+        }
+      },
+      {
+        "name": "program-map-without-elementary-packets",
+        "bytes": 564,
+        "sha256": "6bb41ed1d519ab240a744c5f59935fe9ef1c19ce4eeb60bcc57116681191bfb5",
+        "readRanges": [
+          [
+            0,
+            564
+          ]
+        ],
+        "identicalInspection": true,
+        "inspectionSha256": "5641b787e675fad2f366cb07811a62c362bf007ffb1a07fdb5fa817ecee54181",
+        "scratchPrefixAllocations": {
+          "baseline": 2,
+          "candidate": 0
+        },
+        "msPerInspection": {
+          "baseline": {
+            "median": 0.023800000000003745,
+            "p90": 0.025383333333337532,
+            "batches": [
+              0.024941666666668045,
+              0.02476666666667408,
+              0.14566666666666114,
+              0.025383333333337532,
+              0.025416666666662497,
+              0.023800000000003745,
+              0.02449583333333294,
+              0.025350000000003092,
+              0.024475000000004837,
+              0.024516666666670517,
+              0.024874999999999165,
+              0.00884166666666412,
+              0.008850000000004835,
+              0.00879999999999844,
+              0.009433333333333849,
+              0.00944166666666509,
+              0.009370833333340064,
+              0.011120833333336577,
+              0.009212499999999105,
+              0.008483333333335471
+            ]
+          },
+          "candidate": {
+            "median": 0.004887499999995271,
+            "p90": 0.006558333333335516,
+            "batches": [
+              0.0058124999999999245,
+              0.005162500000002031,
+              0.006558333333335516,
+              0.004887499999995271,
+              0.00488333333332965,
+              0.00582500000000626,
+              0.005241666666667773,
+              0.004516666666669759,
+              0.0052250000000052905,
+              0.00508750000000191,
+              0.017266666666671426,
+              0.004779166666670183,
+              0.004554166666660346,
+              0.0044500000000008795,
+              0.004600000000001121,
+              0.00481249999999515,
+              0.004633333333335561,
+              0.004587500000004259,
+              0.005149999999995695,
+              0.01841666666666697
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

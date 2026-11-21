@@ -4,7 +4,19 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
-## Latest implementation: source track languages
+## Latest implementation: MPEG-TS source inspection
+
+Repeated transport program-map entries no longer allocate duplicate 32 KiB
+stream-prefix buffers. Matched Node A/B on the genuine fixture: 6 → 2 prefix
+allocations; median 0.186 → 0.137 ms, p90 0.266 → 0.315 ms. On the constructed
+96-repeat control: 196 → 2 allocations and median 2.221 → 0.137 ms. All three
+fixtures produced identical inspection results and read ranges before/after.
+This is pre-conversion source inspection, not transcoding or Chrome memory
+evidence. 40 focused checks, build, TS, lint and 402 public evidence entries
+passed. C: still had 0 B free. No browser or conversion was launched and
+`test.mkv` was not used. [Receipt](evidence/2026-11-21-transport-inspection-allocation.json).
+
+## Pending browser gate: source track languages
 
 The source panel now reports declared track languages for Matroska/WebM and
 inspected ISO-BMFF audio/video tracks, including packed codes, QuickTime legacy

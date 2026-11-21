@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-11-21 MPEG-TS source-inspection allocation reduction: exact matched Node
+A/B against b37ea3ff. Genuine fixture 6 → 2 allocations of 32 KiB; median
+0.186 → 0.137 ms, but p90 0.266 → 0.315 ms. With 96 extra repeated program
+maps, 196 → 2 allocations and median 2.221 → 0.137 ms. Program-map-only
+control 2 → 0.
+All three identical A/B result digests and byte ranges; existing 128 KiB total
+read ceiling unchanged. The first fixture revision shifted AAC past the head
+window; the second assertion compared timing across different layouts rather
+than matching inputs. Corrected fixtures/assertions, not the caps. 40 focused
+checks, build, TS, scoped lint and 402 public evidence checks passed. No
+browser, conversion/output, original read, or end-to-end speed claim.
+Raw timings: `evidence/2026-11-21-transport-inspection-allocation.json`.
+
 2026-11-21 bounded track-language source disclosure: 67 focused checks pass
 with protected `test.mkv` size/full SHA-256 unchanged before and after. FFprobe
 independently confirmed the existing complex MKV audio English/Spanish and

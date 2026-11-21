@@ -12,6 +12,7 @@ export const MAX_ISO_BMFF_INSPECTION_BYTES = 64 * 1024;
 export const MAX_MATROSKA_INSPECTION_BYTES = 64 * 1024;
 export const MAX_FLV_INSPECTION_BYTES = 64 * 1024;
 const MPEG_TS_WINDOW_BYTES = 64 * 1024;
+const MPEG_TS_ELEMENTARY_PREFIX_BYTES = 32 * 1024;
 export const MAX_MPEG_TS_INSPECTION_BYTES = MPEG_TS_WINDOW_BYTES * 2;
 export const MAX_AVI_INSPECTION_BYTES = 256 * 1024;
 export const MAX_OGV_INSPECTION_BYTES = 64 * 1024 + MAX_OGG_TAIL_BYTES;
@@ -2104,7 +2105,7 @@ interface TransportStreamTrack {
   language: string | null;
   prefixPts: number[];
   tailPts: number[];
-  elementary: Uint8Array;
+  elementary: Uint8Array | null;
   elementaryBytes: number;
 }
 
@@ -2316,6 +2317,7 @@ async function inspectMpegTs(file: Blob): Promise<MediaSourceInspection> {
     for (let sync = layout.sync; sync + 188 <= bytes.byteLength; sync += layout.stride) {
       if (bytes[sync] !== 0x47) continue;
       const pid = ((bytes[sync + 1] & 0x1f) << 8) | bytes[sync + 2];
+      if (pid !== 0 && pid !== pmtPid) continue;
       const payload = readSectionPayload(bytes, sync);
       if (payload === null) continue;
       if (pid === 0 && bytes[payload] === 0x00 && payload + 12 <= sync + 188) {
@@ -2349,18 +2351,23 @@ async function inspectMpegTs(file: Blob): Promise<MediaSourceInspection> {
             }
             descriptor += 2 + length;
           }
-          const mapping = transportCodec(streamType);
-          tracks.set(elementaryPid, {
-            pid: elementaryPid,
-            streamType,
-            codec: mapping.codec,
-            mediaType: mapping.mediaType,
-            language,
-            prefixPts: [],
-            tailPts: [],
-            elementary: new Uint8Array(32 * 1024),
-            elementaryBytes: 0,
-          });
+          const track = tracks.get(elementaryPid);
+          if (track?.streamType === streamType) {
+            track.language = language;
+          } else {
+            const mapping = transportCodec(streamType);
+            tracks.set(elementaryPid, {
+              pid: elementaryPid,
+              streamType,
+              codec: mapping.codec,
+              mediaType: mapping.mediaType,
+              language,
+              prefixPts: [],
+              tailPts: [],
+              elementary: null,
+              elementaryBytes: 0,
+            });
+          }
           offset += 5 + infoLength;
         }
       }
@@ -2404,12 +2411,20 @@ async function inspectMpegTs(file: Blob): Promise<MediaSourceInspection> {
         }
         payload += 9 + bytes[payload + 8];
       }
-      if (!isTail && payload < sync + 188 && track.elementaryBytes < track.elementary.length) {
+      // Only H.264 SPS, AAC ADTS and MPEG audio inspectors consume payload
+      // prefixes. Repeated PMT entries and unobserved PIDs need no arena.
+      if (
+        !isTail && payload < sync + 188 &&
+        track.elementaryBytes < MPEG_TS_ELEMENTARY_PREFIX_BYTES &&
+        (track.streamType === 0x1b || track.streamType === 0x0f ||
+         track.streamType === 0x03 || track.streamType === 0x04)
+      ) {
+        const elementary = track.elementary ??= new Uint8Array(MPEG_TS_ELEMENTARY_PREFIX_BYTES);
         const length = Math.min(
           sync + 188 - payload,
-          track.elementary.length - track.elementaryBytes,
+          elementary.length - track.elementaryBytes,
         );
-        track.elementary.set(bytes.subarray(payload, payload + length), track.elementaryBytes);
+        elementary.set(bytes.subarray(payload, payload + length), track.elementaryBytes);
         track.elementaryBytes += length;
       }
     }
@@ -2419,14 +2434,14 @@ async function inspectMpegTs(file: Blob): Promise<MediaSourceInspection> {
   const unwrapDelta = (first: number, last: number): number =>
     last >= first ? last - first : last + 8_589_934_592 - first;
   const streamResults: SourceStreamInspection[] = [...tracks.values()].map((track) => {
-    const elementary = track.elementary.subarray(0, track.elementaryBytes);
+    const elementary = track.elementary?.subarray(0, track.elementaryBytes);
     let width: number | null = null;
     let height: number | null = null;
     let frameRate: number | null = null;
     let sampleRateHz: number | null = null;
     let channels: number | null = null;
     let codec = track.codec;
-    if (track.streamType === 0x1b) {
+    if (elementary && track.streamType === 0x1b) {
       const dimensions = h264Dimensions(elementary);
       width = dimensions?.width ?? null;
       height = dimensions?.height ?? null;
@@ -2447,7 +2462,7 @@ async function inspectMpegTs(file: Blob): Promise<MediaSourceInspection> {
             : finitePositive(measured);
       }
     }
-    if (track.streamType === 0x0f) {
+    if (elementary && track.streamType === 0x0f) {
       for (let index = 0; index + 7 <= elementary.length; index += 1) {
         if (elementary[index] !== 0xff || (elementary[index + 1] & 0xf6) !== 0xf0) continue;
         const rateIndex = (elementary[index + 2] >>> 2) & 0x0f;
@@ -2462,7 +2477,7 @@ async function inspectMpegTs(file: Blob): Promise<MediaSourceInspection> {
         break;
       }
     }
-    if (track.streamType === 0x03 || track.streamType === 0x04) {
+    if (elementary && (track.streamType === 0x03 || track.streamType === 0x04)) {
       const mp3 = findMp3Frame(elementary);
       if (mp3) {
         codec = "MP3";
