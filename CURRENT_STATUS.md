@@ -4,6 +4,19 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Physical MP4 timed-text offsets beyond 4 GiB verified in Chrome
+
+`node scripts/qualify-timed-text-webvtt.mjs --co64-mp4` passed on a genuine
+4,570,039,051 B MP4 (768 real-media loops, 221,184 declared video frames).
+All 6,144 late selected cues are physically beyond byte 4,558,723,517.
+Five exact 2,156,616 B browser outputs include all late cues and 20 earlier
+calibration cues. Each success read 1,911,762 B, only 1,035 B above the small
+MP4 control. Normal Chrome tree peaked 70.766 MiB; max cleanup 11.387 MiB.
+Cancellation, write rejection, both recoveries, privacy, 910-row replay and
+cleanup passed. No generated file left; no `test.mkv` use. This is subtitle
+extraction, not a full-video conversion or throughput result. Do not replay
+unchanged. [Receipt](evidence/2026-11-21-timed-text-physical-co64-mp4-browser.json).
+
 ## Combined DOCX formatting headless production control passed
 
 `node scripts/qualify-docx-html.mjs --color-alignment-vertical-control`:
@@ -26,8 +39,8 @@ Both controls passed three same-page repeats, real-payload cancellation,
 injected write rejection and both recoveries. Whole-tree peaks 69.039/71.074
 MiB; max cleanup 14.621/15.926 MiB. All 1,833 native rows replayed; no forbidden
 requests or owned browser, fixture, output, or server leftovers. The separate
-small MP4 control below also passed. Larger/fresh-repeat, native picker and
-other-browser acceptance remain open. No public promotion or matched browser
+small MP4 control below also passed. Larger MOV/3GP and dedicated fresh-repeat,
+native picker and other-browser acceptance remain open. No public promotion or matched browser
 speed claim. [Receipt](evidence/2026-11-21-timed-text-mov-3gp-browser-controls.json).
 
 ## Verified: bounded Matroska/WebM source preview
@@ -77,8 +90,9 @@ same blank, max cleanup 6.098 MiB over loaded idle (unchanged 250/96 caps).
 No forbidden requests or retained output; owned process/profile cleanup and
 807-row raw journal independently checked. The first harness failure remains
 recorded. No public promotion, matched browser speedup, native-picker or
-manual claim. The MOV/3GP small controls above have since passed; a larger
-or cold-repeat MP4 gate remains open. Do not repeat this small gate unchanged.
+manual claim. The small MOV/3GP and first physical >4 GiB MP4 controls above
+have since passed; a cold repeat at that scale remains open. Do not repeat
+this small gate unchanged.
 [Receipt](evidence/2026-11-21-timed-text-mp4-browser-control.json).
 
 ## Next timed-text browser run: cancellation fixture verified offline

@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-11-21 M-03 / M-04 / N-07 / P-08 first physical >4 GiB MP4 timed-text
+gate **closed**. Verified positions for every one of 6,144 late cues on a
+genuine 4.57 GB input, exact browser outputs and both recoveries, 1.91 MB
+worker reads and unchanged whole-tree/cleanup limits. No full-video or
+near-10GB claim. Earlier fixture mux clock failure retained; later calibration
+preserved clocks rather than shifting the oracle. Cold-scale repeats, larger
+MOV/3GP, native picker, other browsers and public qualification remain open.
+[Receipt](evidence/2026-11-21-timed-text-physical-co64-mp4-browser.json).
+
 2026-11-21 N-08 combined small color, paragraph-alignment, and run-vertical
 browser gate **closed**. On real async handles in owned OPFS, three repeats
 and recovery independently verify 14 run segments and six paragraphs;

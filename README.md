@@ -273,8 +273,11 @@ default/forced metadata are not copied. Small headless Chrome controls for
 [MOV/3GP](evidence/2026-11-21-timed-text-mov-3gp-browser-controls.json) passed
 repeat, cancellation, write-rejection/recovery, exact output, and full-tree
 memory checks using real file handles inside an owned browser test directory.
-Larger inputs, native-picker/external destinations, and other browsers are
-not established by these controls. The routes remain private.
+A [physical 4.57 GB MP4 control](evidence/2026-11-21-timed-text-physical-co64-mp4-browser.json)
+also passed with 6,144 selected payloads beyond 4 GiB. Each complete browser
+extraction read about 1.91 MB, and peak whole-tree memory was 70.77 MiB above
+blank. This does not qualify full video conversion, larger MOV/3GP, near-10GB,
+native-picker/external destinations, or other browsers. The routes stay private.
 
 ## Tested storage-error recovery
 

@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-21 physical >4 GiB MP4 timed-text **headless production PASS**.
+Real 4,570,039,051 B owned MP4, 768 loops and exact 221,184 video-frame sample
+count. FFprobe independently locates all 6,144 late chosen payloads at or past
+4,558,723,518 and verifies every PTS; the full independent native oracle
+includes 20 earlier calibration cues. Five exact 2,156,616 B Browser WebVTTs.
+Three success repeats 287.890/270.630/271.280 ms; 1,911,762 B read each
+(16 KiB maximum, 64 KiB write/queue, one pending). Not video throughput or A/B.
+Cancellation observed after 327,679 B, terminal 393,215 B; injected write
+fault zero acknowledged bytes, both exact recoveries. 70.765625 MiB whole-tree,
+11.38671875 MiB max cleanup, 816 valid/0 unavailable. All 910 native rows and
+14 source pins checked. No forbidden requests; 53 observed PIDs, server,
+fixture/output/profile scratch gone. No protected-original access, near-10GB,
+external picker or public acceptance. [Receipt](evidence/2026-11-21-timed-text-physical-co64-mp4-browser.json).
+
 2026-11-21 first physical `co64` timed-text fixture attempt failed before
 Chrome: FFmpeg's native MP4 timed-text mux clipped the first long cue gap.
 Timestamp option candidates did not repair the emitted native clock; early
