@@ -60,7 +60,7 @@ import { largeScalingReference, readLargeScalingReference } from "./lib/mkv-larg
 import { matchOwnedBurstRole } from "./lib/owned-burst-role.mjs";
 import { MKV_SCALE_NEAR10GB, createNear10GbScalingSource, assertNear10GbExtent, decodeNear10GbContent, near10GbExpectedPcmSamples } from "./lib/mkv-near10gb-scaling.mjs";
 import { verifyProductionWorkerBinding } from "./lib/production-worker-binding.mjs";
-import { loadQualifiedHeaderNativeCache, headerNativeCodeCache } from "./lib/mkv-header-native-cache.mjs";
+import { loadQualifiedHeaderDirectAssets, loadQualifiedHeaderNativeCache, headerNativeCodeCache } from "./lib/mkv-header-native-cache.mjs";
 import { headerStagedReference, readHeaderStagedReference } from "./lib/mkv-header-staged-reference.mjs";
 
 assert.equal(process.platform, "win32");
@@ -78,11 +78,12 @@ const largeScalingRepeats = process.argv[2] === "--hevc-header-parser-scale-5gb-
 const near10GbScaling = process.argv[2] === "--hevc-header-parser-scale-near10gb";
 const headerStagedCachedCore = headerStagedOriginalRepeats || process.argv[2] === "--hevc-header-parser-production-staged-cache";
 const headerStagedIntegration = headerStagedCachedCore || process.argv[2] === "--hevc-header-parser-production-staged";
+const headerProductionDirect = process.argv[2] === "--hevc-header-parser-production-direct-cache";
 const largeScaling = near10GbScaling || largeScalingRepeats || process.argv[2] === "--hevc-header-parser-scale-5gb";
 const scalingCase = near10GbScaling ? MKV_SCALE_NEAR10GB : MKV_SCALE_5GB;
-const hevcHeaderParser = headerStagedIntegration || largeScaling || headerProtected || !!headerH264Regression || process.argv[2] === "--hevc-header-parser-loop-source-control";
+const hevcHeaderParser = headerProductionDirect || headerStagedIntegration || largeScaling || headerProtected || !!headerH264Regression || process.argv[2] === "--hevc-header-parser-loop-source-control";
 const hevcKnownDts = hevcHeaderParser || process.argv[2] === "--hevc-known-dts-loop-source-control";
-const scalingLoopControl = (headerStagedIntegration && !headerStagedOriginalRepeats) || largeScaling || ["--hevc-header-parser-loop-source-control", "--hevc-known-dts-loop-source-control", "--h264-startup-loop-source-control"].includes(process.argv[2]);
+const scalingLoopControl = headerProductionDirect || (headerStagedIntegration && !headerStagedOriginalRepeats) || largeScaling || ["--hevc-header-parser-loop-source-control", "--hevc-known-dts-loop-source-control", "--h264-startup-loop-source-control"].includes(process.argv[2]);
 const startupProtectedRepeats = process.argv[2] === "--h264-startup-protected-repeats";
 const startupProtected = startupProtectedRepeats || process.argv[2] === "--h264-startup-protected";
 const probeHevcControl = startupHevcControl || process.argv[2] === "--h264-probe-decoder-hevc-control";
@@ -158,6 +159,7 @@ if (headerStagedIntegration) {
   report.hevcHeaderProductionStagedIntegration = true;
   report.scope = "Corrected exact header core on UNMODIFIED production worker, real staged-save I/O, no worker/media/writer overlay. Fresh loop-source content/clocks/trim/recovery/full-tree250MiB checks. Only authenticated native asset responses substituted; not public promotion, direct-writer or large-file/repeat acceptance.";
 }
+if (headerProductionDirect) report.scope = "Small HEVC/AAC on the unmodified production app and worker, with only the two authenticated private core URLs supplied by the harness. Real selected OPFS-backed file handle, exact packet/timing and complete decoded fidelity, zero app staging, cancellation, write failure and recovery. Not protected-file, 3+1 repeats, speed, native-picker, or release acceptance.";
 if (positiveStartCandidate) {
   report.positiveStartCandidate = true;
   report.scope = "Exact +5s B-frame/VFR/two-AAC fixture on bounded startup-DTS core, unchanged packet/known-DTS/PTS/trim/decoded-content/metadata/recovery/memory gates, packet-derived header semantics and empty edit delays; no timestamp rebasing, original-file/scale/public acceptance or manual-headed claim.";
@@ -209,7 +211,7 @@ const hashFile = async file => {
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${headerStagedOriginalRepeats ? "hevc-header-core-production-staged-original-repeats" : headerStagedIntegration ? "hevc-header-core-production-staged" : near10GbScaling ? "hevc-header-core-scale-near10gb" : largeScaling ? `hevc-header-core-scale-5gb${largeScalingRepeats ? "-repeats" : ""}` : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${headerProductionDirect ? "hevc-header-core-production-direct-small" : headerStagedOriginalRepeats ? "hevc-header-core-production-staged-original-repeats" : headerStagedIntegration ? "hevc-header-core-production-staged" : near10GbScaling ? "hevc-header-core-scale-near10gb" : largeScaling ? `hevc-header-core-scale-5gb${largeScalingRepeats ? "-repeats" : ""}` : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env, timeout = 90000) => execute(file, args, { cwd: root, env, windowsHide: true, timeout, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env, near10GbScaling ? 180000 : 90000)).stdout);
@@ -464,6 +466,45 @@ const assets = new Set();
 for (const dir of ["assets", "engines"]) for (const name of await readdir(path.join(root, "dist/client", dir), { recursive: true }))
   if (!name.includes("..")) assets.add(`/${dir}/${name.replaceAll("\\", "/")}`);
 for (const name of await readdir(path.join(root, "dist/client"))) assets.add("/" + name);
+const directQualificationPage = "/?test=1&directory=1&mkv-direct=1";
+const legacyDirectCorePath = /^\/engines\/remux\/within-direct\.(mjs|wasm)$/;
+async function directQualificationHeaders(baseURL, verifiedWorkerAsset) {
+  const response = await fetch(baseURL + verifiedWorkerAsset, { method: "HEAD", redirect: "error", signal: AbortSignal.timeout(10000) });
+  assert.equal(response.status, 200);
+  const headers = Object.fromEntries(["cross-origin-resource-policy", "cross-origin-embedder-policy", "cross-origin-opener-policy", "content-security-policy", "x-content-type-options"].map(name => [name, response.headers.get(name)]));
+  assert.equal(headers["cross-origin-resource-policy"], "same-origin");
+  assert.equal(headers["cross-origin-embedder-policy"], "require-corp");
+  assert.equal(headers["cross-origin-opener-policy"], "same-origin");
+  assert.match(headers["content-security-policy"] ?? "", /wasm-unsafe-eval/);
+  assert.equal(headers["x-content-type-options"], "nosniff");
+  return { ...headers, "cache-control": "no-store" };
+}
+async function createDirectPayloadCancellationFixture(runtime) {
+  const source = path.join(root, mkvHevcRegressionFixture.file), file = path.join(runtime.directory, "within-test-mkv-direct-cancel.mkv");
+  const loops = 24;
+  assert.equal(await hashFile(source), mkvHevcRegressionFixture.sha256);
+  await runNative(ffmpeg, ["-v", "error", "-n", "-copyts", "-stream_loop", String(loops - 1), "-i", source,
+    "-map", "0", "-c", "copy", "-avoid_negative_ts", "disabled", "-fflags", "+bitexact", file], runtime.env);
+  const bytes = (await lstat(file)).size, sourceProbe = await probe(file, runtime.env);
+  assert.ok(bytes >= 128 * mib && bytes < 160 * mib);
+  assert.equal(Number(sourceProbe.streams[0].nb_read_packets), loops * 288);
+  assert.deepEqual(sourceProbe.streams.map(stream => stream.codec_name), ["hevc", "aac"]);
+  return { file, bytes, sha256: await hashFile(file), loops, videoPackets: loops * 288, nativeToolUsedOnlyForFixtureGeneration: true };
+}
+function observeCorrectedDirectLaunches() {
+  const original = Worker.prototype.postMessage, rows = [];
+  Object.defineProperty(window, "__WITHIN_DIRECT_MKV_LAUNCHES__", { value: rows });
+  Worker.prototype.postMessage = function (...args) {
+    const [message] = args;
+    if (message?.type === "start") {
+      if (rows.length >= 8) throw new Error("Unexpected extra conversion job");
+      rows.push({ profileId: message.profileId, corrected: message.correctedDirectMkv === true,
+        mode: message.destination?.mode, realFileHandle: message.destination?.handle instanceof FileSystemFileHandle,
+        hasStagingName: Object.hasOwn(message.destination ?? {}, "stagingName"), fault: message.testFault ?? null });
+    }
+    return Reflect.apply(original, this, args);
+  };
+}
 const stable = async (get, rows) => {
   const selected = [], deadline = Date.now() + 30000;
   while (Date.now() < deadline) {
@@ -515,22 +556,32 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
   })().finally(() => { pending = null; });
   try {
     result.host = await inspectStressHostMemory(); assert.equal(result.host.safeToStart, true);
-    const overlay = staged ? null : await buildMkvDirectReuseOverlay({ root, directory: runtime.directory, mode });
+    const overlay = staged || headerProductionDirect ? null : await buildMkvDirectReuseOverlay({ root, directory: runtime.directory, mode });
     if (overlay) result.overlay = overlay.proof;
     else {
       const names = [...assets].filter(name => /^\/assets\/conversion\.worker-[\w-]+\.js$/.test(name)); assert.equal(names.length, 1);
       const workerSha256 = await hashFile(path.join(root, "dist/client", names[0].slice(1)));
-      assert.equal(workerSha256, baseline.productionWorkerSha256 ?? baseline.retained.arms[0].overlay.releaseWorkerSha256);
+      if (headerProductionDirect) {
+        const built = await readFile(path.join(root, "dist/client", names[0].slice(1)));
+        assert.equal(sha(built), workerSha256);
+        for (const pathname of baseline.candidate.assets.keys()) {
+          assert.ok(built.includes(pathname), "Production build lacks the dedicated corrected core binding");
+          assert.ok(!assets.has(pathname), "Private qualification core must not ship in the public build");
+        }
+      } else assert.equal(workerSha256, baseline.productionWorkerSha256 ?? baseline.retained.arms[0].overlay.releaseWorkerSha256);
       result.releaseWorker = { asset: names[0], sha256: workerSha256, overrides: false, requests: 0 };
     }
     result.browser = await inspectInstalledChromePin(); assertInstalledChromePinsEqual(result.browser, baseline.browser);
     server = await startOwnedProductionTestServer({ root, directory: runtime.directory, env, port: await port() });
     result.serverLaunch = server.launchRecord;
-    if (headerStagedIntegration) {
-      assert.ok(staged && !overlay);
+    let directHeaders;
+    if (headerStagedIntegration || headerProductionDirect) {
+      if (headerStagedIntegration) assert.ok(staged && !overlay);
+      else assert.ok(!staged && !overlay && candidate);
       const workerFile = path.join(root, "dist/client", result.releaseWorker.asset.slice(1));
       result.productionWorkerBinding = await verifyProductionWorkerBinding({ baseURL: server.baseURL, asset: result.releaseWorker.asset,
         expectedBytes: (await lstat(workerFile)).size, expectedSha256: result.releaseWorker.sha256 });
+      if (headerProductionDirect) directHeaders = await directQualificationHeaders(server.baseURL, result.releaseWorker.asset);
     }
     const profile = path.join(runtime.directory, "profile");
     result.launch = ["--headless=new", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "--no-first-run", "--no-default-browser-check", "about:blank"];
@@ -549,17 +600,30 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     const context = browser.contexts()[0]; page = context.pages()[0]; await page.goto("about:blank");
     result.blank = await stable(drain, samples);
     await context.addInitScript(`window.__WITHIN_AUDIO_VALIDATION_CHUNK__=(${encodeBoundedValidationChunk.toString()});`);
+    if (headerProductionDirect) await context.addInitScript(observeCorrectedDirectLaunches);
     await context.route("**/*", async route => {
       const request = route.request(), method = request.method(), url = request.url();
       let frameUrl = null; try { frameUrl = request.frame()?.url() ?? null; } catch { /* worker-owned */ }
       const kind = classifyPrivateRequest({ method, url, frameUrl, serviceWorkerUrl: request.serviceWorker?.()?.url() ?? null,
         postData: ["GET", "HEAD"].includes(method) ? request.postData() : "blocked-non-read" }, server.baseURL);
       const faultUrl = server.baseURL + "/?test=1&directory=1&fault=write";
+      const pathname = new URL(url).pathname;
+      const privateCore = headerProductionDirect && kind === "app-static" && candidate &&
+        baseline.candidate.assets.has(pathname) && url === server.baseURL + pathname && method === "GET";
+      const directPage = headerProductionDirect && (url === server.baseURL + directQualificationPage || url === server.baseURL + directQualificationPage + "&fault=write");
       if (++result.requests > 256 || !(kind === "browser-local" || kind === "app-static" &&
-          (url === faultUrl || isCompatibilityStaticPath(url, server.baseURL, assets)))) {
+          (url === faultUrl || privateCore || directPage || isCompatibilityStaticPath(url, server.baseURL, assets))) ||
+          (headerProductionDirect && kind === "app-static" && legacyDirectCorePath.test(pathname))) {
         if (result.forbiddenRequests.length < 16) result.forbiddenRequests.push({ method, kind, urlSha256: sha(url) });
         fail(new Error("Request outside exact built-asset/privacy policy")); await route.abort();
-      } else if (candidate && kind === "app-static" && baseline.candidate.assets.has(new URL(url).pathname)) {
+      } else if (privateCore) {
+        try {
+          const tool = baseline.candidate.assets.get(pathname), role = pathname.endsWith(".wasm") ? "wasm" : "module";
+          assert.ok(++result.directEngineRequests[role] <= 16);
+          await route.fulfill({ status: 200, headers: directHeaders, body: tool.body, contentType: tool.type });
+          result.engineResponses[role]++;
+        } catch (error) { fail(error); await route.abort().catch(() => {}); }
+      } else if (candidate && kind === "app-static" && baseline.candidate.assets.has(pathname)) {
         try {
           const pathname = new URL(url).pathname, tool = baseline.candidate.assets.get(pathname);
           const role = pathname.endsWith(".wasm") ? "wasm" : "module";
@@ -606,7 +670,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       }
     });
     const open = async (fault = false) => {
-      await guard(page.goto(server.baseURL + "/?test=1&directory=1" + (fault ? "&fault=write" : "")));
+      await guard(page.goto(server.baseURL + (headerProductionDirect ? directQualificationPage : "/?test=1&directory=1") + (fault ? "&fault=write" : "")));
       await guard(page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 }));
       assert.ok(await page.evaluate(() => crossOriginIsolated));
     };
@@ -631,25 +695,30 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     activeAt = Date.now();
     timer = setInterval(() => void drain().catch(fail), 500);
     async function job(fault = false, cancel = false) {
-      const row = { fault, selection: await guard(protectedMode ? selectExactLocalOriginal(page, fixture) : selectOwnedLocalBrowserFile(page, fixture, fixtureRuntime.directory)) };
+      const selected = headerProductionDirect && cancel ? baseline.cancellationFixture.file : fixture;
+      const row = { fault, selection: await guard(protectedMode ? selectExactLocalOriginal(page, selected) : selectOwnedLocalBrowserFile(page, selected, fixtureRuntime.directory)) };
       if (protectedMode) report.originalMediaSelected = row.selection.completeOriginalSelected;
-      if (cancel) row.cancel = sustained ? "after-positive-destination-writes" : "during-authenticated-wasm-load-before-native-packets";
+      if (cancel) row.cancel = sustained || headerProductionDirect ? "after-positive-destination-writes" : "during-authenticated-wasm-load-before-native-packets";
       result.cases.push(row);
       if (retention) assert.equal((await retention.capture(`job-${result.cases.length}-before`)).error, null);
       await guard(page.locator('[data-testid="format-select"]').selectOption(profileId));
-      if (cancel && sustained) {
+      if (cancel && (sustained || headerProductionDirect)) {
         await guard(page.locator('[data-testid="convert-button"]').click());
-        const observed = await guard(page.waitForFunction(({ staged, completeBytes }) => {
+        const minimumBytes = headerProductionDirect ? 65536 : 2 * mib;
+        const maximumBytes = headerProductionDirect ? Math.floor(baseline.cancellationFixture.bytes * 0.8) : baseline.reference.outputBytes;
+        const observed = await guard(page.waitForFunction(({ staged, maximumBytes, minimumBytes }) => {
           const state = window.__WITHIN_TEST__?.getState(), outputBytes = state?.metrics?.outputBytes ?? 0;
-          if (state?.jobState !== "running" || outputBytes < 2 * 1048576 || outputBytes >= completeBytes ||
+          if (["complete", "error", "cancelled"].includes(state?.jobState)) return { missed: true, state: state.jobState, outputBytes, phase: state.phase };
+          if (state?.jobState !== "running" || outputBytes < minimumBytes || outputBytes >= maximumBytes || !state.metrics.maxWriteChunkBytes ||
               (staged && state.phase !== "Copying staged MP4 to selected destination")) return false;
           const button = [...document.querySelectorAll("button")].find(b => b.textContent.trim() === "Cancel safely" && !b.disabled);
           if (!button) return false;
           button.click();
           return { outputBytes, phase: state.phase };
-        }, { staged, completeBytes: baseline.reference.outputBytes }, { timeout: 20000 }));
+        }, { staged, maximumBytes, minimumBytes }, { timeout: 20000 }));
         row.cancellationBefore = await observed.jsonValue(); await observed.dispose();
-        assert.ok(row.cancellationBefore.outputBytes >= 2 * mib && row.cancellationBefore.outputBytes < baseline.reference.outputBytes);
+        assert.ok(!row.cancellationBefore.missed, "Conversion finished before the harness observed cancellable payload");
+        assert.ok(row.cancellationBefore.outputBytes >= minimumBytes && row.cancellationBefore.outputBytes < maximumBytes);
       } else if (cancel) {
         assert.ok(exactAacCandidate && candidate && !fault && !startupCancellation);
         const arrival = Promise.withResolvers(), resume = Promise.withResolvers();
@@ -677,6 +746,13 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       await guard(page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState), undefined, { timeout: largeRun ? 180000 : 45000 }));
       if (largeRun) { protectedTerminal = Date.now(); row.conversionWindow.end = protectedTerminal; }
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.state = state.jobState; row.metrics = state.metrics;
+      if (headerProductionDirect) {
+        const observed = await page.evaluate(() => window.__WITHIN_DIRECT_MKV_LAUNCHES__);
+        assert.deepEqual(observed, [{ profileId, corrected: true, mode: "handle", realFileHandle: true, hasStagingName: false, fault: fault ? "write" : null }]);
+        [row.destination] = observed;
+        assert.equal(state.opfsName, null);
+        for (const field of ["scratchBytes", "peakScratchBytes", "maxScratchReadChunkBytes", "maxScratchWriteChunkBytes"]) assert.equal(row.metrics?.[field] ?? 0, 0, field);
+      }
       if (retention) assert.equal((await retention.capture(`job-${result.cases.length}-terminal`)).error, null);
       row.error = typeof state.error === "string" ? state.error.slice(0, 2048) : null;
       row.phase = typeof state.phase === "string" ? state.phase.slice(0, 256) : null;
@@ -718,6 +794,10 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
             assert.equal(row.validation.outputSha256, baseline.productionStagedReference.outputSha256, "Unmodified staged writer changed EVERY-byte-qualified current-core output");
             assert.equal(row.metrics.outputBytes, baseline.productionStagedReference.outputBytes);
             row.validation.sameExactCoreDirectOutputIdentity = baseline.productionStagedReference;
+          }
+          if (headerProductionDirect) {
+            assert.equal(row.validation.outputSha256, baseline.reference.outputSha256);
+            assert.equal(row.metrics.outputBytes, baseline.reference.outputBytes);
           }
         } else if (protectedMode) {
           await validateProtectedOutput(fixture, binding.file, row.metrics.outputBytes, baseline, state.warnings, env, row);
@@ -876,6 +956,11 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       await open(true); await job(true);
       await open(); await job();
       await open(); await job();
+    } else if (headerProductionDirect) {
+      await open(); await job(false, true);
+      await open(); await job();
+      await open(true); await job(true);
+      await open(); await job();
     } else if (compareDestinations) {
       if (result.cases[0].validation.candidateGate.passed) { await open(true); await job(true); await open(); await job(); }
     } else if (!largeRun && (mode === "reuse" || (candidate && result.cases[0].validation.candidateGate.passed))) {
@@ -885,11 +970,12 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     result.cleanupStable = await guard(stable(drain, samples)); until = Date.now(); await drain();
     assert.equal(errorSeen, undefined); assert.deepEqual(result.forbiddenRequests, []);
     if (staged) { assert.equal(result.workerResponses, 0); assert.ok(result.releaseWorker.requests > 0); }
+    else if (headerProductionDirect) { assert.equal(result.workerResponses, 0); assert.ok(result.releaseWorker.requests > 0); }
     else assert.ok(result.workerResponses > 0);
     assert.ok(result.directEngineRequests.module > 0 && result.directEngineRequests.wasm > 0);
     if (candidate) {
       assert.deepEqual(result.engineResponses, result.directEngineRequests);
-      assert.equal(result.cases.length, repeatJobs ? protectedJobs : largeRun ? 1 : sustained ? 5 : exactAacCandidate && !compareDestinations ? 4 : 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
+      assert.equal(result.cases.length, repeatJobs ? protectedJobs : largeRun ? 1 : sustained || headerProductionDirect ? 5 : exactAacCandidate && !compareDestinations ? 4 : 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
       const successes = result.cases.filter(row => !row.fault && !row.cancel);
       assert.ok(successes.every(row => row.validation.candidateGate.passed));
       if (exactAacCandidate && !largeRun) assert.equal(successes[0].validation.outputSha256, successes[1].validation.outputSha256, "Recovery changed a deterministic output");
@@ -984,6 +1070,11 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
 
 let fixtureRuntime, toolRuntime;
 try {
+  if (headerProductionDirect) {
+    report.hostPreflight = await inspectStressHostMemory();
+    assert.equal(report.hostPreflight.safeToStart, true, "Unsafe host memory for headless Chrome test");
+    report.diskPreflight = { availableBytes: disk.bavail * disk.bsize, requiredBytes: diskRequired };
+  }
   report.originalBefore = await original(); assert.deepEqual(report.originalBefore, { bytes: 2958573265, sha256: "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" });
   const sourceFiles = ["scripts/qualify-mkv-direct-reuse.mjs", "scripts/lib/mkv-direct-reuse-overlay.mjs", "scripts/lib/private-mkv-write-reuse.ts", "scripts/lib/mkv-direct-packet-clocks.mjs", "scripts/lib/mkv-mp4-timeline-boxes.mjs",
     "scripts/lib/owned-production-test-server.mjs", "scripts/lib/owned-server-close.mjs", "scripts/lib/reliable-owned-identity.mjs", "scripts/lib/hidden-unit-subprocesses.mjs", "scripts/lib/bounded-error-details.mjs",
@@ -1013,6 +1104,9 @@ try {
   if (headerStagedIntegration) sourceFiles.push("scripts/lib/production-worker-binding.mjs", "scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file);
   if (headerStagedOriginalRepeats) sourceFiles.push("scripts/lib/mkv-header-staged-reference.mjs", headerStagedReference.file);
   if (headerStagedCachedCore) sourceFiles.push("scripts/lib/mkv-header-native-cache.mjs", ...headerNativeCodeCache.map(entry => entry.file));
+  if (headerProductionDirect) sourceFiles.push("app/converter/ConverterApp.tsx", "lib/mkv-corrected-direct-qualification.ts", "workers/mkv-corrected-direct-output.ts",
+    "scripts/lib/mkv-header-native-cache.mjs", ...headerNativeCodeCache.map(entry => entry.file),
+    "scripts/lib/production-worker-binding.mjs", "scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file);
   if (headerProtected) sourceFiles.push("scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file,
     "scripts/lib/mkv-header-protected-reference.mjs", "scripts/lib/mkv-full-video-decode.mjs", protectedCompleteVideoReference.file,
     ...headerCoreH264References.map(ref => ref.file));
@@ -1039,10 +1133,10 @@ try {
   if (!protectedMode) fixtureRuntime = await createOwnedRuntimeScratch("mkv-direct-reuse-fixture-");
   let candidate;
   if (editListCandidate) {
-    toolRuntime = await createOwnedRuntimeScratch("mkv-edit-list-tool-download-");
-    candidate = headerStagedCachedCore ? await loadQualifiedHeaderNativeCache(root)
+    if (!headerProductionDirect) toolRuntime = await createOwnedRuntimeScratch("mkv-edit-list-tool-download-");
+    candidate = headerProductionDirect ? await loadQualifiedHeaderDirectAssets(root) : headerStagedCachedCore ? await loadQualifiedHeaderNativeCache(root)
       : await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate, h264Vfr, probeDecoder, startupCore, hevcKnownDts, hevcHeaderParser);
-    if (headerStagedCachedCore) {
+    if (headerStagedCachedCore || headerProductionDirect) {
       assert.equal(candidate.proof.runId, process.argv[3]); assert.equal(candidate.proof.head, process.argv[4]);
       report.qualifiedCodeDelivery = candidate.delivery;
     }
@@ -1175,11 +1269,23 @@ try {
         outputSha256: priorCase.validation.outputSha256, exactCurrentCoreAndEveryOutputByte: true, freshSmallContentDecodeStillRequired: true };
       report.currentCoreLoopReference = baseline.productionStagedReference;
     }
-    await arm(headerStagedIntegration ? "edit-list" : "reuse", created.file, fixtureRuntime, baseline);
+    if (headerProductionDirect) {
+      assertHevcHeaderParserCore(candidate.proof);
+      const referenceBytes = await readFile(path.join(root, hevcHeaderLoopReference.file));
+      readHevcHeaderLoopReference(referenceBytes, candidate.proof);
+      const prior = JSON.parse(referenceBytes), [priorCase] = prior.arms[0].cases;
+      assert.equal(created.bytes, prior.fixture.bytes); assert.equal(report.fixture.sha256, prior.fixture.sha256);
+      baseline.reference = { ...hevcHeaderLoopReference, outputBytes: priorCase.metrics.outputBytes, outputSha256: priorCase.validation.outputSha256 };
+      report.currentCoreLoopReference = baseline.reference;
+      baseline.cancellationFixture = await createDirectPayloadCancellationFixture(fixtureRuntime);
+      report.cancellationFixture = baseline.cancellationFixture;
+    }
+    if (headerProductionDirect) await arm("production-direct", created.file, fixtureRuntime, baseline);
+    else await arm(headerStagedIntegration ? "edit-list" : "reuse", created.file, fixtureRuntime, baseline);
     assert.equal(report.arms[0].status, "passed-loop-source-fidelity-control");
     assert.equal(await hashFile(created.file), report.fixture.sha256);
     assertInstalledChromePinsEqual(await inspectInstalledChromePin(), baseline.browser);
-    report.status = headerStagedIntegration ? "passed-unmodified-production-staged-header-core-not-public-or-scale-acceptance" : "passed-loop-source-fidelity-control-not-large-file-or-public-acceptance";
+    report.status = headerProductionDirect ? "passed-unmodified-production-direct-small-not-public-or-scale-acceptance" : headerStagedIntegration ? "passed-unmodified-production-staged-header-core-not-public-or-scale-acceptance" : "passed-loop-source-fidelity-control-not-large-file-or-public-acceptance";
   } else if (complexTimeline) {
     const fixture = path.join(fixtureRuntime.directory, `${syntheticName}.mkv`), originalFixture = path.join(root, selectedComplexFixture.file);
     assert.equal((await stat(originalFixture)).size, selectedComplexFixture.bytes);
@@ -1330,7 +1436,7 @@ finally {
       assert.ok(report.arms.every(arm => arm.ownedRuntimeRemoved), "Never remove a fixture while browser ownership is unresolved");
       await fixtureRuntime.close(); report.fixtureRuntimeRemoved = true;
     } },
-    async () => { report.originalAfter = await original(); assert.deepEqual(report.originalAfter, report.originalBefore); },
+    async () => { if (!headerProductionDirect || report.originalBefore) { report.originalAfter = await original(); assert.deepEqual(report.originalAfter, report.originalBefore); } },
     async () => { for (const [file, pin] of Object.entries(report.sourcePins ?? {})) assert.equal(await hashFile(path.join(root, file)), pin); },
   ]).catch(error => { report.status = "failed-not-acceptance"; report.cleanupFailureDetails = boundedErrorDetails(error); report.failures.push(...error.errors.map(item => String(item).slice(0, 1024))); });
   const file = `${prefix}.json`; await writeFile(path.join(root, file), JSON.stringify(report, null, 2) + "\n", { flag: "wx" });

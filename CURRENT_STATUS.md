@@ -4,17 +4,39 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
-## Critical path: corrected direct-save MKV branch integrated, browser gate open
+## Critical path: corrected direct-save MKV headless control passed
+
+Three 11,894,121 B production direct-handle outputs matched the exact MP4
+and passed fresh packet/timing and full decoded video/PCM checks. Cancellation
+after 14,930,949 B on a 142,615,516 B disposable fixture and an injected
+bounded-write rejection each recovered to the exact output. Zero app staging,
+no forbidden requests or owned leftovers; `test.mkv` size/SHA-256 unchanged.
+Normal full Chrome tree: 158.699 MiB over blank across the five cases, 42.789
+MiB over loaded idle at stable cleanup; replayed 245 complete measurement rows.
+The three successful outputs used page reloads, not same-page stress repeats.
+Next: the protected-original same-page three plus one clean-session direct
+repeat gate with the identical core and unchanged whole-tree budget. Do not
+repeat the small control unchanged. No speed comparison or public promotion.
+[Passing browser report](evidence/2026-11-21T18-11-17-379Z-mkv-hevc-header-core-production-direct-small.json).
+
+### First browser attempt (retained)
+
+The first small headless run used the unmodified production worker and a real
+OPFS-backed selected handle. The 11,894,121 B MP4 matched the independently
+qualified exact output; fresh packet/timing, decoded video and PCM all passed.
+No app-managed staging. The second job outran the cancellation observer:
+the harness timed out, so that five-case run did not pass. Both owned directories were removed;
+`test.mkv` was not selected, and pre/post SHA-256 matched.
+[First browser report](evidence/2026-11-21T18-08-48-264Z-mkv-hevc-header-core-production-direct-small.json).
 
 The normal app/worker now support a localhost-only corrected `mkv-to-mp4`
 direct-handle test branch. It uses one awaited 1 MiB copy slot, preserves
 seek offsets, and aborts on failed initialization. Separate authenticated core
 URLs prevent silently using the defective published muxer; the private assets
-were not shipped and the public hold is unchanged. 37 focused checks, TypeScript,
-lint, build, and 402 public manifest entries passed. No browser run, `test.mkv`
-access, speedup or memory claim yet. Next: bind the two authenticated assets in
-a new owned browser test, prove zero application staging and exact content
-before trying the protected original. The unchanged staged failure stays failed.
+were not shipped and the public hold is unchanged. 37 focused source checks,
+TypeScript, lint, build, and 402 public manifest entries passed in the source
+cycle. No verified speedup, protected-original direct-save, or public memory
+claim. The unchanged staged failure stays failed.
 [Receipt](evidence/2026-11-21-mkv-corrected-direct-production-source.json).
 
 ## Physical MP4 timed-text offsets beyond 4 GiB verified in Chrome

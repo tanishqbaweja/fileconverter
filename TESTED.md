@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+2026-11-21 corrected direct MKV-to-MP4 **small headless production control
+PASS**. Unmodified production worker, only two authenticated private core
+assets served, real OPFS-backed selected handles and zero app-managed stage.
+Three outputs (11,894,121 B each) match the qualified full digest and fresh
+packet/clocks plus independently decoded full video and PCM. Positive-payload
+cancel at 14,930,949 B on a 142,615,516 B real fixture, rejected bounded write,
+and both recoveries passed. 256 KiB reads, at most 1 MiB writes/queue, one
+pending write, zero forbidden requests and owned leftovers. Normal whole-tree
+158.699 MiB; stable cleanup 42.789 MiB; 245 complete active samples replayed.
+`test.mkv` size/SHA-256 unchanged, not selected. Not same-page stress repeats,
+speed, manual picker, or public acceptance.
+[Report](evidence/2026-11-21T18-11-17-379Z-mkv-hevc-header-core-production-direct-small.json).
+
+2026-11-21 corrected direct MKV-to-MP4 **first small headless browser run
+incomplete**. First browser output: 11,894,121 B, exact expected whole-output
+SHA-256, independent packet/clocks and full decoded video/PCM PASS. Actual
+production worker and handle, no stage. Second 11,887,449 B input finished
+without an observed cancellable progress frame; the 20 s observer timed out.
+No cancel/recovery/write-fault pass and no cleanup-memory-gate result; observed
+whole-tree peak was 128.160 MiB over blank through the failed run. Owned
+runtime and fixtures removed; protected source size/SHA unchanged. Next
+control changes only the cancellation input extent, not the memory or fidelity
+gates. [Report](evidence/2026-11-21T18-08-48-264Z-mkv-hevc-header-core-production-direct-small.json).
+
 2026-11-21 corrected direct MKV-to-MP4 **production-source integration PASS;
 browser gate not run**. Explicit loopback direct handle, one job-owned 1 MiB
 unshared slot, >32-bit and backward writes, one pending operation, failed

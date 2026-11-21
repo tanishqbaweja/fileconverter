@@ -1,5 +1,25 @@
 # Remaining work audit
 
+2026-11-21 M-03 / M-04 / P-08 corrected production direct-save MKV **small
+headless gate closed**: real file handles, three independently validated
+exact outputs, payload cancellation on separate longer media, write
+rejection and both recoveries, zero app stage, privacy and owned teardown.
+Normal complete-tree 158.699 MiB versus 250 MiB; stable cleanup 42.789 MiB
+versus 96 MiB. Next use the protected original in distinct three same-page
+and one clean-session jobs on the unmodified production direct path. Existing
+large staged failure is unchanged; scale, matched throughput, native picker,
+and public release remain open. Do not rerun the small control unchanged.
+[Report](evidence/2026-11-21T18-11-17-379Z-mkv-hevc-header-core-production-direct-small.json).
+
+2026-11-21 M-03 / M-04 / P-08 corrected production direct-save MKV **first
+small content case verified, browser sequence not passed**. The exact
+11,894,121 B output passed full content/timing validation with zero app
+staging. The 12 MB job was too short for the positive-payload cancellation
+observer; write rejection and both recovery assertions are not yet covered
+by this run. Use a real, longer disposable input for cancellation only before
+the protected original. No public promotion, speed, or large repeat claim.
+[Report](evidence/2026-11-21T18-08-48-264Z-mkv-hevc-header-core-production-direct-small.json).
+
 2026-11-21 M-03 / M-04 / P-08 corrected direct-save MKV **integrated privately**
 in the normal production app/worker, not a replacement-worker overlay. The
 test switch requires localhost and a real direct destination; the dedicated
