@@ -121,7 +121,7 @@ try {
   const { input, ...fixture } = await createTimedTextCancellationFixture(runtime, path.join(repo, fixtureSeed), container, co64);
   report.fixtureSeed = fixtureSeed;
   report.fixture = fixture;
-  if (co64) assert.equal(fixture.physicalScale?.allSelectedCuesPhysicallyAboveFourGiB, true);
+  if (co64) assert.equal(fixture.physicalScale?.allLateSelectedCuesPhysicallyAboveFourGiB, true);
   if (co64) console.log(`Verified source bytes=${fixture.inputBytes}; start of selected cues=${fixture.physicalScale.firstCueOffset}.`);
   report.browserPin = await inspectInstalledChromePin();
   const port = await new Promise((resolve, reject) => {

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "status": "failed-native-fixture-clock-oracle-before-browser-launch",
+  "executedCommit": "3dadba8c45b1c527219ed0c306d953e83e9239c3",
+  "command": "node scripts/qualify-timed-text-webvtt.mjs --co64-mp4",
+  "report": "output/playwright/2026-11-21T17-45-14-715Z-timed-text-co64-mp4.json",
+  "reportSha256": "7fd8b3fae41363a6650596732738bc8cb6b1ff46d25ccf265a9962a01a4556db",
+  "observedNativeCue": "00:00:00.000 --> 00:00:00.300",
+  "requiredCue": "05:33:20.150 --> 05:33:20.450",
+  "browserLaunched": false,
+  "ownedScratchRemoved": true,
+  "protectedOriginalSelected": false,
+  "smallNativeControls": {
+    "failed": ["copyts", "itsoffset", "copyts plus itsoffset", "1/100, 1/1000 and 1/10000 requested subtitle encoder time bases"],
+    "nativeMuxTimeBase": "1/1000000",
+    "retained": "20 real timeline calibration cues, one per 1000 seconds, split the first long timestamp jump. FFprobe verified all 21 expected start times in the small control and FFmpeg independently returned the exact final clock.",
+    "unchangedGate": "The 6144 late payloads must still each reside beyond 4 GiB, and the exact WebVTT oracle additionally includes the leading calibration cues. No output clock normalization."
+  }
+}

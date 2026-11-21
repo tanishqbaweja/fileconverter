@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-11-21 first physical `co64` timed-text fixture attempt failed before
+Chrome: FFmpeg's native MP4 timed-text mux clipped the first long cue gap.
+Timestamp option candidates did not repair the emitted native clock; early
+calibration cues fixed the exact timestamps in a separate small control.
+The 6144 late cues still all require actual offsets beyond 4 GiB. The failed
+large fixture was removed. No unchanged replay or browser result claimed.
+[Receipt](evidence/2026-11-21-timed-text-co64-fixture-clock-failure.json).
+
 2026-11-21 combined private DOCX color, alignment and vertical formatting
 **headless production PASS**. `--color-alignment-vertical-control`, Python
 with python-docx 1.2.0. Genuine 38,168 B fixture, four exact independently

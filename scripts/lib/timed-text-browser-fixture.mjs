@@ -16,6 +16,11 @@ const CO64_MIN_OFFSET = 2 ** 32;
 const CO64_FF_LIMIT = 6 * 1024 ** 3;
 const CO64_LOOP_REPEATS = 768;
 const CO64_START_MS = 20_000_000;
+// FFmpeg's tx3g mux clock is 1/1,000,000 here. Separate genuine calibration
+// cues limit an individual early delta to ~1e9 ticks; one 5.5-hour gap was
+// actually clipped by the fixture muxer. The later 6,144 cues still ALL have
+// to live physically after the 4 GiB boundary, regardless of these markers.
+const CO64_CALIBRATION_COUNT = 20;
 
 const clock = (ms) => new Date(ms).toISOString().slice(11, 23);
 const timing = (index) => `${clock(100 + index * 100)} --> ${clock(160 + index * 100)}`;
@@ -71,10 +76,16 @@ export async function createTimedTextCancellationFixture(scratch, seed, containe
   const common = ["-hide_banner", "-loglevel", "error"];
   const decoy = path.join(scratch.directory, "timed-text-decoy.srt");
   const input = path.join(scratch.directory, TIMED_TEXT_CANCEL_INPUT_NAME.replace(/\.mp4$/, `.${container}`));
-  const decoyTiming = co64 ? `${clock(CO64_START_MS + 150)} --> ${clock(CO64_START_MS + 450)}` : "00:00:00.150 --> 00:00:00.450";
-  const selectedTiming = co64 ? index => `${clock(CO64_START_MS + 100 + index * 100)} --> ${clock(CO64_START_MS + 160 + index * 100)}` : timing;
+  const decoyTiming = "00:00:00.150 --> 00:00:00.450";
+  const markerCount = co64 ? CO64_CALIBRATION_COUNT : 0;
+  const selectedTiming = index => {
+    if (index < markerCount) return `${clock(index * 1_000_000 + 100)} --> ${clock(index * 1_000_000 + 400)}`;
+    const fileIndex = index - markerCount;
+    return co64 ? `${clock(CO64_START_MS + 100 + fileIndex * 100)} --> ${clock(CO64_START_MS + 160 + fileIndex * 100)}` : timing(fileIndex);
+  };
+  const selectedCueText = index => index < markerCount ? `Timeline calibration cue ${index + 1}` : cueText(index - markerCount);
   await writeFile(decoy, `1\n${decoyTiming.replaceAll(".", ",")}\n${DECOY_TEXT}\n\n`, { flag: "wx" });
-  const srt = Array.from({ length: CUE_COUNT }, (_, i) => `${i + 1}\n${selectedTiming(i).replaceAll(".", ",")}\n${cueText(i)}\n\n`).join("");
+  const srt = Array.from({ length: CUE_COUNT + markerCount }, (_, i) => `${i + 1}\n${selectedTiming(i).replaceAll(".", ",")}\n${selectedCueText(i)}\n\n`).join("");
   assert.ok(Buffer.byteLength(srt) < MAX_NATIVE_BYTES);
   const generationStarted = Date.now();
   nativeRun(ffmpeg, [...common, "-n", ...(co64 ? ["-stream_loop", String(CO64_LOOP_REPEATS - 1)] : []), "-i", seed, "-f", "srt", "-i", decoy, "-f", "srt", "-i", "pipe:0",
@@ -105,12 +116,14 @@ export async function createTimedTextCancellationFixture(scratch, seed, containe
     assert.ok((await lstat(decoyCopy)).size < 4096);
     decoyText = await readFile(decoyCopy, "utf8");
     const { packets } = JSON.parse(nativeRun(ffprobe, ["-v", "error", "-select_streams", "s:1", "-show_packets",
-      "-show_entries", "packet=pos,size", "-of", "json", input], scratch, undefined, 180_000));
+      "-show_entries", "packet=pos,size,pts_time", "-of", "json", input], scratch, undefined, 180_000));
     const visible = packets.filter(packet => Number(packet.size) > 2);
-    assert.equal(visible.length, CUE_COUNT);
-    const firstCueOffset = Math.min(...visible.map(packet => Number(packet.pos)));
-    const lastCueEnd = Math.max(...visible.map(packet => Number(packet.pos) + Number(packet.size)));
-    assert.ok(firstCueOffset >= CO64_MIN_OFFSET && lastCueEnd <= info.size, "Every real selected cue must physically follow the 4 GiB boundary");
+    assert.equal(visible.length, CUE_COUNT + markerCount);
+    const late = visible.slice(markerCount);
+    for (const [index, packet] of late.entries()) assert.equal(Number(packet.pts_time), (CO64_START_MS + 100 + index * 100) / 1000);
+    const firstCueOffset = Math.min(...late.map(packet => Number(packet.pos)));
+    const lastCueEnd = Math.max(...late.map(packet => Number(packet.pos) + Number(packet.size)));
+    assert.ok(firstCueOffset >= CO64_MIN_OFFSET && lastCueEnd <= info.size, "Every late selected cue must physically follow the 4 GiB boundary");
     // FFprobe's declared video sample count proves the whole native loop was
     // muxed. Four-GiB padding, sparse-file tricks and file-size truncation
     // cannot provide this exact count from the source's 288 HEVC frames.
@@ -118,14 +131,15 @@ export async function createTimedTextCancellationFixture(scratch, seed, containe
     assert.equal(videoFrames, CO64_LOOP_REPEATS * 288);
     const hash = createHash("sha256");
     for await (const data of createReadStream(input, { highWaterMark: 1048576 })) hash.update(data);
-    physicalScale = { loops: CO64_LOOP_REPEATS, videoFrames, firstCueOffset, lastCueEnd, allSelectedCuesPhysicallyAboveFourGiB: true,
+    physicalScale = { loops: CO64_LOOP_REPEATS, videoFrames, firstCueOffset, lastCueEnd, timelineCalibrationCues: markerCount,
+      lateCueCount: CUE_COUNT, allLateSelectedCuesPhysicallyAboveFourGiB: true,
       sourceSha256: hash.digest("hex"), generationElapsedMs, browserReencodedVideo: false, protectedOriginalSelected: false };
   } else {
     const decode = i => nativeRun(ffmpeg, [...common, "-i", input, ...srtOutput(i, "pipe:1")], scratch);
     decoyText = decode(0); selectedText = decode(1);
   }
   const decoyOracle = decodedCueOracle(decoyText, 1, () => decoyTiming, () => DECOY_TEXT);
-  const expected = decodedCueOracle(selectedText, CUE_COUNT, selectedTiming, cueText);
+  const expected = decodedCueOracle(selectedText, CUE_COUNT + markerCount, selectedTiming, selectedCueText);
   assert.ok(expected.bytes > 1_048_576 && expected.bytes <= MAX_NATIVE_BYTES && expected.sha256 !== decoyOracle.sha256);
   return { input, inputBytes: info.size, container, majorBrand, trackIds, selectedTrackId: trackIds[1], expected, decoyOracle,
     ...(physicalScale ? { physicalScale } : {}),
