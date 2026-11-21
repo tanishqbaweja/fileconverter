@@ -19,6 +19,7 @@ import {
   DEFAULT_VIDEO_CONVERSION_OPTIONS,
 } from "../lib/media-conversion-options";
 import { MPEG2_JOB_PROFILE, estimateMpeg2StageBytes } from "../lib/mpeg2-stage-policy";
+import { isTimedTextQualification, requirePrivateTimedTextSelection } from "../lib/timed-text-qualification";
 import { isVpxDecoderProfile, validateVpxVideoOptions, assertVpxSource, estimateVpxStageBytes } from "../lib/vpx-decoder-policy";
 import type { VpxDecoderCore } from "./vpx-core-loader";
 import type { StagedCopyHandoff } from "../lib/staged-copy-protocol";
@@ -4180,6 +4181,10 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
   try {
     const isMpeg2Job = profileId === MPEG2_JOB_PROFILE;
     const isVpxJob = isVpxDecoderProfile(profileId);
+    const isTimedTextJob = isTimedTextQualification(profileId);
+    const timedTextTrackId = isTimedTextJob
+      ? requirePrivateTimedTextSelection(workerScope.location.hostname, message.timedTextTrackId, message.destination.mode)
+      : undefined;
     let vpxDecoderCore: VpxDecoderCore | undefined;
     let mpeg2SplitCore: Mpeg2SplitCore | undefined;
     let requiredScratchBytes: number | undefined;
@@ -4443,7 +4448,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "zip-to-tar-xz"
           ? ARCHIVE_WASM_WRITE_CHUNK
           : MAX_WRITE_CHUNK,
-        profileId === "avi-to-flv" || profileId === "mkv-to-mp4" || profileId === "docx-to-html",
+        profileId === "avi-to-flv" || profileId === "mkv-to-mp4" || profileId === "docx-to-html" || isTimedTextJob,
       );
     }
     if (profileId === "svg-to-png") {
@@ -4723,6 +4728,22 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         progress: (phase) =>
           emitProgress(jobId, phase, metrics, startedAt),
       });
+    } else if (timedTextTrackId !== undefined) {
+      const { runIsoTimedTextToWebVtt, TIMED_TEXT_WRITE_BYTES } = await import("./iso-timed-text-webvtt");
+      const subtitleDestination = destination.writable;
+      await runIsoTimedTextToWebVtt({
+        size: file.size,
+        assertActive,
+        warn: message => post({ type: "warning", jobId, message }),
+        async read(position, length) {
+          const bytes = new Uint8Array(await file.slice(position, position + length).arrayBuffer());
+          metrics.inputBytes += bytes.byteLength;
+          metrics.maxReadChunkBytes = Math.max(metrics.maxReadChunkBytes, bytes.byteLength);
+          emitProgress(jobId, "Reading the selected subtitle track", metrics, startedAt);
+          return bytes;
+        },
+        write: chunk => writeBounded(subtitleDestination, chunk, jobId, "Writing WebVTT", metrics, startedAt, true, TIMED_TEXT_WRITE_BYTES),
+      }, timedTextTrackId);
     } else if (profileId === "docx-to-txt" || profileId === "docx-to-html") {
       const documentDestination = destination.writable;
       // A row-span patch moves the underlying writer's cursor. Append from

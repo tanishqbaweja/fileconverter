@@ -1,3 +1,5 @@
+import { TIMED_TEXT_QUALIFICATION_INPUTS } from "./timed-text-qualification.ts";
+
 export type EngineId =
   | "compression-stream"
   | "bzip2-wasm"
@@ -6380,7 +6382,18 @@ export const privateQualificationProfiles: readonly ConversionProfile[] = [{
     "Output is static HTML with escaped document text/validated link attributes and restrictive CSP; no source scripts, CSS or automatically loaded external resources are emitted. Navigation links have no-referrer/noopener protections; following an external link is a separate user action.",
   ],
   maxTestedBytes: null, automatedTestStatus: "pending", public: false,
-}];
+}, ...TIMED_TEXT_QUALIFICATION_INPUTS.map((input): ConversionProfile => ({
+  id: `${input}-to-vtt`, input, output: "vtt", engine: "subtitle-stream", route: "stream",
+  browserRequirements: ["Web Workers", "File System Access"],
+  cpuClass: "low", memoryClass: "bounded-low",
+  metadataLimitations: [
+    "Local qualification only. Choose one timed-text track per file; video, audio, other subtitle tracks, language tags and default/forced dispositions are not written to the WebVTT sidecar.",
+  ],
+  fidelityLimitations: [
+    "Preserves cue text and timestamps rounded to WebVTT milliseconds from a non-fragmented tx3g track. Styles, fonts, positioning and modifiers are omitted. Unsupported edit lists, external/encrypted references and fragmented input are rejected.",
+  ],
+  maxTestedBytes: null, automatedTestStatus: "pending", public: false,
+}))];
 
 export function isPublishedProfile(profile: ConversionProfile): boolean {
   return profile.public && profile.automatedTestStatus === "passed" && !profile.publicationHold;

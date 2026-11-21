@@ -255,6 +255,14 @@ The planner distinguishes an unsupported Matroska timed-text copy, a
 subtitle that still needs native verification, and existing profiles that
 exclude subtitles. No new subtitle conversion route is advertised.
 
+Local qualification can extract one explicitly selected `tx3g` track
+from non-fragmented MP4, MOV or 3GP as a standalone WebVTT. The app shows
+only unambiguous track IDs and doesn't guess which language to extract.
+Cue text and timing are retained; styling, positioning and language or
+default/forced metadata are not copied. Native browser destination and
+memory qualification remain open. See
+`evidence/2026-11-21-timed-text-private-integration.json`.
+
 ## Tested storage-error recovery
 
 A real production-browser FLAC-to-Opus test exhausted a deliberately limited

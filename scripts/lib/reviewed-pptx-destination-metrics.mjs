@@ -2,6 +2,7 @@
 // Unknown edits still fail closed; this helper never enters the application.
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { preTimedTextIntegration } from "./reviewed-timed-text-integration.mjs";
 
 export const prePptxMetricWorkerSha256 = "57b9f4b9edeb981d9d267e8e2892d89007c114fb999708aff2407311b0147ce9";
 export const postPptxMetricWorkerSha256 = "b1043f246fb570c84f50f21fa1b5b6a4a6dd23a7240ee0c6fe2f0ab866825dd0";
@@ -29,6 +30,7 @@ const docxPatch = `        patch: (position, chunk, phase) =>
           patchBounded(documentDestination, position, chunk, jobId, phase, metrics, startedAt),
 `;
 export function preDocxRowspanWorker(bytes) {
+  bytes = preTimedTextIntegration("workers/conversion.worker.ts", bytes);
   if (sha(bytes) !== "893908859d5098d7e2078d2ae8e4231e1b6b7ba199dac9126d8cf8a5c761dbe5") return bytes;
   const current = bytes.toString("utf8");
   let old = current;

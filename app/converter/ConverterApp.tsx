@@ -6,6 +6,7 @@ import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinat
 import { createVpxCompiledCoreSlot } from "../../lib/vpx-compiled-core";
 import { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";
 import { MPEG2_JOB_PROFILE } from "../../lib/mpeg2-stage-policy";
+import { isTimedTextQualification, timedTextTrackChoices, TIMED_TEXT_QUALIFICATION_INPUTS } from "../../lib/timed-text-qualification";
 import { runMpeg2QualificationJob, validateMpeg2QualificationRequest, type Mpeg2QualificationResult } from "../../lib/mpeg2-qualification-job";
 import { isVpxDecoderProfile } from "../../lib/vpx-decoder-policy";
 import { runVpxQualificationJob, validateVpxQualificationRequest } from "../../lib/vpx-qualification-job";
@@ -131,6 +132,7 @@ interface ActiveBatch {
   testFault?: TestFault;
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
+  timedTextTrackId?: number;
   runId: string;
   index: number;
   opfsNames: string[];
@@ -387,6 +389,8 @@ export function ConverterApp() {
   });
   const [sourceMediaInspection, setSourceMediaInspection] =
     useState<MediaSourceInspection | null>(null);
+  const [timedTextSource, setTimedTextSource] = useState<{ file: File; choices: ReturnType<typeof timedTextTrackChoices> } | null>(null);
+  const [timedTextSelection, setTimedTextSelection] = useState<{ file: File; id: number } | null>(null);
   const [sourceStructuredInspection, setSourceStructuredInspection] =
     useState<StructuredSourceInspection | null>(null);
   const [sourceImageInspection, setSourceImageInspection] =
@@ -468,6 +472,10 @@ export function ConverterApp() {
     () => profiles.find((profile) => profile.id === profileId) ?? null,
     [profileId, profiles],
   );
+  const isTimedTextJob = testMode && isTimedTextQualification(selectedProfile?.id);
+  const timedTextChoices = timedTextSource && timedTextSource.file === file ? timedTextSource.choices : [];
+  const selectedTimedTextTrackId = isTimedTextJob && timedTextSelection && timedTextSelection.file === file &&
+    timedTextChoices.some(choice => choice.id === timedTextSelection.id) ? timedTextSelection.id : undefined;
   const svgRasterizationWithheld = inputFormat === "svg" && !testMode &&
     !profiles.some((profile) => profile.id === "svg-to-png");
   const temporarilyWithheldProfiles = useMemo(
@@ -511,6 +519,8 @@ export function ConverterApp() {
       await Promise.resolve();
       if (cancelled) return;
       setSourceMediaInspection(null);
+      setTimedTextSource(null);
+      setTimedTextSelection(null);
       setSourceStructuredInspection(null);
       setSourceImageInspection(null);
       setSourcePackageInspection(null);
@@ -530,6 +540,8 @@ export function ConverterApp() {
         ]);
         if (cancelled) return;
         setSourceMediaInspection(inspection);
+        if (testMode && inspection?.streams && TIMED_TEXT_QUALIFICATION_INPUTS.some(format => format === inputFormat))
+          setTimedTextSource({ file, choices: timedTextTrackChoices(inspection.streams) });
         setSourceStructuredInspection(structuredInspection);
         setSourceImageInspection(imageInspection);
         setSourcePackageInspection(packageInspection);
@@ -567,7 +579,7 @@ export function ConverterApp() {
       cancelled = true;
       inspectionAbortController.abort();
     };
-  }, [batchFiles.length, file, inputFormat, profiles]);
+  }, [batchFiles.length, file, inputFormat, profiles, testMode]);
 
   useEffect(() => {
     let disposed = false;
@@ -675,6 +687,7 @@ export function ConverterApp() {
         destination,
         audioOptions: batch.audioOptions,
         videoOptions: batch.videoOptions,
+        ...(batch.timedTextTrackId !== undefined ? { timedTextTrackId: batch.timedTextTrackId } : {}),
         cancellationBuffer,
         testFault: batch.testFault,
       };
@@ -1199,6 +1212,10 @@ export function ConverterApp() {
     const worker = workerRef.current;
     if (!file || !selectedProfile || !worker || !beginBatchItemRef.current) return;
     const files = batchFiles.length ? batchFiles : [file];
+    if (isTimedTextJob && (files.length !== 1 || selectedTimedTextTrackId === undefined)) {
+      setError("Choose one MPEG-4 Timed Text track from one source file.");
+      return;
+    }
 
     if (!testMode) {
       if (files.length > 1 && !destinationDirectoryHandle) {
@@ -1238,6 +1255,7 @@ export function ConverterApp() {
       videoOptions: videoEncodingOptionsEnabled
         ? { ...videoOptions }
         : undefined,
+      ...(selectedTimedTextTrackId !== undefined ? { timedTextTrackId: selectedTimedTextTrackId } : {}),
       outputNames: batchOutputNames(files, selectedProfile),
       destinationHandle,
       destinationDirectoryHandle: testDirectoryMode || (testMode && selectedProfile.id === MPEG2_JOB_PROFILE)
@@ -1309,7 +1327,9 @@ export function ConverterApp() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const currentFileProgress = file
+  const currentFileProgress = isTimedTextJob
+    ? jobState === "complete" ? 100 : 0
+    : file
     ? Math.min(100, ((metrics?.inputBytes ?? 0) / Math.max(1, file.size)) * 100)
     : 0;
   const progress =
@@ -1329,6 +1349,7 @@ export function ConverterApp() {
       ? metrics.inputBytes / (metrics.elapsedMs / 1000)
       : 0;
   const estimatedRemainingMs =
+    !isTimedTextJob &&
     file &&
     metrics &&
     throughput > 0 &&
@@ -2306,6 +2327,26 @@ export function ConverterApp() {
                 </fieldset>
               ) : null}
 
+              {isTimedTextJob ? (
+                <fieldset className="conversion-plan">
+                  <legend>MPEG-4 Timed Text track</legend>
+                  {batchFiles.length !== 1 ? <p>Choose one source file for subtitle extraction.</p>
+                    : sourceInspectionStatus === "inspecting" ? <p>Inspecting subtitle tracks…</p>
+                    : timedTextChoices.length ? (
+                      <label>
+                        <span>Track to extract</span>
+                        <select data-testid="timed-text-track-select" value={selectedTimedTextTrackId ?? ""}
+                          disabled={jobState === "running"}
+                          onChange={event => setTimedTextSelection(file && event.target.value
+                            ? { file, id: Number(event.target.value) } : null)}>
+                          <option value="">Choose a track</option>
+                          {timedTextChoices.map(choice => <option key={choice.id} value={choice.id}>{choice.label}</option>)}
+                        </select>
+                      </label>
+                    ) : <p>No selectable MPEG-4 Timed Text track was found in the bounded source scan.</p>}
+                </fieldset>
+              ) : null}
+
               {mediaConversionPlan ? (
                 <section
                   className="conversion-plan"
@@ -2524,6 +2565,7 @@ export function ConverterApp() {
                   onClick={startConversion}
                   disabled={
                     !selectedProfile ||
+                    (isTimedTextJob && (batchFiles.length !== 1 || selectedTimedTextTrackId === undefined)) ||
                     (mediaProfile && sourceInspectionStatus === "inspecting") ||
                     Boolean(mediaConversionPlan?.blockingReasons.length) ||
                     (!testMode &&

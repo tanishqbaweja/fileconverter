@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-11-21 localhost timed-text sidecar integration: genuine MP4/MOV/3GP
+fixtures exercised the bundled worker's message dispatch, real source
+reads, exact text/timing and bounded writes (975/999/967 B reads and
+125 B outputs). Bounded source choices matched native track IDs [3, 4].
+Node destination double proved unknown-track abort, real-write fault and
+after-write cancellation do not commit; nonlocal and missing-ID requests
+never open a destination; same-worker recovery was exact.
+507/507 affected portable checks across 81 files, build/TS/lint and 402
+public evidence entries pass. Historical pins still require exact preimages.
+All scratch removed; browser destination/selector and memory not exercised.
+`evidence/2026-11-21-timed-text-private-integration.json`.
+
 2026-11-21 bounded timed-text extraction engine: native tools generated and
 independently decoded three real MP4/MOV/3GP fixtures with distinguishable
 first/second `tx3g` tracks. Direct worker implementation used 967–999 input

@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "status": "private-localhost-timed-text-app-and-worker-integrated-browser-gate-open",
+  "requirementIds": [
+    "M-03",
+    "N-07"
+  ],
+  "baseCommit": "c02444cfe0098e10c95317723945a1dfc136ca2e",
+  "sourceSha256": {
+    "app/converter/ConverterApp.tsx": "b76d1b77bad41f5fe1a27dff1c6de35764d8f96f49046a18fb3667c2c05faf93",
+    "workers/conversion.worker.ts": "08ea18dacc94cc5c01e25a9bd5347777f708039259dc22ccddf14c3d4dba0c83",
+    "workers/iso-timed-text-webvtt.ts": "ffd961199ef0e306d5723ba618a96cfca3e410ded33d88b67e57780f81944150",
+    "lib/capability-registry.ts": "bf2b92240bca3f400181e8871ac48bfd37dfeb5b0c3d366b65affe972d42468a",
+    "lib/conversion-protocol.ts": "f94eea35a6278bd1e12c7cd512688daca3c5246be7e0a185eb10309a7be39d0b",
+    "lib/media-source-inspection.ts": "d51fea54af6b29cc26ffc2887b39ec95c4cdd8768f6a56416ba9920e0df698ec",
+    "lib/timed-text-qualification.ts": "13217256456dfa6a2c934218a4b260109480443cb55bc68f07a545c515dfea3a",
+    "scripts/check-iso-timed-text-webvtt.mjs": "89aa9a1022d5e0f8ba8a287cb037e1c34d973297cfdfb4dce3762a303ca49881",
+    "scripts/lib/iso-timed-text-worker-control.mjs": "651ce2d1d450375c805cc6670f8a3092149a136fe80508de177540743653ab8d",
+    "scripts/lib/reviewed-timed-text-integration.mjs": "8b825960ce53eb4d652fd5719fff38e9e8233f8d620ee682edb2a963c2991b13",
+    "tests/timed-text-qualification-integration.test.mjs": "20415712a28e2099aac02f8f42fea2ba69dad8df74e0e03c20cb1dddc85904cc",
+    "tests/media-track-language.test.mjs": "fb2155acbb5ea678f483db8d5799f27729b2022c0e9524bc18d43e2fd280818c"
+  },
+  "profileIds": [
+    "mp4-to-vtt",
+    "mov-to-vtt",
+    "3gp-to-vtt"
+  ],
+  "publicRouteChanged": false,
+  "privateUi": "Single-source selector binds the explicitly chosen, unique on-disk track ID to the checked File; no default track or heterogeneous batch selection.",
+  "workerBoundary": "Private routes refuse non-loopback requests, missing or invalid track IDs and staged handles before destination open. Valid direct requests reuse existing asynchronous commit/abort and bounded queued writes.",
+  "command": "node scripts/check-iso-timed-text-webvtt.mjs --worker-integration",
+  "nativeComparisonAndWorkerDouble": {
+    "version": "ffprobe version N-122712-g7e3781e3ca-20260211 Copyright (c) 2007-2026 the FFmpeg developers",
+    "cases": [
+      {
+        "format": "mp4",
+        "fileBytes": 338591,
+        "sourcePanelOfferedTrackIds": [
+          3,
+          4
+        ],
+        "selectedTrackId": 4,
+        "outputBytes": 125,
+        "outputSha256": "d8348e771e9795b68af6bf7df98551a108211408e7e3fbeb5a932212753d7357",
+        "exactNativeCueComparison": true,
+        "metrics": {
+          "inputBytes": 975,
+          "outputBytes": 125,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 125,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 41,
+          "maxWriteChunkBytes": 125,
+          "elapsedMs": 2.8658000000000357,
+          "wasmMemoryBytes": 0,
+          "peakWasmMemoryBytes": 0,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 0,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0
+        },
+        "adverse": [
+          {
+            "kind": "remote-origin",
+            "terminal": "error",
+            "previousUnchanged": true,
+            "opened": 0,
+            "closed": 0,
+            "aborted": 0,
+            "writes": 0,
+            "errorMessage": "Timed-text WebVTT extraction is restricted to local qualification."
+          },
+          {
+            "kind": "missing-track",
+            "terminal": "error",
+            "previousUnchanged": true,
+            "opened": 0,
+            "closed": 0,
+            "aborted": 0,
+            "writes": 0,
+            "errorMessage": "Choose an explicit MPEG-4 Timed Text track."
+          },
+          {
+            "kind": "unknown-track",
+            "terminal": "error",
+            "previousUnchanged": true,
+            "opened": 1,
+            "closed": 0,
+            "aborted": 1,
+            "writes": 0,
+            "errorMessage": "Timed-text extraction: no matching tx3g subtitle track."
+          },
+          {
+            "kind": "destination-fault",
+            "terminal": "error",
+            "previousUnchanged": true,
+            "opened": 1,
+            "closed": 0,
+            "aborted": 1,
+            "writes": 1,
+            "errorMessage": "The destination rejected a bounded write."
+          },
+          {
+            "kind": "cancel-after-actual-write-to-double",
+            "terminal": "cancelled",
+            "previousUnchanged": true,
+            "opened": 1,
+            "closed": 0,
+            "aborted": 1,
+            "writes": 1
+          },
+          {
+            "kind": "same-worker-exact-recovery",
+            "sha256": "d8348e771e9795b68af6bf7df98551a108211408e7e3fbeb5a932212753d7357",
+            "terminal": "complete"
+          }
+        ]
+      },
+      {
+        "format": "mov",
+        "fileBytes": 338690,
+        "sourcePanelOfferedTrackIds": [
+          3,
+          4
+        ],
+        "selectedTrackId": 4,
+        "outputBytes": 125,
+        "outputSha256": "d8348e771e9795b68af6bf7df98551a108211408e7e3fbeb5a932212753d7357",
+        "exactNativeCueComparison": true,
+        "metrics": {
+          "inputBytes": 999,
+          "outputBytes": 125,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 125,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 41,
+          "maxWriteChunkBytes": 125,
+          "elapsedMs": 0.8752999999999247,
+          "wasmMemoryBytes": 0,
+          "peakWasmMemoryBytes": 0,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 0,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0
+        },
+        "adverse": []
+      },
+      {
+        "format": "3gp",
+        "fileBytes": 338414,
+        "sourcePanelOfferedTrackIds": [
+          3,
+          4
+        ],
+        "selectedTrackId": 4,
+        "outputBytes": 125,
+        "outputSha256": "d8348e771e9795b68af6bf7df98551a108211408e7e3fbeb5a932212753d7357",
+        "exactNativeCueComparison": true,
+        "metrics": {
+          "inputBytes": 967,
+          "outputBytes": 125,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 125,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 41,
+          "maxWriteChunkBytes": 125,
+          "elapsedMs": 0.7820999999999003,
+          "wasmMemoryBytes": 0,
+          "peakWasmMemoryBytes": 0,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 0,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0
+        },
+        "adverse": []
+      }
+    ],
+    "browserLaunched": false,
+    "privateWorkerDispatchVerifiedInNode": true,
+    "destinationBackend": "transactional test double, no browser storage",
+    "scratchRemoved": true,
+    "playerRenderingVerified": false
+  },
+  "actualBrowserFileSystemAccessVerified": false,
+  "headlessBrowserLaunched": false,
+  "systemDriveFreeBytes": 0,
+  "protectedOriginalRead": false,
+  "disposableArtifactsRemoved": true,
+  "verification": {
+    "affectedPortableFiles": 81,
+    "checksPassed": 507,
+    "checksFailed": 0,
+    "checksSkipped": 0,
+    "typescriptPassed": true,
+    "affectedLintPassed": true,
+    "productionBuildPassed": true,
+    "publicEvidenceEntriesMatched": 402,
+    "priorChecks": [
+      "The new worker module was missing from the lifecycle inventory; added it without relaxing retained-state checks.",
+      "Older source witnesses require their exact archived bytes. The historical adapter authenticates both old and changed digests; live integration is tested directly.",
+      "Adding three tkhd fields makes the synthetic header-read witness exactly 602 bytes, still with no media-payload reads."
+    ]
+  },
+  "goalComplete": false,
+  "nextAction": "Prepare and run a headless production-browser qualification with real OPFS-backed or user-selected handles, same-page repeats, local-only/route privacy, cancellation, write fault/recovery and the full-process-tree 250 MiB gate. Do not repeat this worker-double control unchanged or promote before browser proof."
+}

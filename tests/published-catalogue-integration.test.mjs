@@ -9,9 +9,11 @@ import ts from "typescript";
 import { build } from "esbuild";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 import { readPreCatalogueUi } from "./helpers/historical-published-ui.mjs";
+import { preTimedTextIntegration } from "../scripts/lib/reviewed-timed-text-integration.mjs";
 
 const normalize = text => text.replaceAll("\r\n", "\n");
 const app = normalize(await readFile("app/converter/ConverterApp.tsx", "utf8"));
+const codeOwnerApp = normalize(preTimedTextIntegration("app/converter/ConverterApp.tsx", Buffer.from(app)).toString());
 const oldApp = normalize(await readPreCatalogueUi("app/converter/ConverterApp.tsx"));
 const component = normalize(await readFile("app/converter/PublishedFormatsCatalogue.tsx", "utf8"));
 const oldComponent = normalize(await readPreCatalogueUi("app/converter/PublishedFormatsCatalogue.tsx"));
@@ -95,7 +97,7 @@ test("current application mounts the bounded component with explicit lifecycle a
     ['      workerRef.current?.terminate();\n      staticCodeSlot.dispose();\n      mpeg2CodeSlot.dispose();\n      workerRef.current = null;',
       '      workerRef.current?.terminate();\n      workerRef.current = null;'],
   ];
-  let withoutCodeOwner = app;
+  let withoutCodeOwner = codeOwnerApp;
   for (const [current, historical] of codeOwnerEdits) {
     assert.equal(withoutCodeOwner.split(current).length, 2, "Unique exact code-owner hunk");
     withoutCodeOwner = withoutCodeOwner.replace(current, historical);
@@ -105,7 +107,7 @@ test("current application mounts the bounded component with explicit lifecycle a
     assert.equal(reconstructed.split(historical).length, 2, "Unique exact reverse code-owner hunk");
     reconstructed = reconstructed.replace(historical, current);
   }
-  assert.equal(reconstructed, app);
+  assert.equal(reconstructed, codeOwnerApp);
   const begin = oldApp.indexOf("  // The compiled registry is immutable; progress must not rebuild its static display.");
   const end = oldApp.indexOf("\n  return (\n    <main>", begin);
   assert.ok(begin > 0 && end > begin);

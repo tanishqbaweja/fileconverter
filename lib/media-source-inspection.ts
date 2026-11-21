@@ -25,6 +25,8 @@ const MAX_TRACK_LANGUAGES_IN_SUMMARY = 16;
 export interface SourceStreamInspection {
   mediaType: "audio" | "video" | "subtitle";
   codec: string;
+  /** On-disk ISO-BMFF track ID, not the stream's display position. */
+  isoTrackId?: number;
   /** Container sample framing, not proof of a raw cross-container codec. */
   isoSubtitleSampleEntry?: "tx3g" | "wvtt" | "stpp";
   /** Declared header language, when available; not an output-preservation guarantee. */
@@ -1581,6 +1583,7 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
     streams.push({
       mediaType,
       codec,
+      ...(track.trackId ? { isoTrackId: track.trackId } : {}),
       ...(mediaType === "subtitle" && subtitle ? { isoSubtitleSampleEntry: subtitle } : {}),
       ...(languageTag ? { languageTag } : {}),
       durationSeconds,

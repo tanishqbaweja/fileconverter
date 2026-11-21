@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-21 M-03 / N-07 timed-text → WebVTT integrated in local qualification
+only. Explicit source-bound track IDs, one file, loopback-only worker,
+bounded reads/writes and existing destination close/abort. Genuine MP4,
+MOV and 3GP fixtures exercised bundled worker jobs in Node with a
+transactional test double; text/timing, bad selection, write failure,
+cancellation and exact recovery passed. 507 affected portable tests, build,
+TS, lint and 402-entry audit pass. Real browser storage/selector/repeats,
+privacy, whole-process memory and public qualification remain open.
+Receipt: `evidence/2026-11-21-timed-text-private-integration.json`.
+
 2026-11-21 M-03 / N-07 bounded actual `tx3g` → WebVTT engine implemented,
 outside the registry. Genuine two-track MP4/MOV/3GP fixtures each produced
 two Unicode cue texts and clocks exactly matching independent FFmpeg decode.

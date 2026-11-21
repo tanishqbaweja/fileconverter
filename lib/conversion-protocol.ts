@@ -108,6 +108,8 @@ export interface StartConversionMessage {
     | { mode: "opfs-test"; name: string };
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
+  /** Explicit on-disk track ID for localhost ISO timed-text qualification. */
+  timedTextTrackId?: number;
   /** Coordinator-owned static code only; never caller-provided user data. */
   vpxCompiledCore?: VpxCompiledCore;
   /** Coordinator-owned immutable MPEG-2 code pair, never caller media/state. */

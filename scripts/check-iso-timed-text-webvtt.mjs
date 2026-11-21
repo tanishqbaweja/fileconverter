@@ -3,14 +3,20 @@ import "./lib/hidden-unit-subprocesses.mjs";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { lstat, open, writeFile } from "node:fs/promises";
+import { lstat, open, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { runIsoTimedTextToWebVtt } from "../workers/iso-timed-text-webvtt.ts";
+import { loadTimedTextWorkerControl } from "./lib/iso-timed-text-worker-control.mjs";
+import { inspectMediaSource } from "../lib/media-source-inspection.ts";
+import { timedTextTrackChoices } from "../lib/timed-text-qualification.ts";
 
 const ffmpeg = process.env.WITHIN_FFMPEG_EXECUTABLE ?? "ffmpeg";
 const ffprobe = process.env.WITHIN_FFPROBE_EXECUTABLE ?? "ffprobe";
 const repo = path.resolve(import.meta.dirname, "..");
+const integrated = process.argv[2] === "--worker-integration";
+assert.equal(process.argv.length, integrated ? 3 : 2);
+const worker = integrated ? await loadTimedTextWorkerControl(repo) : null;
 const source = path.join(repo, "fixtures/media/quicktime-source.mov");
 const scratch = await createOwnedRuntimeScratch("timed-text-vtt-preflight-");
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
@@ -26,7 +32,10 @@ const parseNativeSrt = text => text.trim().split(/\r?\n\r?\n/).map(block => {
   const [id, timing, ...payload] = block.split(/\r?\n/);
   assert.match(id, /^\d+$/);
   assert.match(timing, /^\d\d:\d\d:\d\d,\d{3} --> \d\d:\d\d:\d\d,\d{3}$/);
-  return { timing: timing.replaceAll(",", "."), text: payload.join("\n") };
+  // FFmpeg may wrap a generated cue in default srt font tags. Compare the
+  // text/timing layer only, without stripping arbitrary cue markup.
+  const plain = payload.join("\n").replace(/<\/?font(?: (?:face|size|color)="(?:Serif|18|0|#000000)")*>/g, "");
+  return { timing: timing.replaceAll(",", "."), text: plain };
 });
 const parseVtt = bytes => {
   const text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
@@ -62,6 +71,50 @@ try {
       { timing: "00:00:00.100 --> 00:00:00.500", text: "Première ligne 世界\nSecond line 😀" },
       { timing: "00:00:00.900 --> 00:00:01.300", text: "Next & cue" },
     ]);
+    if (worker) {
+      const stat = await lstat(input);
+      assert.ok(stat.isFile() && stat.size <= 1_048_576);
+      const file = new File([await readFile(input)], "static-generated." + format);
+      const inspection = await inspectMediaSource(file, format);
+      const choices = timedTextTrackChoices(inspection?.streams ?? []);
+      assert.deepEqual(choices.map(choice => choice.id), streams.map(stream => Number(stream.id)));
+      const request = { file, format, trackId: choices[1].id };
+      const successful = await worker(request);
+      assert.equal(successful.terminal.type, "complete");
+      assert.deepEqual(parseVtt(successful.committed), proof);
+      assert.deepEqual([successful.opened, successful.closed, successful.aborted], [1, 1, 0]);
+      const metrics = successful.terminal.metrics;
+      assert.equal(metrics.outputBytes, successful.committed.length);
+      assert.ok(metrics.inputBytes < 4096);
+      assert.ok(metrics.maxReadChunkBytes <= 131072 && metrics.maxWriteChunkBytes <= 65536);
+      assert.equal(metrics.peakPendingOperations, 1);
+      const adverse = [];
+      if (format === "mp4") {
+        for (const [kind, changes, expectedType, opened, aborted] of [
+          ["remote-origin", { hostname: "example.invalid" }, "error", 0, 0],
+          ["missing-track", { trackId: undefined }, "error", 0, 0],
+          ["unknown-track", { trackId: 99999 }, "error", 1, 1],
+          ["destination-fault", { fault: "write" }, "error", 1, 1],
+          ["cancel-after-actual-write-to-double", { cancel: true }, "cancelled", 1, 1],
+        ]) {
+          const stopped = await worker({ ...request, ...changes });
+          assert.equal(stopped.terminal.type, expectedType, kind);
+          assert.deepEqual([stopped.opened, stopped.closed, stopped.aborted], [opened, 0, aborted], kind);
+          assert.equal(stopped.previousUnchanged, true, kind);
+          assert.equal(stopped.terminal.metrics.pendingOperations, 0);
+          if (kind === "destination-fault" || kind.startsWith("cancel")) assert.equal(stopped.writes, 1);
+          adverse.push({ kind, ...stopped, committed: undefined, errorMessage: stopped.terminal.message,
+            terminal: stopped.terminal.type });
+        }
+        const recovery = await worker(request);
+        assert.equal(recovery.terminal.type, "complete");
+        assert.equal(sha(recovery.committed), sha(successful.committed));
+        adverse.push({ kind: "same-worker-exact-recovery", sha256: sha(recovery.committed), terminal: recovery.terminal.type });
+      }
+      cases.push({ format, fileBytes: stat.size, sourcePanelOfferedTrackIds: choices.map(choice => choice.id), selectedTrackId: id, outputBytes: successful.committed.length,
+        outputSha256: sha(successful.committed), exactNativeCueComparison: true, metrics, adverse });
+      continue;
+    }
     const file = await open(input, "r");
     try {
       const stat = await file.stat(), chunks = [], warnings = [];
@@ -97,5 +150,7 @@ try {
   }
 } finally { await scratch.close(); }
 await assert.rejects(lstat(scratch.directory), { code: "ENOENT" });
-console.log(JSON.stringify({ version, cases, browserLaunched: false, productRouteRegistered: false,
+console.log(JSON.stringify({ version, cases, browserLaunched: false,
+  ...(integrated ? { privateWorkerDispatchVerifiedInNode: true, destinationBackend: "transactional test double, no browser storage" }
+    : { productRouteRegistered: false }),
   scratchRemoved: true, playerRenderingVerified: false }, null, 2));

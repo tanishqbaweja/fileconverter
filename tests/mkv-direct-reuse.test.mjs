@@ -5,13 +5,14 @@ import test from "node:test";
 import { gunzipSync } from "node:zlib";
 import { transform } from "esbuild";
 import { prepareMkvDirectReuseOverlay } from "../scripts/lib/mkv-direct-reuse-overlay.mjs";
+import { preTimedTextIntegration } from "../scripts/lib/reviewed-timed-text-integration.mjs";
 import { compareSmallMkvPacketClocks } from "../scripts/lib/mkv-direct-packet-clocks.mjs";
 import { inspectMkvMp4TimelineBoxes } from "../scripts/lib/mkv-mp4-timeline-boxes.mjs";
 import { directWrapperSha256, makeMkvEditListTimelineCandidate } from "../media/ffmpeg/mkv-edit-list-timeline-candidate.mjs";
 
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const paths = ["workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts"];
-const sources = Object.fromEntries(await Promise.all(paths.map(async file => [file, await read(file)])));
+const sources = Object.fromEntries(await Promise.all(paths.map(async file => [file, preTimedTextIntegration(file, await read(file))])));
 const raw = await read("scripts/lib/private-mkv-write-reuse.ts");
 const { code } = await transform(raw.toString(), { loader: "ts", format: "esm" });
 const { createMkvWriteReuse, MKV_REUSE_WRITE_BYTES } = await import("data:text/javascript;base64," + Buffer.from(code).toString("base64"));

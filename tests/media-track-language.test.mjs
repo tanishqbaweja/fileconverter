@@ -220,7 +220,7 @@ test("optional ISO-BMFF language reads yield to the existing byte ceiling and sa
 
 function isoSubtitle(type, {
   handler = "sbtl", language = "fra", extendedLanguage, entryCount = 1, entryBytes = 8,
-  wrongParent = false, lateHandler = false,
+  wrongParent = false, lateHandler = false, trackId = 9,
 } = {}) {
   const hdlr = Buffer.alloc(12);
   const stsd = Buffer.alloc(8);
@@ -231,7 +231,9 @@ function isoSubtitle(type, {
   const parts = [mdhd(packed(language)), table];
   if (lateHandler) parts.push(box("hdlr", hdlr)); else parts.unshift(box("hdlr", hdlr));
   if (extendedLanguage) parts.push(elng(extendedLanguage));
-  return box("trak", box("mdia", ...parts));
+  const tkhd = Buffer.alloc(24);
+  tkhd.writeUInt32BE(trackId, 12);
+  return box("trak", box("tkhd", tkhd), box("mdia", ...parts));
 }
 
 test("ISO-BMFF shows known subtitle framing and languages without reading any cue payload", async () => {
@@ -240,8 +242,8 @@ test("ISO-BMFF shows known subtitle framing and languages without reading any cu
   const source = observedBlob(ftyp, mdat, box("moov",
     isoSubtitle("tx3g", { lateHandler: true }),
     isoAudio(mdhd(packed("eng"))),
-    isoSubtitle("wvtt", { handler: "text", language: "deu", extendedLanguage: "de-AT" }),
-    isoSubtitle("stpp", { handler: "subt", language: "spa" }),
+    isoSubtitle("wvtt", { handler: "text", language: "deu", extendedLanguage: "de-AT", trackId: 11 }),
+    isoSubtitle("stpp", { handler: "subt", language: "spa", trackId: 15 }),
   ));
   const result = await inspectMediaSource(source, "mp4");
   assert.equal(result.mediaType, "audio");
@@ -250,10 +252,12 @@ test("ISO-BMFF shows known subtitle framing and languages without reading any cu
     ["subtitle", "tx3g"], ["audio", undefined], ["subtitle", "wvtt"], ["subtitle", "stpp"],
   ]);
   assert.deepEqual(tags(result), ["fra", "eng", "de-AT", "spa"]);
+  assert.deepEqual(result.streams.map(({ isoTrackId }) => isoTrackId), [9, undefined, 11, 15]);
   assert.ok(result.streams.filter(({ mediaType }) => mediaType === "subtitle")
     .every(s => s.durationSeconds === 2 && s.width === null && s.channels === null));
   assert.ok(source.reads.every(([start, end]) => end <= ftyp.length + 8 || start >= ftyp.length + mdat.length));
-  assert.ok(result.inspectedBytes < 600);
+  // Three new track IDs add three 8-byte tkhd headers and 24-byte records.
+  assert.equal(result.inspectedBytes, 602);
 });
 
 test("generic chapter text, ambiguous descriptions and unrelated handlers do not claim subtitle tracks", async () => {
