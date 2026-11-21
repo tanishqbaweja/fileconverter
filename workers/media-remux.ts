@@ -16,6 +16,7 @@ import { mediaNativeArguments } from "../lib/media-native-arguments";
 import { observeNativeInputMemory } from "../lib/native-input-memory-observation";
 import { explainAudioMetadataBudgetError } from "../lib/audio-metadata-budget-error";
 import { requiresPersistentVorbisInput } from "../lib/audio-input-policy";
+import { CORRECTED_DIRECT_MKV_CORE, CORRECTED_DIRECT_MKV_PROFILE, CORRECTED_DIRECT_MKV_WRITE_BYTES } from "../lib/mkv-corrected-direct-qualification";
 import type { WebCodecsVp9Core } from "./webcodecs-vp9-core";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
@@ -109,6 +110,7 @@ export interface MediaRemuxOptions {
   singleThreadVideoCore?: boolean;
   forceAsynchronousInput?: boolean;
   aiffSpecialistCore?: boolean;
+  correctedDirectMkv?: boolean;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -150,6 +152,7 @@ export async function runMediaRemux({
   singleThreadVideoCore = false,
   forceAsynchronousInput = false,
   aiffSpecialistCore = false,
+  correctedDirectMkv = false,
   jobId,
   metrics,
   startedAt,
@@ -344,6 +347,11 @@ export async function runMediaRemux({
   const maximumOutputWriteBytes = writable.maximumWriteBytes ?? MAX_AVIO_CHUNK;
   const useDirectRemuxCore =
     remuxProfile === 1 && maximumOutputWriteBytes > MAX_AVIO_CHUNK;
+  if (correctedDirectMkv && (profileId !== CORRECTED_DIRECT_MKV_PROFILE || !useDirectRemuxCore ||
+      maximumOutputWriteBytes !== CORRECTED_DIRECT_MKV_WRITE_BYTES || writable.requiresOwnedWriteBuffer || writable.writeSync ||
+      mpeg2SplitCore || webCodecsVp9Core || vpxDecoderCore || aiffSpecialistCore)) {
+    throw new Error("Corrected direct MKV cannot fall back to the published muxer or use another destination or codec core.");
+  }
   const coalescedOutput =
     (remuxProfile === 2 ||
       remuxProfile === 3 ||
@@ -679,7 +687,9 @@ export async function runMediaRemux({
   };
 
   const moduleUrl =
-    aiffSpecialistCore
+    correctedDirectMkv
+      ? CORRECTED_DIRECT_MKV_CORE.module
+    : aiffSpecialistCore
       ? AIFF_MODULE_URL
     : remuxProfile === 39
       ? THEORA_MODULE_URL
@@ -697,7 +707,9 @@ export async function runMediaRemux({
         ? VP9_MODULE_URL
         : REMUX_MODULE_URL;
   const wasmUrl =
-    webCodecsVp9Core
+    correctedDirectMkv
+      ? CORRECTED_DIRECT_MKV_CORE.wasm
+    : webCodecsVp9Core
       ? webCodecsVp9Core.wasmUrl
     : vpxDecoderCore
       ? vpxDecoderCore.wasmUrl

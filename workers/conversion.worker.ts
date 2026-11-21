@@ -20,6 +20,7 @@ import {
 } from "../lib/media-conversion-options";
 import { MPEG2_JOB_PROFILE, estimateMpeg2StageBytes } from "../lib/mpeg2-stage-policy";
 import { isTimedTextQualification, requirePrivateTimedTextSelection } from "../lib/timed-text-qualification";
+import { requireCorrectedDirectMkvQualification } from "../lib/mkv-corrected-direct-qualification";
 import { isVpxDecoderProfile, validateVpxVideoOptions, assertVpxSource, estimateVpxStageBytes } from "../lib/vpx-decoder-policy";
 import type { VpxDecoderCore } from "./vpx-core-loader";
 import type { StagedCopyHandoff } from "../lib/staged-copy-protocol";
@@ -4185,6 +4186,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     const timedTextTrackId = isTimedTextJob
       ? requirePrivateTimedTextSelection(workerScope.location.hostname, message.timedTextTrackId, message.destination.mode)
       : undefined;
+    const correctedDirectMkv = requireCorrectedDirectMkvQualification(message.correctedDirectMkv, workerScope.location.hostname, profileId, message.destination.mode);
     let vpxDecoderCore: VpxDecoderCore | undefined;
     let mpeg2SplitCore: Mpeg2SplitCore | undefined;
     let requiredScratchBytes: number | undefined;
@@ -4243,7 +4245,10 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       message.videoOptions,
     );
     emitProgress(jobId, "Worker started", metrics, startedAt, true);
-    if (message.destination.mode === "staged-handle") {
+    if (correctedDirectMkv && message.destination.mode === "handle") {
+      const { openCorrectedDirectMkvOutput } = await import("./mkv-corrected-direct-output");
+      destination = { writable: await openCorrectedDirectMkvOutput(message.destination.handle) };
+    } else if (message.destination.mode === "staged-handle") {
       destination = await openStagedDirectDestination(
         message.destination.handle,
         message.destination.stagingName,
@@ -4459,10 +4464,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       message.testFault !== "worker-crash" &&
       !destination.handlesTestFault
     ) {
+      const maximumWriteBytes = destination.writable.maximumWriteBytes;
       destination.writable = injectDestinationFault(
         destination.writable,
         message.testFault,
       );
+      if (correctedDirectMkv) destination.writable.maximumWriteBytes = maximumWriteBytes;
     }
     emitProgress(jobId, "Destination opened", metrics, startedAt, true);
     if (
@@ -5233,6 +5240,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         writable: destination.writable,
         audioOptions,
         videoOptions,
+        correctedDirectMkv,
         lowMemoryVideoCore:
           profileId === "hevc-to-webm",
         singleThreadVideoCore: profileId === "hevc-to-webm-vp9",

@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-21 corrected direct MKV-to-MP4 **production-source integration PASS;
+browser gate not run**. Explicit loopback direct handle, one job-owned 1 MiB
+unshared slot, >32-bit and backward writes, one pending operation, failed
+initial truncate abort, native-byte/ABI mapping at two dedicated asset URLs.
+37 focused checks, production build, TypeScript, lint and 402 public-manifest
+entries passed. Regular worker includes the branch; private artifact not
+shipped. Initial worker-inventory order and lint failures corrected. No
+converted media, browser, protected file access, or speed/memory claim.
+[Receipt](evidence/2026-11-21-mkv-corrected-direct-production-source.json).
+
 2026-11-21 physical >4 GiB MP4 timed-text **headless production PASS**.
 Real 4,570,039,051 B owned MP4, 768 loops and exact 221,184 video-frame sample
 count. FFprobe independently locates all 6,144 late chosen payloads at or past

@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-21 M-03 / M-04 / P-08 corrected direct-save MKV **integrated privately**
+in the normal production app/worker, not a replacement-worker overlay. The
+test switch requires localhost and a real direct destination; the dedicated
+asset names do not use the old muxer. Added bounded reusable native-output
+buffer, backpressure, positional seeks and startup abort. Exact native cache
+mapping and 37 focused checks/build/TS/lint/public inventory passed. Next:
+distinct real-handle browser gate with authenticated assets, exact output,
+zero app-stage bytes and unchanged repeat/safety/privacy controls. No public
+promotion or speed/memory claim; previous staged failure remains unchanged.
+[Receipt](evidence/2026-11-21-mkv-corrected-direct-production-source.json).
+
 2026-11-21 M-03 / M-04 / N-07 / P-08 first physical >4 GiB MP4 timed-text
 gate **closed**. Verified positions for every one of 6,144 late cues on a
 genuine 4.57 GB input, exact browser outputs and both recoveries, 1.91 MB

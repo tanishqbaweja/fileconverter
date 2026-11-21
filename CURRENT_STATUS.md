@@ -4,6 +4,19 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Critical path: corrected direct-save MKV branch integrated, browser gate open
+
+The normal app/worker now support a localhost-only corrected `mkv-to-mp4`
+direct-handle test branch. It uses one awaited 1 MiB copy slot, preserves
+seek offsets, and aborts on failed initialization. Separate authenticated core
+URLs prevent silently using the defective published muxer; the private assets
+were not shipped and the public hold is unchanged. 37 focused checks, TypeScript,
+lint, build, and 402 public manifest entries passed. No browser run, `test.mkv`
+access, speedup or memory claim yet. Next: bind the two authenticated assets in
+a new owned browser test, prove zero application staging and exact content
+before trying the protected original. The unchanged staged failure stays failed.
+[Receipt](evidence/2026-11-21-mkv-corrected-direct-production-source.json).
+
 ## Physical MP4 timed-text offsets beyond 4 GiB verified in Chrome
 
 `node scripts/qualify-timed-text-webvtt.mjs --co64-mp4` passed on a genuine

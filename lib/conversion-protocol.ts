@@ -110,6 +110,8 @@ export interface StartConversionMessage {
   videoOptions?: VideoConversionOptions;
   /** Explicit on-disk track ID for localhost ISO timed-text qualification. */
   timedTextTrackId?: number;
+  /** Localhost-only corrected-core MKV direct-destination qualification. */
+  correctedDirectMkv?: true;
   /** Coordinator-owned static code only; never caller-provided user data. */
   vpxCompiledCore?: VpxCompiledCore;
   /** Coordinator-owned immutable MPEG-2 code pair, never caller media/state. */

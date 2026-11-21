@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "status": "private-corrected-direct-mkv-integrated-source-and-build-verified-browser-gate-open",
+  "requirementIds": [
+    "M-03",
+    "M-04",
+    "P-08"
+  ],
+  "baseCommit": "f3ecde6d234f407bbb55712110acefc2a0777d80",
+  "sourceSha256": {
+    "app/converter/ConverterApp.tsx": "ba8a6ac23ecfc96e7da7265796d3848c7877200a3164dd653ce8b0c37556b00d",
+    "lib/conversion-protocol.ts": "68e71a7b7d416632213ffcd6d10f68bb293af2eb8c4d1e2813455852709e76fb",
+    "lib/mkv-corrected-direct-qualification.ts": "adef760585ec0c39c0477746ed66eced18121e4a287309744517a060312bf1a0",
+    "workers/conversion.worker.ts": "3a6d982095c78e879bb9e95df71f02d30d44e06ecdf1994044940f3673b70e86",
+    "workers/media-remux.ts": "db6bda09686b23c0a452adcc8490b4cdabfa2276349fd1069774da07079f8bdb",
+    "workers/mkv-corrected-direct-output.ts": "6c3fc23316424c8fdf54cec577794c9e802344cd4541f8fcfe2cbaa7332f9fca",
+    "scripts/lib/mkv-header-native-cache.mjs": "bda857f15f297f4eb2d09a2c23e51989a328552e125f76b0e7cedbef2484c1e3",
+    "scripts/lib/reviewed-mkv-corrected-direct.mjs": "0a0edceb05b32dbefa01363a5bac9d5c07aba4400dab4228a3f3fb2aa19784d2",
+    "scripts/lib/reviewed-timed-text-integration.mjs": "4b432c98f7ee58564fe539d3cbd2912a7571c94a14fbfe076f317312c8ed8eac",
+    "tests/mkv-corrected-direct-qualification.test.mjs": "02b4470f0b1d18ce169e6cdc2268e2ef6673acf580c454732121d21571ae5698",
+    "tests/worker-lifecycle.test.mjs": "d866df9e6c3cb91b0d0fdcc920504f8979aea3ea49bff6d99dab4bafe7a0bfe3"
+  },
+  "privateView": "/?test=1&directory=1&mkv-direct=1, select the existing withheld mkv-to-mp4 profile. Normal hosted UI unchanged.",
+  "summary": "The compiled normal app/worker now send and accept a real handle for the gated route without the previous worker overlay. The worker uses one 1 MiB unshared buffer with backpressure and exact positional writes. Initial truncate failure aborts before publishing a destination. Corrected native asset URLs are distinct; no fallback to the published defective mux path.",
+  "nativeBinding": {
+    "retainedBuildRun": "43691831594",
+    "checkedWasmSha256": "41c4a075de285d0d906b2711c5e5420a401235ab89e1f185abe5d48a830a3eba",
+    "assetNames": [
+      "/engines/remux-qualification/mkv-header-41c4a075.mjs",
+      "/engines/remux-qualification/mkv-header-41c4a075.wasm"
+    ],
+    "mapping": "loadQualifiedHeaderDirectAssets verifies and maps the reusable native cache only for an owned qualification harness; ordinary asset URLs are neither overridden nor bundled at the private names.",
+    "buildWorker": {
+      "file": "dist/client/assets/conversion.worker-CslTheXV.js",
+      "sha256": "e218af4edaceef0ff1963f59d00f9fc3eaf1e165c72fd1dabef94f713fc02eb",
+      "correctedCoreRoutePresent": true,
+      "privateWasmShipped": false
+    }
+  },
+  "checks": {
+    "focusedPassed": 37,
+    "failed": 0,
+    "typescript": true,
+    "scopedLint": true,
+    "productionBuild": true,
+    "publicManifestEntries": 402,
+    "firstAttempt": "35/36 checks; inventory expected order misplaced the new worker entry, and lint disallowed a module variable name. Both corrected; further explicit startup-abort test passed."
+  },
+  "browserLaunched": false,
+  "mediaConverted": false,
+  "protectedOriginalRead": false,
+  "ownedScratchRemoved": true,
+  "publicPromotion": false,
+  "memoryGateChanged": false,
+  "largeVideoPreviouslyFailedGateChanged": false,
+  "performanceImprovementMeasured": false,
+  "nextAction": "Serve only the authenticated native assets under their distinct loopback URLs in a new/updated browser harness. Bind the currently built production worker unchanged. Require real direct saves, byte/packet/clocks parity, zero app-managed staging and cancel/fault/recovery under the original 250/96 MiB rules. If that small distinct path passes, use the protected original under the original full repeat gate; do not replay the unchanged staged configuration and do not count any missing browser process as zero."
+}

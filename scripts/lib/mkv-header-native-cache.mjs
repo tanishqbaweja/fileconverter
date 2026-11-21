@@ -9,6 +9,7 @@ import { hevcHeaderLoopReference, assertHevcHeaderParserCore, readHevcHeaderLoop
 import { assertSameMkvNativeBuild } from "./mkv-protected-repeat-contract.mjs";
 import { readWasmMemoryLimits } from "./wasm-memory-limits.mjs";
 import { readEmscriptenExportAbi } from "./wasm-export-abi.mjs";
+import { CORRECTED_DIRECT_MKV_CORE } from "../../lib/mkv-corrected-direct-qualification.ts";
 export const headerNativeCodeCache = Object.freeze([
   { name: "within-direct.mjs", file: "fixtures/qualification-tools/within-test-mkv-header-core.mjs", type: "text/javascript" },
   { name: "within-direct.wasm", file: "fixtures/qualification-tools/within-test-mkv-header-core.wasm", type: "application/wasm" },
@@ -37,6 +38,17 @@ export async function loadQualifiedHeaderNativeCache(root) {
   // Do not mislabel this delivery as a newly downloaded or still-available ZIP.
   const proof = { ...original, artifact: delivery, abi }; assertSameMkvNativeBuild(original, proof);
   return { proof, assets, delivery };
+}
+
+// Serve only these separately named authenticated resources in the owned
+// loopback qualification. Ordinary production /engines/remux URLs remain
+// unchanged; this map cannot accidentally substitute them.
+export async function loadQualifiedHeaderDirectAssets(root) {
+  const { proof, assets, delivery } = await loadQualifiedHeaderNativeCache(root);
+  const nativeModule = assets.get("/engines/remux/within-direct.mjs");
+  const wasm = assets.get("/engines/remux/within-direct.wasm");
+  assert.equal(nativeModule?.type, "text/javascript"); assert.equal(wasm?.type, "application/wasm");
+  return { proof, delivery, assets: new Map([[CORRECTED_DIRECT_MKV_CORE.module, nativeModule], [CORRECTED_DIRECT_MKV_CORE.wasm, wasm]]) };
 }
 export async function retainQualifiedHeaderNativeCache(root, tools, qualificationLicense) {
   const original = await golden(root); assertHevcHeaderParserCore(tools.proof); assertSameMkvNativeBuild(original, tools.proof);

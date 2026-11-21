@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { preDocxRunVertical } from "./reviewed-docx-run-vertical.mjs";
+import { preMkvCorrectedDirectIntegration } from "./reviewed-mkv-corrected-direct.mjs";
 
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const pins = {
@@ -13,6 +14,7 @@ const pins = {
   "lib/media-source-inspection.ts": ["8dc9b23ce3045474f89da95e3d1fa56b1850b2eb3cdab91168bc39480798e99b", "d51fea54af6b29cc26ffc2887b39ec95c4cdd8768f6a56416ba9920e0df698ec"],
 };
 export function preTimedTextIntegration(file, bytes) {
+  bytes = preMkvCorrectedDirectIntegration(file, bytes);
   bytes = preDocxRunVertical(file, bytes);
   if (file === "lib/media-source-inspection.ts" && sha(bytes) === "98fb9dc08db1d129b6318d715cd1e3883390a4fe7e1b7a377d7826a4bf5d9e85") {
     bytes = execFileSync("git", ["show", `20f1dc8e924c231019987aa2b5dbcab4417c7c99:${file}`], { windowsHide: true, maxBuffer: 1_048_576 });

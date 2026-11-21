@@ -7,6 +7,7 @@ import { createVpxCompiledCoreSlot } from "../../lib/vpx-compiled-core";
 import { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";
 import { MPEG2_JOB_PROFILE } from "../../lib/mpeg2-stage-policy";
 import { isTimedTextQualification, timedTextTrackChoices, TIMED_TEXT_QUALIFICATION_INPUTS } from "../../lib/timed-text-qualification";
+import { CORRECTED_DIRECT_MKV_PROFILE, CORRECTED_DIRECT_MKV_QUERY } from "../../lib/mkv-corrected-direct-qualification";
 import { runMpeg2QualificationJob, validateMpeg2QualificationRequest, type Mpeg2QualificationResult } from "../../lib/mpeg2-qualification-job";
 import { isVpxDecoderProfile } from "../../lib/vpx-decoder-policy";
 import { runVpxQualificationJob, validateVpxQualificationRequest } from "../../lib/vpx-qualification-job";
@@ -133,6 +134,7 @@ interface ActiveBatch {
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
   timedTextTrackId?: number;
+  correctedDirectMkv?: true;
   runId: string;
   index: number;
   opfsNames: string[];
@@ -461,6 +463,8 @@ export function ConverterApp() {
   const testDirectoryMode =
     testMode &&
     new URLSearchParams(window.location.search).get("directory") === "1";
+  const testCorrectedDirectMkv = testDirectoryMode &&
+    new URLSearchParams(window.location.search).get(CORRECTED_DIRECT_MKV_QUERY) === "1";
   const testCleanupMode =
     testMode &&
     new URLSearchParams(window.location.search).get("cleanup") === "1";
@@ -642,7 +646,7 @@ export function ConverterApp() {
         handle: FileSystemFileHandle,
       ): typeof destination => {
         if (
-          batch.profile.id !== "mp4-to-avi" &&
+          batch.correctedDirectMkv || (batch.profile.id !== "mp4-to-avi" &&
           batch.profile.id !== "mov-to-avi" &&
           batch.profile.id !== "3gp-to-avi" &&
           batch.profile.id !== "mkv-to-avi" &&
@@ -651,7 +655,7 @@ export function ConverterApp() {
           batch.profile.id !== "avi-to-3gp" &&
           batch.profile.id !== "avi-to-mpeg-ts" &&
           batch.profile.id !== "m2v-to-ogv" &&
-          batch.profile.id !== MPEG2_JOB_PROFILE
+          batch.profile.id !== MPEG2_JOB_PROFILE)
         ) {
           activeOpfsNameRef.current = null;
           return { mode: "handle", handle };
@@ -688,6 +692,7 @@ export function ConverterApp() {
         audioOptions: batch.audioOptions,
         videoOptions: batch.videoOptions,
         ...(batch.timedTextTrackId !== undefined ? { timedTextTrackId: batch.timedTextTrackId } : {}),
+        ...(batch.correctedDirectMkv ? { correctedDirectMkv: true } : {}),
         cancellationBuffer,
         testFault: batch.testFault,
       };
@@ -1256,6 +1261,7 @@ export function ConverterApp() {
         ? { ...videoOptions }
         : undefined,
       ...(selectedTimedTextTrackId !== undefined ? { timedTextTrackId: selectedTimedTextTrackId } : {}),
+      ...(testCorrectedDirectMkv && selectedProfile.id === CORRECTED_DIRECT_MKV_PROFILE ? { correctedDirectMkv: true } : {}),
       outputNames: batchOutputNames(files, selectedProfile),
       destinationHandle,
       destinationDirectoryHandle: testDirectoryMode || (testMode && selectedProfile.id === MPEG2_JOB_PROFILE)
