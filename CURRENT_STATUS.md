@@ -41,18 +41,18 @@ TypeScript, scoped lint, production build and 402 public evidence checks passed.
 This is not browser speed/memory evidence. C: still 0 B; no replay of the old
 fixture-only gate. [Benchmark](evidence/2026-11-21-timed-text-read-windows-benchmark.json).
 
-## Next MP4 timed-text browser run: driver ready, launch blocked by disk
+## Small MP4 timed-text headless production control passed
 
-`node scripts/qualify-timed-text-webvtt.mjs` is the new headless production
-MP4 control, reusing the verified 6,144-cue fixture below. It checks explicit
-track selection, real file-handle saves, three repeats, cancellation after
-written bytes, injected write failure, exact recovery, physical output hash,
-storage cleanup, network restrictions and the unchanged 250 MiB whole-tree
-limit. All 16 offline tests, syntax and lint passed. The command itself
-refused 0 B free on C: (requires 512 MiB) before building, creating a fixture
-or launching Chrome. Run it when the disk and host memory guards pass; don't
-replay the fixture-only preflight. MP4 live result, MOV/3GP, native picker and
-scaling remain unverified. [Receipt](evidence/2026-11-21-timed-text-browser-driver-preflight.json).
+On normal-service Chrome 158, all five complete real-handle outputs matched
+the independent 6,144-cue, 2,155,445 B oracle. Three same-page repeats,
+cancellation after 327,679 B written, injected write failure and both
+recoveries passed. Peak complete-tree private memory was 72.785 MiB over the
+same blank, max cleanup 6.098 MiB over loaded idle (unchanged 250/96 caps).
+No forbidden requests or retained output; owned process/profile cleanup and
+807-row raw journal independently checked. The first harness failure remains
+recorded. No public promotion, matched browser speedup, native-picker or
+manual claim. MOV/3GP and larger/fresh-session gates are open; do not repeat
+this small gate unchanged. [Receipt](evidence/2026-11-21-timed-text-mp4-browser-control.json).
 
 ## Next timed-text browser run: cancellation fixture verified offline
 

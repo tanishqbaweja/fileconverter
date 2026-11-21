@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-21 M-03 / N-07 small private MP4 timed-text browser gate **closed**.
+Five exact independently hashed outputs, three same-session repeats, observed
+payload cancellation, injected write rejection, both recoveries, privacy and
+owned cleanup. 72.785 MiB over earliest stable same Chrome blank, 6.098 MiB
+max cleanup over loaded idle, original 250/96 MiB limits. 807-row checked
+native archive. Production test directory uses real handles in OPFS; this
+does not certify native picker/external destination. MOV/3GP, larger/fresh
+cases, browser compatibility and public integration still open. No status
+upgrade for large media. [Receipt](evidence/2026-11-21-timed-text-mp4-browser-control.json).
+
 2026-11-21 M-03 / N-07 first live MP4 timed-text browser call failed in the
 physical validator after one reported completion. No repeat/failure/memory
 qualification; browser/server and scratch removed. Missing bounded probe

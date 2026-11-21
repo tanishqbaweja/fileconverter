@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-11-21 small private MP4 timed-text **headless production gate PASS**.
+Actual Chrome 158 real selected-handle output: five exact 2,155,445 B
+files bound to disk and full-hashed against the independent 6,144-cue oracle.
+Three same-page repeats 618.840/306.155/348.985 ms; not browser A/B. Cancel
+after 327,679 B and write fault with 0 acknowledged bytes, both recoveries
+and seven empty inventories. 16 KiB observed read/64 KiB write+queue/one
+pending. Whole-tree peak 72.78515625 MiB; 721 valid/1 unavailable; maximum
+cleanup 6.09765625 MiB. All 807 raw native rows read back; seven case-memory
+windows match. 38 requests, zero forbidden; server and 48 observed browser
+PIDs gone, profile/fixture/output absent. No scaling/native-picker/public
+claim, no need to replay unchanged.
+[Receipt](evidence/2026-11-21-timed-text-mp4-browser-control.json).
+
 2026-11-21 first live private MP4 timed-text browser attempt **FAILED at
 validation setup**. Worker reports a genuine complete 2,155,445 B direct
 handle output, but physical binding stopped before validation. Existing
