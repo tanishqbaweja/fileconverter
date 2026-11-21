@@ -27,20 +27,22 @@ import { queryReliableProcessIdentity } from "./lib/reliable-owned-identity.mjs"
 import { selectOwnedLocalBrowserFile } from "./lib/select-owned-local-browser-file.mjs";
 import { assertTimedTextLaunch, assertTimedTextTerminal, classifyTimedTextBrowserRequest, collectTimedTextStaticPaths, CLEANUP_MIB_LIMIT,
   observeTimedTextLaunches, PRIVATE_MIB_LIMIT, resolveTimedTextBrowserRun, summarizeTimedTextMemory, validateTimedTextPhysicalOutput } from "./lib/timed-text-browser-control.mjs";
-import { createTimedTextCancellationFixture, TIMED_TEXT_CANCEL_OUTPUT_NAME as outputName } from "./lib/timed-text-browser-fixture.mjs";
+import { createTimedTextCancellationFixture, TIMED_TEXT_CANCEL_OUTPUT_NAME as outputName,
+  TIMED_TEXT_CO64_SEED, TIMED_TEXT_CO64_WORK_BYTES } from "./lib/timed-text-browser-fixture.mjs";
 
 const repo = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile), mib = 1048576;
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const systemDrive = process.env.SystemDrive;
 const minimumDiskBytes = 512 * mib;
-const { container, profileId, preflightOnly } = resolveTimedTextBrowserRun(process.argv.slice(2));
+const { container, profileId, preflightOnly, co64 } = resolveTimedTextBrowserRun(process.argv.slice(2));
 assert.equal(process.platform, "win32", "Windows Chrome whole-tree observer required");
 assert.match(systemDrive ?? "", /^[A-Z]:$/i, "Windows system drive unavailable");
 const disk = await statfs(systemDrive + path.sep);
 assert.ok(disk.bavail * disk.bsize >= minimumDiskBytes,
   `System drive has ${disk.bavail * disk.bsize} free bytes; need ${minimumDiskBytes} before any build, fixture or browser launch`);
 const repositoryDisk = await statfs(repo);
-assert.ok(repositoryDisk.bavail * repositoryDisk.bsize >= minimumDiskBytes, "Not enough space on repository drive");
+const requiredRepositoryBytes = co64 ? TIMED_TEXT_CO64_WORK_BYTES : minimumDiskBytes;
+assert.ok(repositoryDisk.bavail * repositoryDisk.bsize >= requiredRepositoryBytes, "Not enough space on repository drive");
 const hostMemory = await inspectStressHostMemory();
 assert.equal(hostMemory.safeToStart, true, "Host requires at least 2 GiB each of free physical and virtual memory");
 if (preflightOnly) {
@@ -50,10 +52,10 @@ if (preflightOnly) {
 }
 
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), samples = [];
-const basename = container === "mp4" ? `${stamp}-timed-text` : `${stamp}-timed-text-${container}`;
-const report = { status: "not-completed", stamp, scope: `private-headless-${container}-timed-text-direct-handle-control`, container, profileId, hostMemory,
+const basename = co64 ? `${stamp}-timed-text-co64-mp4` : container === "mp4" ? `${stamp}-timed-text` : `${stamp}-timed-text-${container}`;
+const report = { status: "not-completed", stamp, scope: `private-headless-${container}-timed-text-${co64 ? "physical-co64-" : ""}direct-handle-control`, container, profileId, co64, hostMemory,
   sourcePins: {}, cases: [], forbiddenRequests: [], requestCount: 0, realmSamples: [], failures: [],
-  systemFreeBytes: disk.bavail * disk.bsize, repositoryFreeBytes: repositoryDisk.bavail * repositoryDisk.bsize,
+  systemFreeBytes: disk.bavail * disk.bsize, repositoryFreeBytes: repositoryDisk.bavail * repositoryDisk.bsize, requiredRepositoryBytes,
   privateMiBLimit: PRIVATE_MIB_LIMIT, cleanupMiBLimit: CLEANUP_MIB_LIMIT,
   memoryFormula: "(peak complete Chrome process-tree private bytes - same stable clean blank Chrome private bytes) / 1048576",
   headless: true, headedVerified: false, nativePickerVerified: false, externalDestinationVerified: false,
@@ -105,7 +107,7 @@ try {
   for (const file of ["scripts/qualify-timed-text-webvtt.mjs", "scripts/lib/timed-text-browser-control.mjs",
     "scripts/lib/timed-text-browser-fixture.mjs", "scripts/lib/birth-aware-chromium-memory.mjs", "scripts/lib/windows-tree-monitor.cs",
     "scripts/lib/windows-process-birth-proof.cs", "scripts/lib/windows-tree-monitor-birth-aware.ps1",
-    "fixtures/media/quicktime-source.mov", "app/converter/ConverterApp.tsx", "workers/conversion.worker.ts",
+    co64 ? TIMED_TEXT_CO64_SEED : "fixtures/media/quicktime-source.mov", "app/converter/ConverterApp.tsx", "workers/conversion.worker.ts",
     "workers/iso-timed-text-webvtt.ts", "lib/timed-text-qualification.ts", "lib/capability-registry.ts", "package-lock.json"]) {
     report.sourcePins[file] = sha(await readFile(path.join(repo, file)));
   }
@@ -114,8 +116,13 @@ try {
     { cwd: repo, env, windowsHide: true, timeout: 120000, maxBuffer: 262144 });
   const staticPaths = await collectTimedTextStaticPaths(path.join(repo, "dist/client"));
   report.allowedProductionAssetCount = staticPaths.size;
-  const { input, ...fixture } = await createTimedTextCancellationFixture(runtime, path.join(repo, "fixtures/media/quicktime-source.mov"), container);
+  const fixtureSeed = co64 ? TIMED_TEXT_CO64_SEED : "fixtures/media/quicktime-source.mov";
+  if (co64) console.log("Generating one real >4 GiB fixture on the repository drive; no browser started yet.");
+  const { input, ...fixture } = await createTimedTextCancellationFixture(runtime, path.join(repo, fixtureSeed), container, co64);
+  report.fixtureSeed = fixtureSeed;
   report.fixture = fixture;
+  if (co64) assert.equal(fixture.physicalScale?.allSelectedCuesPhysicallyAboveFourGiB, true);
+  if (co64) console.log(`Verified source bytes=${fixture.inputBytes}; start of selected cues=${fixture.physicalScale.firstCueOffset}.`);
   report.browserPin = await inspectInstalledChromePin();
   const port = await new Promise((resolve, reject) => {
     const reserve = createServer();
@@ -255,6 +262,7 @@ try {
     assert.ok(!seen.has(result.launch.jobId), "Repeated jobs require distinct launches");
     seen.add(result.launch.jobId);
     assertTimedTextTerminal(result.state, kind, fixture.expected.bytes, profileId);
+    if (co64) assert.ok(result.state.metrics.inputBytes <= 4 * mib, "Subtitle extraction must not traverse the video payload");
     if (kind === "complete") {
       assert.deepEqual(result.state.batchOutputNames, [outputName]);
       const binding = await guard(bindOpfsOutputValidationBacking(page, profile, outputName, fixture.expected.bytes));
@@ -335,7 +343,7 @@ finally {
       assert.ok(row.memory.maxSampleGapMs <= 1000, "Insufficient active job sampling coverage");
     }
   });
-  report.status = failed ? "failed-not-qualification" : `passed-private-headless-${container}-control-not-public-qualification`;
+  report.status = failed ? "failed-not-qualification" : `passed-private-headless-${co64 ? "physical-co64-" : ""}${container}-control-not-public-qualification`;
   const directory = path.join(repo, "output/playwright");
   await mkdir(directory, { recursive: true });
   assert.equal((await realpath(directory)).toLowerCase(), directory.toLowerCase(), "Reports must remain in the repository");

@@ -12,10 +12,11 @@ const MIB = 1048576;
 export function resolveTimedTextBrowserRun(args) {
   assert.ok(args.length <= 1, "Choose one isolated container or --preflight");
   const preflightOnly = args[0] === "--preflight";
+  const co64 = args[0] === "--co64-mp4";
   const match = /^--container=(mp4|mov|3gp)$/.exec(args[0] ?? "");
-  assert.ok(!args.length || preflightOnly || match, "Use --container=mp4, --container=mov or --container=3gp");
+  assert.ok(!args.length || preflightOnly || co64 || match, "Use --container=mp4, --container=mov, --container=3gp or --co64-mp4");
   const container = match?.[1] ?? "mp4";
-  return { container, profileId: `${container}-to-vtt`, preflightOnly };
+  return { container, profileId: `${container}-to-vtt`, preflightOnly, co64 };
 }
 
 // This inspection wraps only the real Worker boundary and never changes the

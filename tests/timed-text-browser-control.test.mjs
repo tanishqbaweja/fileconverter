@@ -9,11 +9,12 @@ import { assertTimedTextLaunch, assertTimedTextTerminal, classifyTimedTextBrowse
 
 test("one explicit supported ISO-BMFF container per measured Chrome session", () => {
   for (const container of ["mp4", "mov", "3gp"]) {
-    assert.deepEqual(resolveTimedTextBrowserRun([`--container=${container}`]), { container, profileId: `${container}-to-vtt`, preflightOnly: false });
+    assert.deepEqual(resolveTimedTextBrowserRun([`--container=${container}`]), { container, profileId: `${container}-to-vtt`, preflightOnly: false, co64: false });
   }
   assert.equal(resolveTimedTextBrowserRun([]).profileId, "mp4-to-vtt");
   assert.equal(resolveTimedTextBrowserRun(["--preflight"]).preflightOnly, true);
-  for (const args of [["--container=mkv"], ["--container=mov", "--container=3gp"], ["--preflight", "--container=mov"]]) {
+  assert.deepEqual(resolveTimedTextBrowserRun(["--co64-mp4"]), { container: "mp4", profileId: "mp4-to-vtt", preflightOnly: false, co64: true });
+  for (const args of [["--container=mkv"], ["--container=mov", "--container=3gp"], ["--preflight", "--container=mov"], ["--container=3gp", "--co64-mp4"]]) {
     assert.throws(() => resolveTimedTextBrowserRun(args));
   }
 });
