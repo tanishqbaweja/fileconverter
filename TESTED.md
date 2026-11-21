@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-21 MP4 timed-text headless production driver **implemented, not run
+past host preflight**. 16/16 offline tests pass, including exact asset-path
+request control, altered/truncated/extended output rejection, track and
+terminal guard negatives, and complete-tree baseline/nullable memory tests.
+First assertion pass caught an incorrect positive-byte requirement after an
+injected rejected write; zero acknowledged output is now checked for this case.
+Scoped lint/driver syntax passed. `node scripts/qualify-timed-text-webvtt.mjs`
+refused C: with 0 B free, before build, fixture, server or browser. The new
+harness uses owned OPFS real handles; no public, scale or native picker result.
+[Receipt](evidence/2026-11-21-timed-text-browser-driver-preflight.json).
+
 2026-11-21 timed-text browser cancellation fixture **offline preflight PASS**.
 `node scripts/check-timed-text-browser-fixture.mjs` generated a genuine
 2,848,610 B MP4; FFmpeg independently decoded both `tx3g` tracks before an

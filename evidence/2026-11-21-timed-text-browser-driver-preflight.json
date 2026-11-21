@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "status": "mp4-browser-control-implemented-offline-checks-pass-live-run-held-by-host-disk",
+  "requirementIds": ["M-03", "N-07"],
+  "baseCommit": "216ea868",
+  "command": "node scripts/qualify-timed-text-webvtt.mjs",
+  "sourceSha256": {
+    "scripts/qualify-timed-text-webvtt.mjs": "2a3644553912839bb80901335ce44d1250a4f21ca4406b7c80026509cf2f4fd4",
+    "scripts/lib/timed-text-browser-control.mjs": "0954c48a5ffb9d34173b2150f8ba46c39a002817073c75405b4387b0d16f6c11",
+    "tests/timed-text-browser-control.test.mjs": "db7ba39045fbcaeaac30af69a16fd81103856e022ef96d0e5055cafae3752bc5"
+  },
+  "fixtureEvidence": "evidence/2026-11-21-timed-text-browser-fixture-preflight.json",
+  "launchPreflight": {
+    "exitCode": 1,
+    "systemFreeBytes": 0,
+    "requiredSystemFreeBytes": 536870912,
+    "buildStarted": false,
+    "fixtureRegenerated": false,
+    "serverLaunched": false,
+    "browserLaunched": false,
+    "ownedBrowserRuntimeDirectoriesFoundAfterGate": 0
+  },
+  "preparedScope": {
+    "profile": "mp4-to-vtt",
+    "samePageSuccessRepeats": 3,
+    "additionalCases": ["cancel after observed written bytes", "same-page recovery", "bounded write rejection after real write", "same-browser recovery"],
+    "physicalDestination": "real FileSystemFileHandle in isolated OPFS test directory; no external/native picker",
+    "privacy": "allow built static files and fixed test URLs only; reject other requests",
+    "privateMiBLimit": 250,
+    "cleanupOverLoadedMiBLimit": 96,
+    "sameBlankWholeProcessTree": true,
+    "browserServicesDisabled": false
+  },
+  "offlineChecks": {
+    "focusedPassed": 16,
+    "focusedFailed": 0,
+    "lintPassed": true,
+    "driverSyntaxPassed": true,
+    "existingBuildStaticAssetInventoryCount": 120,
+    "commands": [
+      "node --import ./scripts/lib/hidden-unit-subprocesses.mjs --test tests/timed-text-browser-control.test.mjs tests/iso-timed-text-webvtt.test.mjs tests/timed-text-qualification-integration.test.mjs",
+      "node node_modules/eslint/bin/eslint.js scripts/qualify-timed-text-webvtt.mjs scripts/lib/timed-text-browser-control.mjs tests/timed-text-browser-control.test.mjs",
+      "node --check scripts/qualify-timed-text-webvtt.mjs"
+    ],
+    "firstAttempt": "15/16: the new assertion incorrectly required a positive acknowledged byte count on write rejection. The test now distinguishes staged bytes from the rejected write's expected zero acknowledged bytes."
+  },
+  "browserResultAvailable": false,
+  "publicRouteChanged": false,
+  "protectedOriginalRead": false,
+  "nextAction": "Run this command only when same host disk and 2 GiB physical/virtual guards pass. MOV/3GP, scaling, native picker, other browsers, and public qualification remain separate open work. Do not repeat the fixture-only preflight unchanged."
+}

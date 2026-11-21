@@ -4,6 +4,19 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Next MP4 timed-text browser run: driver ready, launch blocked by disk
+
+`node scripts/qualify-timed-text-webvtt.mjs` is the new headless production
+MP4 control, reusing the verified 6,144-cue fixture below. It checks explicit
+track selection, real file-handle saves, three repeats, cancellation after
+written bytes, injected write failure, exact recovery, physical output hash,
+storage cleanup, network restrictions and the unchanged 250 MiB whole-tree
+limit. All 16 offline tests, syntax and lint passed. The command itself
+refused 0 B free on C: (requires 512 MiB) before building, creating a fixture
+or launching Chrome. Run it when the disk and host memory guards pass; don't
+replay the fixture-only preflight. MP4 live result, MOV/3GP, native picker and
+scaling remain unverified. [Receipt](evidence/2026-11-21-timed-text-browser-driver-preflight.json).
+
 ## Next timed-text browser run: cancellation fixture verified offline
 
 The earlier 125 B controls cannot reach the real-write cancellation trigger.
@@ -14,8 +27,8 @@ hash, with 16 KiB reads, up to 64 KiB per write, and one pending write.
 The first UTF-8-safe write was 65,535 B; the cumulative 65,536 B trigger was
 crossed on write two. The Node control stopped there. No actual browser
 destination, cancellation, or memory result yet; C: still has 0 B free.
-Scratch was removed. Reuse this fixture in the headless driver next; do not
-repeat the preflight unchanged. [Receipt](evidence/2026-11-21-timed-text-browser-fixture-preflight.json).
+Scratch was removed. The headless driver above now reuses it; do not repeat
+the preflight unchanged. [Receipt](evidence/2026-11-21-timed-text-browser-fixture-preflight.json).
 
 ## Latest implementation: private timed-text sidecar in the app
 
