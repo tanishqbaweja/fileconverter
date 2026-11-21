@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-11-21 ISO-BMFF subtitle inspection: three genuine MP4/MOV/3GP files
+with two `tx3g` tracks and nonempty cues each matched FFprobe. Browser-source
+inspector read 1,334/1,376/1,326 header bytes respectively, using the existing
+64 KiB limit. Early MOV expectation corrected: its classic QuickTime fields
+display fr/es, FFprobe normalizes them to fra/spa. Authored header controls
+cover ISO WebVTT/XML, chapter text, nested and ambiguous entries and no cue
+reads; those were not real WebVTT/XML conversions. Planner matched existing
+native rejection/exclusions for Matroska/FLV/MPEG-TS. 50 focused checks,
+build, TS, lint and 402 public evidence entries pass. Three owned fixtures
+removed; no browser, conversion qualification, original read or speed claim.
+Receipt: `evidence/2026-11-21-iso-subtitle-inspection.json`.
+
 2026-11-21 DOCX HTML direct UTF-8 encoding retained. Matched worker benchmark
 with 12 interleaved runs for each version/fixture: 332.647 → 287.846 ms
 median for 8,000 styled paragraphs; 41.252 → 40.703 ms genuine Word fixture;

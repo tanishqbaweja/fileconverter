@@ -25,6 +25,8 @@ const MAX_TRACK_LANGUAGES_IN_SUMMARY = 16;
 export interface SourceStreamInspection {
   mediaType: "audio" | "video" | "subtitle";
   codec: string;
+  /** Container sample framing, not proof of a raw cross-container codec. */
+  isoSubtitleSampleEntry?: "tx3g" | "wvtt" | "stpp";
   /** Declared header language, when available; not an output-preservation guarantee. */
   languageTag?: string;
   durationSeconds: number | null;
@@ -1033,7 +1035,16 @@ interface IsoTrack {
   mediaLanguageWord?: number | null;
   extendedLanguageBox?: IsoBox | null;
   multipleMediaBoxes?: boolean;
+  subtitleHandler?: boolean;
+  subtitleEntry?: SourceStreamInspection["isoSubtitleSampleEntry"] | null;
 }
+
+const ISO_SUBTITLE_LABELS = {
+  tx3g: "MPEG-4 Timed Text subtitle (tx3g)",
+  wvtt: "ISO-BMFF WebVTT subtitle (wvtt)",
+  stpp: "ISO-BMFF XML subtitle (stpp)",
+} as const;
+type IsoChildScope = "track" | "media" | "media-info" | "sample-table";
 
 // Apple QuickTime File Format, "Language code values": only the documented
 // Script Manager codes, indexed by their on-disk value (0–94 and 128–138).
@@ -1284,7 +1295,7 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
     end: number,
     depth: number,
     track: IsoTrack | null,
-    languageScope?: "track" | "media",
+    scope?: IsoChildScope,
   ): Promise<void> => {
     if (depth > 8) throw new Error("The ISO-BMFF nesting ceiling was exceeded.");
     let directMediaSeen = false;
@@ -1309,12 +1320,16 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
         await parseChildren(box.dataStart, box.end, depth + 1, nextTrack, "track");
         tracks.push(nextTrack);
       } else if (["moov", "mdia", "minf", "stbl", "mvex"].includes(box.type)) {
-        const directMedia = Boolean(track && box.type === "mdia" && languageScope === "track");
+        const directMedia = Boolean(track && box.type === "mdia" && scope === "track");
         if (directMedia && track) {
           if (directMediaSeen) track.multipleMediaBoxes = true;
           directMediaSeen = true;
         }
-        await parseChildren(box.dataStart, box.end, depth + 1, track, directMedia ? "media" : undefined);
+        const nextScope = directMedia ? "media"
+          : box.type === "minf" && scope === "media" ? "media-info"
+          : box.type === "stbl" && scope === "media-info" ? "sample-table"
+          : undefined;
+        await parseChildren(box.dataStart, box.end, depth + 1, track, nextScope);
       } else if (box.type === "moof") {
         await parseMoof(box);
       } else if (box.type === "ftyp" && box.end - box.dataStart >= 4) {
@@ -1344,10 +1359,15 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
         const handler = await read(box.dataStart, 12);
         const handlerType = ascii(handler, 8, 4);
         if (["soun", "vide"].includes(handlerType)) track.handler = handlerType;
+        if (scope === "media") {
+          // Generic QuickTime 'text' alone is not a subtitle witness; chapter
+          // tracks also use it. The specific stsd entry is required below.
+          track.subtitleHandler = track.subtitleHandler === undefined && ["text", "subt", "sbtl"].includes(handlerType);
+        }
       } else if (box.type === "mdhd" && track) {
         const length = Math.min(36, box.end - box.dataStart);
-        const firstMediaHeader = languageScope === "media" && track.mediaLanguageWord === undefined;
-        if (languageScope === "media") track.mediaLanguageWord = null;
+        const firstMediaHeader = scope === "media" && track.mediaLanguageWord === undefined;
+        if (scope === "media") track.mediaLanguageWord = null;
         if (length >= 24) {
           const mdhd = await read(box.dataStart, length);
           const version = mdhd.getUint8(0);
@@ -1363,15 +1383,22 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
             }
           }
         }
-      } else if (box.type === "elng" && track && languageScope === "media") {
+      } else if (box.type === "elng" && track && scope === "media") {
         // Retain only one location, then resolve it after mandatory header reads.
         track.extendedLanguageBox = track.extendedLanguageBox === undefined ? box : null;
-      } else if (box.type === "stsd" && track && box.end - box.dataStart >= 16) {
+      } else if (box.type === "stsd" && track) {
+        const firstSubtitleDescription = scope === "sample-table" && track.subtitleEntry === undefined;
+        if (scope === "sample-table") track.subtitleEntry = null;
+        if (box.end - box.dataStart < 16) { offset = box.end; continue; }
         const stsd = await read(box.dataStart, 8);
         const entryCount = stsd.getUint32(4, false);
         if (entryCount > 0) {
           const entry = await readBox(box.dataStart + 8, box.end);
           const available = entry.end - entry.dataStart;
+          if (firstSubtitleDescription && entryCount === 1 && entry.end === box.end &&
+              available >= 8 && Object.hasOwn(ISO_SUBTITLE_LABELS, entry.type)) {
+            track.subtitleEntry = entry.type as keyof typeof ISO_SUBTITLE_LABELS;
+          }
           if (track.handler === "soun" && available >= 28) {
             const audio = await read(entry.dataStart, 28);
             track.codec = entry.type;
@@ -1483,9 +1510,12 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
   }
   const streams: SourceStreamInspection[] = [];
   for (const track of tracks) {
-    if (!track.codec || !["soun", "vide"].includes(track.handler ?? "")) continue;
-    if (track.handler === "soun" && (!track.sampleRateHz || !track.channels)) continue;
-    if (track.handler === "vide" && (!track.width || !track.height)) continue;
+    const subtitle = !track.multipleMediaBoxes && track.subtitleHandler && track.subtitleEntry;
+    const mediaType = track.handler === "soun" ? "audio" : track.handler === "vide" ? "video" : subtitle ? "subtitle" : null;
+    const codec = mediaType === "subtitle" && subtitle ? ISO_SUBTITLE_LABELS[subtitle] : track.codec && isoCodec(track.codec);
+    if (!mediaType || !codec) continue;
+    if (mediaType === "audio" && (!track.sampleRateHz || !track.channels)) continue;
+    if (mediaType === "video" && (!track.width || !track.height)) continue;
 
     let languageTag: string | null | undefined;
     if (!track.multipleMediaBoxes) {
@@ -1548,10 +1578,10 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
             amrModeIndex
           ]
         : null;
-    const mediaType = track.handler === "vide" ? "video" : "audio";
     streams.push({
       mediaType,
-      codec: isoCodec(track.codec),
+      codec,
+      ...(mediaType === "subtitle" && subtitle ? { isoSubtitleSampleEntry: subtitle } : {}),
       ...(languageTag ? { languageTag } : {}),
       durationSeconds,
       bitrateBps: finitePositive(amrModeBitrate ?? 0) ?? encodedBitrate,
@@ -1568,7 +1598,8 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
     });
   }
   addTrackLanguageSummary(metadataSignals, streams);
-  const primary = streams.find((stream) => stream.mediaType === "video") ?? streams[0];
+  const primary = streams.find((stream) => stream.mediaType === "video") ??
+    streams.find((stream) => stream.mediaType === "audio");
   if (!primary) {
     throw new Error("The bounded ISO-BMFF scan did not find a complete audio or video track.");
   }

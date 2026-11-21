@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-21 M-02 / M-03 ISO-BMFF recognized subtitle source disclosure:
+`tx3g`, `wvtt` and `stpp` from bounded handler/description reads, with
+declared languages. Matroska preflight now rejects the same unsupported
+`tx3g` copy as native; ISO WebVTT/XML samples are not presumed raw compatible.
+Existing MPEG-TS/FLV exclusions are presented before processing. Three real
+two-subtitle fixtures agree with FFprobe; 50 focused checks and build/TS/
+lint/402-entry audit pass. No output codec, registry or memory acceptance
+change. Still open: browser source/check UI and genuine subtitle retention
+through an independently qualified conversion path. Receipt:
+`evidence/2026-11-21-iso-subtitle-inspection.json`.
+
 2026-11-21 P-08 / N-08 DOCX HTML writer now encodes UTF-8 directly into its
 reusable chunk, retaining exact byte/write boundaries and backpressure.
 Matched Node worker median improved 13.5% on 8,000 short styled paragraphs;

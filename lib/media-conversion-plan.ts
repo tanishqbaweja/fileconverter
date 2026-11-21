@@ -369,6 +369,11 @@ function planContainerCopy(
         `The ${profile.output.toUpperCase()} destination does not preserve this subtitle stream.`,
       );
     }
+    if (profile.output === "mkv" && stream.mediaType === "subtitle" && stream.isoSubtitleSampleEntry) {
+      return stream.isoSubtitleSampleEntry === "tx3g"
+        ? planItem(stream, index, "reject", "The installed Matroska stream-copy engine cannot copy this MPEG-4 Timed Text track. Subtitle re-encoding is not available in this profile.")
+        : planItem(stream, index, "verify", "This subtitle uses ISO-BMFF sample framing. The native engine must verify this exact codec and packet layout; the preview cannot promise a Matroska copy.");
+    }
     const compatible = containerCodecCompatible(profile, stream);
     return planItem(
       stream,

@@ -4,6 +4,18 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Latest implementation: timed subtitles in the source panel
+
+MP4, MOV and 3GP now disclose recognized timed subtitle tracks and declared
+languages before conversion. The planner flags unsupported Matroska timed-text
+copy and shows the existing MPEG-TS/FLV exclusions. ISO WebVTT/XML framing
+needs native verification; no new subtitle conversion is claimed.
+Three real fixtures, each with two nonempty subtitle tracks, matched FFprobe
+using only 1,326–1,376 application header bytes. 50 focused checks, build, TS,
+lint and 402 public audit entries passed. Generated fixtures were removed;
+no browser, protected original read or registry change. Browser check pending.
+[Receipt](evidence/2026-11-21-iso-subtitle-inspection.json).
+
 ## Latest implementation: DOCX HTML encoding
 
 The writer encodes into its reusable 64 KiB chunk; a four-byte scratch area

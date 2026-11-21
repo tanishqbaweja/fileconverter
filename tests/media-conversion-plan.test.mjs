@@ -131,6 +131,29 @@ test("MP4 stream-copy plan distinguishes copied, excluded, and rejecting streams
   assert.equal(rejected.blockingReasons.length, 1);
 });
 
+test("ISO subtitle sample framing is not mistaken for a compatible raw subtitle packet", () => {
+  const source = inspection([
+    stream("video", "H.264/AVC"),
+    stream("audio", "AAC"),
+    { ...stream("subtitle", "MPEG-4 Timed Text subtitle (tx3g)"), isoSubtitleSampleEntry: "tx3g" },
+    { ...stream("subtitle", "ISO-BMFF WebVTT subtitle (wvtt)"), isoSubtitleSampleEntry: "wvtt" },
+    { ...stream("subtitle", "ISO-BMFF XML subtitle (stpp)"), isoSubtitleSampleEntry: "stpp" },
+  ]);
+  for (const format of ["mp4", "mov", "3gp"]) {
+    const matroska = planMediaConversion(profile(format + "-to-mkv"), source);
+    assert.deepEqual(matroska.streams.map(row => row.action), ["copy", "copy", "reject", "verify", "verify"]);
+    assert.equal(matroska.blockingReasons.length, 1);
+    assert.match(matroska.streams[2].detail, /cannot copy this MPEG-4 Timed Text track/);
+    for (const destination of ["flv", "mpeg-ts"]) {
+      const plan = planMediaConversion(profile(format + "-to-" + destination), source);
+      assert.deepEqual(plan.streams.map(row => row.action), ["copy", "copy", "exclude", "exclude", "exclude"]);
+      assert.deepEqual(plan.blockingReasons, []);
+    }
+  }
+  const nativeMatroska = inspection([stream("video", "H.264/AVC"), stream("subtitle", "WebVTT subtitle")]);
+  assert.deepEqual(planMediaConversion(profile("mp4-to-mkv"), nativeMatroska).streams.map(row => row.action), ["copy", "copy"]);
+});
+
 test("AVI to 3GP candidate copies compatible video and explicitly excludes MP3", () => {
   const candidate = {
     id: "avi-to-3gp",

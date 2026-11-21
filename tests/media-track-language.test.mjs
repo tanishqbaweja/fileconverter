@@ -217,3 +217,55 @@ test("optional ISO-BMFF language reads yield to the existing byte ceiling and sa
   assert.ok(source.reads.some(([a, b]) => b - a === sampleCount * 4));
   assert.ok(!source.reads.some(([a, b]) => b - a === 60));
 });
+
+function isoSubtitle(type, {
+  handler = "sbtl", language = "fra", extendedLanguage, entryCount = 1, entryBytes = 8,
+  wrongParent = false, lateHandler = false,
+} = {}) {
+  const hdlr = Buffer.alloc(12);
+  const stsd = Buffer.alloc(8);
+  hdlr.write(handler, 8, "ascii");
+  stsd.writeUInt32BE(entryCount, 4);
+  const description = box("stsd", stsd, box(type, Buffer.alloc(entryBytes)));
+  const table = wrongParent ? description : box("minf", box("stbl", description));
+  const parts = [mdhd(packed(language)), table];
+  if (lateHandler) parts.push(box("hdlr", hdlr)); else parts.unshift(box("hdlr", hdlr));
+  if (extendedLanguage) parts.push(elng(extendedLanguage));
+  return box("trak", box("mdia", ...parts));
+}
+
+test("ISO-BMFF shows known subtitle framing and languages without reading any cue payload", async () => {
+  const ftyp = box("ftyp", Buffer.from("isom"));
+  const mdat = box("mdat", Buffer.alloc(200_000));
+  const source = observedBlob(ftyp, mdat, box("moov",
+    isoSubtitle("tx3g", { lateHandler: true }),
+    isoAudio(mdhd(packed("eng"))),
+    isoSubtitle("wvtt", { handler: "text", language: "deu", extendedLanguage: "de-AT" }),
+    isoSubtitle("stpp", { handler: "subt", language: "spa" }),
+  ));
+  const result = await inspectMediaSource(source, "mp4");
+  assert.equal(result.mediaType, "audio");
+  assert.equal(result.codec, "AAC");
+  assert.deepEqual(result.streams.map(({ mediaType, isoSubtitleSampleEntry }) => [mediaType, isoSubtitleSampleEntry]), [
+    ["subtitle", "tx3g"], ["audio", undefined], ["subtitle", "wvtt"], ["subtitle", "stpp"],
+  ]);
+  assert.deepEqual(tags(result), ["fra", "eng", "de-AT", "spa"]);
+  assert.ok(result.streams.filter(({ mediaType }) => mediaType === "subtitle")
+    .every(s => s.durationSeconds === 2 && s.width === null && s.channels === null));
+  assert.ok(source.reads.every(([start, end]) => end <= ftyp.length + 8 || start >= ftyp.length + mdat.length));
+  assert.ok(result.inspectedBytes < 600);
+});
+
+test("generic chapter text, ambiguous descriptions and unrelated handlers do not claim subtitle tracks", async () => {
+  const result = await inspectMediaSource(iso(
+    isoAudio(mdhd(packed("eng"))),
+    isoSubtitle("text", { handler: "text" }),
+    isoSubtitle("tx3g", { handler: "tmcd" }),
+    isoSubtitle("tx3g", { handler: "soun" }),
+    isoSubtitle("wvtt", { entryCount: 2 }),
+    isoSubtitle("stpp", { entryBytes: 4 }),
+    isoSubtitle("tx3g", { wrongParent: true }),
+  ), "mp4");
+  assert.deepEqual(result.streams.map(({ mediaType }) => mediaType), ["audio"]);
+  await assert.rejects(inspectMediaSource(iso(isoSubtitle("tx3g")), "mp4"), /complete audio or video track/);
+});

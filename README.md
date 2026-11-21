@@ -237,8 +237,8 @@ multi-gigabyte scaling or process-memory qualification.
 
 The source panel lists declared languages by inspected stream. Matroska and
 WebM expose languages for the video, audio and subtitles found in the first
-64 KiB. MP4, M4A, 3GP and QuickTime expose them for inspected audio and video
-tracks within a total read budget of 64 KiB. Extended tags take precedence:
+64 KiB. MP4, M4A, 3GP and QuickTime expose them for inspected audio, video and
+recognized subtitle tracks within a total read budget of 64 KiB. Extended tags take precedence:
 [Matroska LanguageBCP47](https://www.rfc-editor.org/rfc/rfc9559.html#section-5.1.4.1.20)
 and [QuickTime/ISO-BMFF elng](https://developer.apple.com/documentation/quicktime-file-format/extended_language_tag_atom).
 QuickTime numeric codes are mapped only for the QuickTime brand. If the
@@ -247,6 +247,13 @@ from the fallback field. Missing and unspecified languages are not displayed.
 The preview shows at most 16 tags plus an overflow count. It describes the
 source; it does not select an output track or guarantee language preservation
 in the destination.
+
+ISO-BMFF subtitle inspection recognizes `tx3g`, `wvtt` and `stpp` sample
+descriptions, not generic QuickTime chapter text. Declaring an ISO WebVTT
+track does not make its packet framing interchangeable with other containers.
+The planner distinguishes an unsupported Matroska timed-text copy, a
+subtitle that still needs native verification, and existing profiles that
+exclude subtitles. No new subtitle conversion route is advertised.
 
 ## Tested storage-error recovery
 

@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "status": "iso-bmff-subtitle-source-disclosure-and-planning-verified-no-browser-conversion",
+  "requirementIds": [
+    "M-02",
+    "M-03"
+  ],
+  "baseCommit": "247ec62112b907f2a3e73afa281838ec1923ae2c",
+  "sourceSha256": {
+    "lib/media-source-inspection.ts": "8dc9b23ce3045474f89da95e3d1fa56b1850b2eb3cdab91168bc39480798e99b",
+    "lib/media-conversion-plan.ts": "19702097b2dbefd625eebb934e40eade999eef81a612aa9307925e70298aae72",
+    "tests/media-conversion-plan.test.mjs": "5bb2ebedb499b7450456b9457b7594b8af3c5622676edfa7b73251a62d93e957",
+    "tests/media-track-language.test.mjs": "2310fa7496b8df88792344b17099aa7cc5f53ce64705f2418248037114ab320a",
+    "scripts/check-iso-subtitle-inspection.mjs": "a21b0880495abade979ca3a147af8e4d1cdda8565062ad56c1e4a6f8e2cee17f",
+    "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068"
+  },
+  "command": "node scripts/check-iso-subtitle-inspection.mjs",
+  "sourceDisclosure": "Report tx3g, wvtt, stpp when supported handler and one complete direct sample description agree. Keep generic text chapter tracks and malformed/ambiguous sample descriptions out of subtitle inventory.",
+  "behavior": "Matroska copy preflight rejects tx3g because the native selected-stream compatibility gate already rejects it; ISO WebVTT/XML framing defers to native checking. Existing FLV and MPEG-TS exclusions surface before conversion.",
+  "references": [
+    "https://mp4ra.org/registered-types/codecs",
+    "https://mp4ra.org/registered-types/handlers"
+  ],
+  "maxCumulativeSourceReadBytes": 65536,
+  "cuePayloadInspectedByApplication": false,
+  "nativeValidation": {
+    "nativeVersion": "ffprobe version N-122712-g7e3781e3ca-20260211 Copyright (c) 2007-2026 the FFmpeg developers",
+    "results": [
+      {
+        "format": "mp4",
+        "bytes": 192540,
+        "sha256": "47b762725755a4717f4d2271f63d3bb6a00e4f5e54eefe3d00ba40c498b2a16a",
+        "inspectedBytes": 1334,
+        "nativeStreams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "tags": {
+              "language": "und"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "tags": {
+              "language": "und"
+            }
+          },
+          {
+            "index": 2,
+            "codec_name": "mov_text",
+            "codec_type": "subtitle",
+            "codec_tag_string": "tx3g",
+            "tags": {
+              "language": "fra"
+            }
+          },
+          {
+            "index": 3,
+            "codec_name": "mov_text",
+            "codec_type": "subtitle",
+            "codec_tag_string": "tx3g",
+            "tags": {
+              "language": "spa"
+            }
+          }
+        ],
+        "nonemptySubtitlePackets": 2,
+        "subtitleLanguages": [
+          "fra",
+          "spa"
+        ],
+        "plans": {
+          "mkv": [
+            "copy",
+            "copy",
+            "reject",
+            "reject"
+          ],
+          "mpeg-ts": [
+            "copy",
+            "copy",
+            "exclude",
+            "exclude"
+          ],
+          "flv": [
+            "copy",
+            "copy",
+            "exclude",
+            "exclude"
+          ]
+        }
+      },
+      {
+        "format": "mov",
+        "bytes": 192639,
+        "sha256": "1af52d2534dc4582ae169673f316c111220b7ad975dbf4c09a0c5b6728081447",
+        "inspectedBytes": 1376,
+        "nativeStreams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "tags": {}
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "tags": {}
+          },
+          {
+            "index": 2,
+            "codec_name": "mov_text",
+            "codec_type": "subtitle",
+            "codec_tag_string": "tx3g",
+            "tags": {
+              "language": "fra"
+            }
+          },
+          {
+            "index": 3,
+            "codec_name": "mov_text",
+            "codec_type": "subtitle",
+            "codec_tag_string": "tx3g",
+            "tags": {
+              "language": "spa"
+            }
+          }
+        ],
+        "nonemptySubtitlePackets": 2,
+        "subtitleLanguages": [
+          "fr",
+          "es"
+        ],
+        "plans": {
+          "mkv": [
+            "copy",
+            "copy",
+            "reject",
+            "reject"
+          ],
+          "mpeg-ts": [
+            "copy",
+            "copy",
+            "exclude",
+            "exclude"
+          ],
+          "flv": [
+            "copy",
+            "copy",
+            "exclude",
+            "exclude"
+          ]
+        }
+      },
+      {
+        "format": "3gp",
+        "bytes": 192363,
+        "sha256": "b2247cbddccbb11ad75a013d7b5ba3b922577a2736d451ff466f855f2c3ced84",
+        "inspectedBytes": 1326,
+        "nativeStreams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "tags": {
+              "language": "und"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "tags": {
+              "language": "und"
+            }
+          },
+          {
+            "index": 2,
+            "codec_name": "mov_text",
+            "codec_type": "subtitle",
+            "codec_tag_string": "tx3g",
+            "tags": {
+              "language": "fra"
+            }
+          },
+          {
+            "index": 3,
+            "codec_name": "mov_text",
+            "codec_type": "subtitle",
+            "codec_tag_string": "tx3g",
+            "tags": {
+              "language": "spa"
+            }
+          }
+        ],
+        "nonemptySubtitlePackets": 2,
+        "subtitleLanguages": [
+          "fra",
+          "spa"
+        ],
+        "plans": {
+          "mkv": [
+            "copy",
+            "copy",
+            "reject",
+            "reject"
+          ],
+          "mpeg-ts": [
+            "copy",
+            "copy",
+            "exclude",
+            "exclude"
+          ],
+          "flv": [
+            "copy",
+            "copy",
+            "exclude",
+            "exclude"
+          ]
+        }
+      }
+    ],
+    "browserLaunched": false,
+    "nativeToolsUsedForFixtureGenerationAndProbeOnly": true,
+    "ownedScratchRemoved": true
+  },
+  "firstAttempt": "QuickTime displayed fr/es from classic numeric language fields, whereas FFprobe normalizes the same values to fra/spa. Fixture witness now expects representation according to the container brand; no inspector rule was weakened.",
+  "authoredHeaderEdgeCases": [
+    "ISO WebVTT and XML input labels are not Qualified output profiles",
+    "match a supported handler and one complete sample description",
+    "mpeg4 unknown and chapter text are not reported as subtitle",
+    "nested fake and truncated sample entries omitted",
+    "first subtitle cannot become primary audio/video",
+    "media-data payload skipped"
+  ],
+  "verification": {
+    "focusedChecks": 50,
+    "failed": 0,
+    "productionBuildPassed": true,
+    "typescriptPassed": true,
+    "affectedLintPassed": true,
+    "publicEvidenceEntriesMatched": 402
+  },
+  "systemDriveFreeBytes": 0,
+  "browserLaunched": false,
+  "testMkvAccessed": false,
+  "nativeConversionEngineChanged": false,
+  "registryChanged": false,
+  "subtitleOutputPreservationQualified": false,
+  "goalComplete": false,
+  "nextAction": "Verify the current source panel in a safe headless Chrome session with the multilingual fixtures. For actual tx3g preservation, design a genuine bounded subtitle conversion path, not packet relabeling. Do not repeat this Node/native fixture check or previously failed large-video configurations unchanged."
+}
