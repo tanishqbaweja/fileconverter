@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-21 M-03 / N-07 bounded actual `tx3g` → WebVTT engine implemented,
+outside the registry. Genuine two-track MP4/MOV/3GP fixtures each produced
+two Unicode cue texts and clocks exactly matching independent FFmpeg decode.
+Supports selected track ID, clear samples, UTF-8 and BOM UTF-16, simple edit
+lists, bounded 32-/64-bit table offsets, <=128 KiB reads, <=64 KiB awaited
+writes. 47 checks, TS, lint, browser-target bundle and 402 public entries
+pass. Styling/advanced edits/fragmentation not implemented. App integration,
+production browser, direct destination, cleanup/recovery and memory still
+open; no public capability changed.
+See `evidence/2026-11-21-timed-text-webvtt-engine.json`.
+
 2026-11-21 M-02 / M-03 ISO-BMFF recognized subtitle source disclosure:
 `tx3g`, `wvtt` and `stpp` from bounded handler/description reads, with
 declared languages. Matroska preflight now rejects the same unsupported

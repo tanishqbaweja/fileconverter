@@ -4,6 +4,19 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Latest implementation: bounded timed-text extraction engine
+
+The new local engine extracts one selected `tx3g` track from non-fragmented
+MP4/MOV/3GP to WebVTT, including cue gaps and bounded edit lists. It is not
+registered in the app yet. Genuine two-track fixtures, with different text
+on the unselected track, all produced the same independently verified 125 B
+WebVTT (two cues per file). Each run read only 967–999 bytes from ~339 kB.
+47 focused checks, TS, lint, browser-target bundling and the 402-entry audit
+passed. Synthetic 5 GiB addressing is not a physical stress result. No Chrome
+launch, test.mkv read or disposable output retained. Next: private worker,
+track selection and transactional destination integration, then browser gates.
+[Receipt](evidence/2026-11-21-timed-text-webvtt-engine.json).
+
 ## Latest implementation: timed subtitles in the source panel
 
 MP4, MOV and 3GP now disclose recognized timed subtitle tracks and declared

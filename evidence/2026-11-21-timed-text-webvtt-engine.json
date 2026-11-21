@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "status": "bounded-tx3g-to-webvtt-engine-verified-outside-browser-not-registered",
+  "requirementIds": [
+    "M-03",
+    "N-07"
+  ],
+  "baseCommit": "a7e907bb4553b90413f339db96f5cd9e204db15d",
+  "sourceSha256": {
+    "workers/iso-timed-text-webvtt.ts": "ffd961199ef0e306d5723ba618a96cfca3e410ded33d88b67e57780f81944150",
+    "scripts/check-iso-timed-text-webvtt.mjs": "297c8ddf624f2dc1041350eae7548ea95bef7827f09afa4c405050ab7903f2d0",
+    "tests/iso-timed-text-webvtt.test.mjs": "b99ef09962f665428c0304d6bd8adf72d72715d6b0ade753fb62ad073c57a083"
+  },
+  "command": "node scripts/check-iso-timed-text-webvtt.mjs",
+  "formatReferences": [
+    "https://www.etsi.org/deliver/etsi_ts/126200_126299/126245/18.00.00_60/ts_126245v180000p.pdf",
+    "https://www.w3.org/TR/webvtt1/",
+    "https://developer.apple.com/documentation/quicktime-file-format/sample-to-chunk_atom"
+  ],
+  "supported": "One explicitly selected tx3g track from a non-fragmented ISO-BMFF file; no auto-select when multiple tracks exist. Four bounded sample-table windows, local mdat reads, UTF-8 or BOM-tagged UTF-16, linear/leading-empty edits, deterministic escaped WebVTT.",
+  "limits": {
+    "maxReadBytes": 131072,
+    "tableWindowBytes": 16384,
+    "maxWriteBytes": 65536,
+    "maxPendingWrites": 1,
+    "maxBoxHeaders": 4096,
+    "maxMdatRegions": 128
+  },
+  "limitations": [
+    "No public/private browser route or UI track picker yet",
+    "No wvtt/stpp extraction, encryption, remote data refs, fragmentation, ctts or non-linear edits",
+    "No subtitle styling/colors, default/forced dispositions, positional modifiers, language embedding or remux back into media",
+    "Empty lines become visually blank nonbreaking-space lines; malformed or unrepresentable millisecond intervals reject"
+  ],
+  "nativeFixtureComparison": {
+    "version": "ffprobe version N-122712-g7e3781e3ca-20260211 Copyright (c) 2007-2026 the FFmpeg developers",
+    "cases": [
+      {
+        "format": "mp4",
+        "fileBytes": 338591,
+        "selected": {
+          "trackId": 4,
+          "samples": 5,
+          "cues": 2
+        },
+        "outputBytes": 125,
+        "outputSha256": "d8348e771e9795b68af6bf7df98551a108211408e7e3fbeb5a932212753d7357",
+        "comparedCueTextAndTimeExactly": true,
+        "reads": 96,
+        "readBytes": 975,
+        "maxRead": 41,
+        "maxWrite": 125,
+        "peakPending": 1
+      },
+      {
+        "format": "mov",
+        "fileBytes": 338690,
+        "selected": {
+          "trackId": 4,
+          "samples": 5,
+          "cues": 2
+        },
+        "outputBytes": 125,
+        "outputSha256": "d8348e771e9795b68af6bf7df98551a108211408e7e3fbeb5a932212753d7357",
+        "comparedCueTextAndTimeExactly": true,
+        "reads": 99,
+        "readBytes": 999,
+        "maxRead": 41,
+        "maxWrite": 125,
+        "peakPending": 1
+      },
+      {
+        "format": "3gp",
+        "fileBytes": 338414,
+        "selected": {
+          "trackId": 4,
+          "samples": 5,
+          "cues": 2
+        },
+        "outputBytes": 125,
+        "outputSha256": "d8348e771e9795b68af6bf7df98551a108211408e7e3fbeb5a932212753d7357",
+        "comparedCueTextAndTimeExactly": true,
+        "reads": 95,
+        "readBytes": 967,
+        "maxRead": 41,
+        "maxWrite": 125,
+        "peakPending": 1
+      }
+    ],
+    "browserLaunched": false,
+    "productRouteRegistered": false,
+    "scratchRemoved": true,
+    "playerRenderingVerified": false
+  },
+  "additionalChecks": {
+    "focused": 47,
+    "failed": 0,
+    "typescriptPassed": true,
+    "affectedLintPassed": true,
+    "browserTargetBundleBytes": 15725,
+    "publicEvidenceEntriesMatched": 402,
+    "syntheticBeyond4GiB": "5 GiB sparse virtual file, real co64 address beyond 4 GiB and <512 B total reads; not a physical multi-gigabyte stress result.",
+    "tableWindowControl": "4,300 indexed samples, multiple table pages, last 1 ms cue exact.",
+    "writeAndFailureControl": "65,535-character ampersand cue expands past multiple 64 KiB writes, one pending, cancellation after first write and injected quota failure propagate.",
+    "initialTypeCheck": "BigInt literal syntax failed the existing ES2017 TypeScript target; replaced with constructors/constants without changing target or timeline arithmetic."
+  },
+  "systemDriveFreeBytes": 0,
+  "protectedOriginalAccessed": false,
+  "disposableOutputsRetained": false,
+  "fullBrowserQualification": false,
+  "wholeGoalComplete": false,
+  "nextAction": "Wire a private route into the existing bounded transactional worker and explicit track selection. When Chrome is safe, qualify real browser destination writes, cancellation/abort/recovery, privacy and full-tree memory. Do not replay this already verified Node fixture unchanged."
+}

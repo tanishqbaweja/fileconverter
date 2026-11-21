@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-11-21 bounded timed-text extraction engine: native tools generated and
+independently decoded three real MP4/MOV/3GP fixtures with distinguishable
+first/second `tx3g` tracks. Direct worker implementation used 967–999 input
+bytes and produced three identical 125 B WebVTT outputs; exact two cues/Unicode
+text and times match per file. 47 Node checks cover edit clipping, sparse
+5 GiB offsets (virtual only), 4,300-sample table windows, 64 KiB writes with
+backpressure, after-write cancellation and quota error. Initial TS rejected
+BigInt literals on ES2017; constructors fix spelling with exact arithmetic
+unchanged. Final TS/lint/browser bundle/402-entry audit pass. Scratch removed;
+no browser run, test.mkv read, or route registered.
+Receipt: `evidence/2026-11-21-timed-text-webvtt-engine.json`.
+
 2026-11-21 ISO-BMFF subtitle inspection: three genuine MP4/MOV/3GP files
 with two `tx3g` tracks and nonempty cues each matched FFprobe. Browser-source
 inspector read 1,334/1,376/1,326 header bytes respectively, using the existing
