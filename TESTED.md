@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-11-21 timed-text browser cancellation fixture **offline preflight PASS**.
+`node scripts/check-timed-text-browser-fixture.mjs` generated a genuine
+2,848,610 B MP4; FFmpeg independently decoded both `tx3g` tracks before an
+application source-inspection/engine-only Node check. Track 4 matched all 6,144
+cue timestamps/text and the independent 2,155,445 B hash (33 writes); track 3
+matched its distinct 79 B decoy. First check exposed a wrong exact-first-chunk
+assumption: UTF-8 flushed at 65,535 B. Correct cumulative 65,536 B threshold
+crossed on write two (131,071 B), at which point the engine-only control stopped.
+Maximum reads/writes 16 KiB/64 KiB, one pending write; 12 focused tests and
+scoped lint passed. Scratch removed; no browser destination, privacy, memory,
+manual coverage, or public acceptance claimed. C: 0 B, no `test.mkv` access.
+[Receipt](evidence/2026-11-21-timed-text-browser-fixture-preflight.json).
+
 2026-11-21 localhost timed-text sidecar integration: genuine MP4/MOV/3GP
 fixtures exercised the bundled worker's message dispatch, real source
 reads, exact text/timing and bounded writes (975/999/967 B reads and

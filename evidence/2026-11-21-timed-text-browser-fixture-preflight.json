@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "status": "native-fixture-and-node-engine-preflight-passed-browser-qualification-open",
+  "requirementIds": [
+    "M-03",
+    "N-07"
+  ],
+  "baseCommit": "71011623a7eb4ba5e346dbfb13f7c895fc6d1624",
+  "command": "node scripts/check-timed-text-browser-fixture.mjs",
+  "sourceSha256": {
+    "fixtures/media/quicktime-source.mov": "9ac80798a1f55fa3f39f43bb579e8e1271c5895d76d6db8b87e923160626d62f",
+    "scripts/lib/timed-text-browser-fixture.mjs": "9881e405e4f7f353e7c4cf4c793dd7d3ab958a96837a9457e06ed97ac6e1307c",
+    "scripts/check-timed-text-browser-fixture.mjs": "430081ed6673d88f4859e17fdc415aaf78b9bb4be400bc2a57f494093d2ed1f0",
+    "workers/iso-timed-text-webvtt.ts": "ffd961199ef0e306d5723ba618a96cfca3e410ded33d88b67e57780f81944150"
+  },
+  "oracleScope": "Native FFmpeg generated the synthetic MP4 and independently decoded every cue on each track. The oracle checks text and timing before hashing expected WebVTT bytes. It does not run the application conversion.",
+  "fixture": {
+    "inputBytes": 2848610,
+    "trackIds": [
+      3,
+      4
+    ],
+    "selectedTrackId": 4,
+    "expected": {
+      "cues": 6144,
+      "bytes": 2155445,
+      "sha256": "1eff4945944e8d3f88e8210567dedcb1f42c38afef48f36f947aacdc13620f12"
+    },
+    "decoyOracle": {
+      "cues": 1,
+      "bytes": 79,
+      "sha256": "84d2abcae152abdb9839d69be48b7099352b0ca2210b3df1bc44ef38d52a051a"
+    },
+    "selectedPacketCount": 12289,
+    "nativeTool": "ffprobe version N-122712-g7e3781e3ca-20260211 Copyright (c) 2007-2026 the FFmpeg developers",
+    "inputName": "within-test-timed-text-cancellation.mp4",
+    "outputName": "within-test-timed-text-cancellation.vtt"
+  },
+  "offeredTrackIds": [
+    3,
+    4
+  ],
+  "nodeEnginePreflight": {
+    "success": {
+      "trackId": 4,
+      "samples": 12289,
+      "cues": 6144,
+      "sha256": "1eff4945944e8d3f88e8210567dedcb1f42c38afef48f36f947aacdc13620f12",
+      "readOperations": 12389,
+      "inputBytes": 1910727,
+      "maxReadChunkBytes": 16384,
+      "outputBytes": 2155445,
+      "writeOperations": 33,
+      "maxWriteChunkBytes": 65536,
+      "peakPendingWrites": 1
+    },
+    "decoy": {
+      "trackId": 3,
+      "samples": 3,
+      "cues": 1,
+      "sha256": "84d2abcae152abdb9839d69be48b7099352b0ca2210b3df1bc44ef38d52a051a",
+      "readOperations": 94,
+      "inputBytes": 947,
+      "maxReadChunkBytes": 63,
+      "outputBytes": 79,
+      "writeOperations": 1,
+      "maxWriteChunkBytes": 79,
+      "peakPendingWrites": 1
+    },
+    "cancellation": {
+      "stoppedAtFirstThresholdCrossing": true,
+      "triggerBytes": 65536,
+      "readOperations": 841,
+      "inputBytes": 140946,
+      "maxReadChunkBytes": 16384,
+      "outputBytes": 131071,
+      "writeOperations": 2,
+      "maxWriteChunkBytes": 65536,
+      "peakPendingWrites": 1
+    }
+  },
+  "scratchRemoved": true,
+  "browserLaunched": false,
+  "browserQualification": false,
+  "browserMemoryMeasured": false,
+  "protectedOriginalRead": false,
+  "firstAttempt": {
+    "status": "fixture-control-assertion-rejected",
+    "reason": "Assumed the first write held exactly 65536 bytes; the UTF-8-safe boundary flushed at 65535. The control now stops at the first crossing of the unchanged cumulative 65536-byte threshold. Production engine was unchanged."
+  },
+  "focusedChecks": {
+    "passed": 12,
+    "failed": 0,
+    "commands": [
+      "node --test tests/iso-timed-text-webvtt.test.mjs tests/timed-text-qualification-integration.test.mjs",
+      "node node_modules/eslint/bin/eslint.js scripts/check-timed-text-browser-fixture.mjs scripts/lib/timed-text-browser-fixture.mjs"
+    ]
+  },
+  "systemDriveFreeBytes": 0,
+  "publicRouteChanged": false,
+  "nextAction": "Wire the reusable fixture into a headless production-browser control observing real committed/cancelled destination state and unchanged whole-process-tree memory. Do not replay the offline check unchanged. Native-picker and external-drive coverage is not established."
+}

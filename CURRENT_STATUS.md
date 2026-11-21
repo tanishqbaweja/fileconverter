@@ -4,6 +4,19 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Next timed-text browser run: cancellation fixture verified offline
+
+The earlier 125 B controls cannot reach the real-write cancellation trigger.
+`node scripts/check-timed-text-browser-fixture.mjs` created a genuine 2,848,610 B
+MP4 and independently checked every cue of two `tx3g` tracks. In Node the
+engine selected track 4 and matched all 6,144 cues and the 2,155,445 B output
+hash, with 16 KiB reads, up to 64 KiB per write, and one pending write.
+The first UTF-8-safe write was 65,535 B; the cumulative 65,536 B trigger was
+crossed on write two. The Node control stopped there. No actual browser
+destination, cancellation, or memory result yet; C: still has 0 B free.
+Scratch was removed. Reuse this fixture in the headless driver next; do not
+repeat the preflight unchanged. [Receipt](evidence/2026-11-21-timed-text-browser-fixture-preflight.json).
+
 ## Latest implementation: private timed-text sidecar in the app
 
 Local qualification now offers MP4, MOV and 3GP to WebVTT with explicit

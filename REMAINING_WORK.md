@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-11-21 M-03 / N-07 timed-text browser cancellation input **verified offline**.
+The earlier 125 B outputs cannot exercise the 64 KiB cancel-after-output guard.
+The new generated MP4 has a 6,144-cue selected `tx3g` track and distinct
+one-cue decoy. An independent native oracle and the file-backed Node engine
+agreed byte-for-byte on both tracks; the UTF-8-safe first write can be one byte
+short of the trigger, so cancellation preflight now tests cumulative bytes.
+[Receipt](evidence/2026-11-21-timed-text-browser-fixture-preflight.json).
+Next: wire this fixture into the headless production browser driver and
+verify real destination cleanup after the trigger and write fault, recovery,
+three repeats, privacy and full-tree memory. C: 0 B; qualification not run.
+No status upgrade from partial, no replay of the unchanged offline test.
+
 2026-11-21 M-03 / N-07 timed-text → WebVTT integrated in local qualification
 only. Explicit source-bound track IDs, one file, loopback-only worker,
 bounded reads/writes and existing destination close/abort. Genuine MP4,
