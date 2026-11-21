@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-21 N-08 private DOCX run vertical formatting implemented and independently
+verified outside Chrome. `w:vertAlign` resolves document defaults, paragraph
+and character style chains, and direct superscript/subscript/baseline values.
+It emits fixed semantic tags only; custom `w:position` and exact Word font
+metrics are disclosed as unsupported. Real fixture, 14 exact segments/five
+mutation rejections, three bounded writes, 209 tests, build, TS, lint and public
+manifest checks passed. No change to public route or milestone. Next: include
+this case in the next headless DOCX direct-handle repeat/recovery/memory run
+when host headroom permits. [Receipt](evidence/2026-11-21-docx-run-vertical.json).
+
 2026-11-21 P-08 / M-03 / N-07 private timed-text reads coalesced **within each
 selected chunk**. Same input/oracle/output boundaries: 12,389 → 332 native-file
 Blob reads, 1,125.392 → 84.824 ms median in eight runs per variant; no speed

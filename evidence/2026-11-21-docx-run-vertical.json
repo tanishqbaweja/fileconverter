@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "status": "private-docx-run-vertical-worker-preflight-verified-browser-open",
+  "requirementIds": [
+    "N-08"
+  ],
+  "baseCommit": "929e822bf33dafd3add4b273dbc9af987cd1499d",
+  "sourceSha256": {
+    "workers/docx-html-conversion.ts": "3f0155e9ef0daa6d00bc370e1728cb091530eb8c7e3ccd0a3c865341721986f9",
+    "workers/docx-outline.ts": "d716032e925e1591e54c7a56f06fbcd7d6c5566df42c4cc7cef964ec2794f937",
+    "lib/capability-registry.ts": "a8eace3d767eac85bd090e134753ea48b49b8ee5406c5a965ebffb837f31845b",
+    "scripts/check-docx-run-vertical-fixture.mjs": "92e46c3e53d082b4dc38c202f083c3dbc1e94f5a683d7168c4d0b6f7ccc8957c",
+    "scripts/lib/docx-run-vertical-fixtures.py": "0f94e2f468487cd20af1b64cd6d3c4cb9e8fa2b538cb916cbf54607e485d660f",
+    "tests/docx-style-emphasis.test.mjs": "2905e468cf4ae7e76b01267dab4cd2afd2d1b3cf365420ac22185481b9109e01",
+    "scripts/lib/reviewed-docx-run-vertical.mjs": "56d5869c427aa03955d9b31046c847205bd92c0c237105f8ceae15682c6e3c95"
+  },
+  "command": "node scripts/check-docx-run-vertical-fixture.mjs",
+  "commandPrerequisite": "Python with python-docx 1.2.0 on PATH or WITHIN_DOCX_FIXTURE_PYTHON set to that interpreter.",
+  "semantics": "Run vertAlign is an enumerated override; document defaults, default/named paragraph chains, named character chains, and direct values resolve in that order. Baseline explicitly resets the inherited run shift. Safe fixed HTML tags only.",
+  "spec": "https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.verticaltextalignment?view=openxml-3.0.1",
+  "fixture": {
+    "generator": "python-docx",
+    "version": "1.2.0",
+    "bytes": 37611,
+    "zipCrcAndReopenVerified": true,
+    "sha256": "eed360d13eca661abcc1a29914f9de84670a58d6a1dba6e20fdb68d5d4bbec5e"
+  },
+  "oracle": {
+    "bytes": 171850,
+    "sha256": "528f5b929043828bf0be20e0aae98ad693bd8c03bdb91c616dc694932cd5d91a",
+    "paragraphs": 4,
+    "segments": 14,
+    "validator": "independent Python HTMLParser"
+  },
+  "negatives": [
+    "lost-shift",
+    "swapped-shift",
+    "ignored-reset",
+    "lost-emphasis",
+    "truncated-tail"
+  ],
+  "writes": [
+    65536,
+    65536,
+    40778
+  ],
+  "peakPending": 1,
+  "warnings": [
+    "DOCX HTML preserves main-document paragraphs, table rows/cells, horizontal grid spans, and standard vertical merges with empty continuation cells. Omitted edge grid positions use empty HTML cells. Direct bold/italic/underline/strike, tabs, line breaks, Unicode and accepted tracked insertions are preserved. Tracked deletions and moved-from text are excluded.",
+    "Named styles (referenced/default paragraph and character) preserve outline hierarchy and supported bold/italic/underline/strike emphasis and text colors with direct overrides. Text colors use bounded RGB and theme mapping; automatic color uses the browser text color, not Word's background-dependent choice. Underline patterns/colors are normalized to a single underline. Legacy horizontal merges, table-style effects, complex-script properties, fonts, shading, borders, page layout, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.",
+    "Direct and inherited superscript/subscript use semantic HTML; explicit baseline resets are retained. Exact Word font metrics and custom raised/lowered text positions are not reproduced.",
+    "Supported DOCX paragraph alignment follows document defaults, paragraph styles and direct overrides, including right-to-left leading and trailing edges. This does not recreate Word's bidirectional run ordering, list tab geometry or exact justification spacing.",
+    "Explicit DOCX HTTP/HTTPS/mailto hyperlinks and local bookmark positions are preserved without fetching targets; unsafe/relative/package links retain display text but are inactive. Frame targets, browsing history, document-location hints and field-code links are not reproduced; nested hyperlinks are rejected. Relationships are capped at1MiB/4096entries/1024links and bookmarks at4096names.",
+    "Supported DOCX decimal, repeated-letter, Roman and Unicode-bullet list labels, instance continuation, level restarts and inherited paragraph-style numbering are preserved in streamed HTML lists. Marker fonts, original tab stops and indent geometry are normalized; picture/legacy markers, linked numbering styles and other numbering systems are rejected when used.",
+    "DOCX outline metadata read 169 style definitions from a referenced internal package part."
+  ],
+  "browserLaunched": false,
+  "browserQualified": false,
+  "protectedOriginalRead": false,
+  "scratchRemoved": true,
+  "verified": {
+    "affectedTests": 209,
+    "failed": 0,
+    "productionBuild": true,
+    "typescript": true,
+    "scopedLint": true,
+    "publicManifestEntries": 402
+  },
+  "initialFocusedAttempt": "29/30: the negative body check accidentally matched the existing table-cell CSS in the document head. Restricting it to body markup fixed the assertion; no product behavior changed for that correction.",
+  "limitations": [
+    "Exact Word font sizing and w:position offsets are not reproduced.",
+    "No browser destination/memory, manual, scaling, or public-qualification claim."
+  ],
+  "systemDriveFreeBytes": 0,
+  "publicRouteChanged": false,
+  "nextAction": "Add this distinct formatting fixture to the next headless DOCX direct-handle qualification when the host guard can pass; do not rerun this unchanged worker-only fixture."
+}

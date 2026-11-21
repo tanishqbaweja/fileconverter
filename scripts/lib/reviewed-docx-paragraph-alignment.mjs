@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { preDocxRunVertical } from "./reviewed-docx-run-vertical.mjs";
 
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const pins = {
@@ -10,6 +11,7 @@ const pins = {
 };
 
 export function preDocxHtmlEncoding(file, bytes) {
+  bytes = preDocxRunVertical(file, bytes);
   if (file !== "workers/docx-html-conversion.ts" ||
       sha(bytes) !== "30e7763523d3efafc0a6d5034fbc00d080b2bfe6e17a2be7c051e29dafdbca34") return bytes;
   const archived = execFileSync("git", ["show", `eac518f1ad88dc51214971ebfdc50441bc0c7b3b:${file}`],

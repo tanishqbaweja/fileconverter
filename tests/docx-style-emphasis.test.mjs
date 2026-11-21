@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile } from "node:fs/promises";
 import { build } from "esbuild";
+import { preDocxRunVertical } from "../scripts/lib/reviewed-docx-run-vertical.mjs";
 import { strToU8, zipSync } from "fflate";
 const WORD = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const built = await build({ entryPoints: ["workers/docx-html-conversion.ts"], bundle: true, write: false, format: "esm", platform: "browser" });
@@ -83,4 +85,51 @@ test("style/direct emphasis and character references reject ambiguous duplicates
     ['<w:p><w:r><w:rPr/><w:rPr/><w:t>x</w:t></w:r></w:p>', "", /once/],
     ['<w:p><w:r><w:t/><w:rPr><w:b/></w:rPr></w:r></w:p>', "", /precede/],
   ]) await assert.rejects(convert(body, styles), message);
+});
+
+const vertical = value => `<w:vertAlign w:val="${value}"/>`;
+const character = id => `<w:rStyle w:val="${id}"/>`;
+test("superscript/subscript cascade over defaults and explicit baseline resets without leaking to neighbors", async () => {
+  const defaults = `<w:docDefaults><w:rPrDefault><w:rPr>${vertical("superscript")}</w:rPr></w:rPrDefault></w:docDefaults>`;
+  const styles = defaults + style("Normal", "paragraph", vertical("subscript"), "", 'w:default="1"') +
+    style("P", "paragraph", vertical("baseline")) + style("DerivedP", "paragraph", "", "P") + style("Bare", "paragraph", "") +
+    style("C", "character", vertical("superscript") + '<w:color w:val="112233"/><w:b/>') + style("DerivedC", "character", "", "C") +
+    style("Reset", "character", vertical("baseline"), "C") + style("Ignored", "character", vertical("subscript"), "", 'w:default="1"');
+  const body = paragraph(run("Default") + run(" Reset ", vertical("baseline")) + run("Default again")) +
+    paragraph(run("Paragraph reset") + run("x &amp; y 😀", character("DerivedC")) +
+      run("Character reset", character("Reset")) + run("Forced", character("C") + vertical("subscript")), "DerivedP") +
+    paragraph(run("Document default"), "Bare");
+  const r = await convert(body, styles);
+  assert.match(r.html, /<p><sub>Default<\/sub> Reset <sub>Default again<\/sub><\/p>/);
+  assert.match(r.html, /<p>Paragraph reset<span style="color:#112233"><strong><sup>x &amp; y 😀<\/sup><\/strong><\/span><span style="color:#112233"><strong>Character reset<\/strong><\/span><span style="color:#112233"><strong><sub>Forced<\/sub><\/strong><\/span><\/p>/i);
+  assert.match(r.html, /<p><sup>Document default<\/sup><\/p>/);
+  assert.ok(r.warnings.some(warning => warning.includes("custom raised/lowered")));
+  assert.equal(r.peakPending, 1);
+});
+
+test("vertical formatting from change history, foreign namespaces and paragraph marks is never interpreted", async () => {
+  const fake = '<f:vertAlign xmlns:f="urn:fake" w:val="superscript"/>' + `<w:rPrChange><w:rPr>${vertical("subscript")}</w:rPr></w:rPrChange>`;
+  const body = `<w:p><w:pPr><w:pStyle w:val="P"/><w:rPr>${vertical("subscript")}</w:rPr></w:pPr>` +
+    run("Plain", fake + '<w:position w:val="24"/>') + "</w:p>";
+  const r = await convert(body, style("P", "paragraph", fake));
+  assert.match(r.html, /<p>Plain<\/p>/);
+  assert.doesNotMatch(r.html.split("<body>")[1], /<su[bp]>|vertical-align/);
+});
+
+test("active vertical properties require known values and reject duplicates at their own level", async () => {
+  for (const props of [vertical("lift"), '<w:vertAlign/>', vertical("baseline") + vertical("subscript")]) {
+    await assert.rejects(convert(paragraph(run("direct", props))), /vertical alignment/);
+    await assert.rejects(convert(paragraph(run("styled"), "P"), style("P", "paragraph", props)), /vertical alignment/);
+    await assert.rejects(convert(paragraph(run("default")), `<w:docDefaults><w:rPrDefault><w:rPr>${props}</w:rPr></w:rPrDefault></w:docDefaults>`), /vertical alignment/);
+  }
+});
+
+test("historical DOCX proof maps only exact reviewed run-vertical changes", async () => {
+  for (const file of ["workers/docx-html-conversion.ts", "workers/docx-outline.ts", "lib/capability-registry.ts"]) {
+    const current = await readFile(file), archived = preDocxRunVertical(file, current);
+    assert.notDeepEqual(current, archived);
+    assert.equal(preDocxRunVertical(file, archived), archived);
+    const unknown = Buffer.concat([current, Buffer.from("\n// unknown change\n")]);
+    assert.equal(preDocxRunVertical(file, unknown), unknown);
+  }
 });

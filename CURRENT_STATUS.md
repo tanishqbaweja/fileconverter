@@ -4,6 +4,17 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Verified offline: private DOCX superscript/subscript
+
+DOCX-to-HTML now emits semantic `<sup>`/`<sub>` for direct and inherited run
+formatting and honors explicit baseline resets. Exact Word font metrics and
+custom `w:position` offsets remain unsupported. A real 37,611 B DOCX produced
+171,850 B HTML in three writes; the independent parser verified 14 segments
+and rejected five mutations. 209 affected tests, production build, TypeScript,
+scoped lint and the 402-entry public manifest audit passed. No browser, public
+route, or `test.mkv` change. Include this fixture in the next browser DOCX
+control after the host guard can pass. [Receipt](evidence/2026-11-21-docx-run-vertical.json).
+
 ## Verified speed improvement: private timed-text file reads
 
 The extractor now coalesces consecutive samples only within a selected-track

@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-11-21 private DOCX superscript/subscript **worker preflight PASS**.
+Real python-docx 1.2.0 37,611 B package reopened with intact CRC and styles;
+bundled production engine generated 171,850 B HTML via 65,536/65,536/40,778 B
+writes, one pending. Independent HTMLParser verified 14 exact text/vertical/
+bold segments and rejected five mutations. Explicit baseline overrides a
+shift, named and default styles resolve, and out-of-scope custom positions
+stay inactive. Initial body negative test incorrectly matched existing head
+CSS; scoped assertion resolved it. 209 affected tests, build, TS, lint and
+402 public manifest checks pass. All fixture/output scratch removed. No
+browser, manual, native-picker, performance, or public claim; C: 0 B.
+[Receipt](evidence/2026-11-21-docx-run-vertical.json).
+
 2026-11-21 timed-text read batching **retained on matched offline A/B**.
 Same 2,848,588 B genuine MP4, same selected cue track, eight interleaved
 measurements per method. Baseline 12,389 reads/1,125.392 ms median vs candidate

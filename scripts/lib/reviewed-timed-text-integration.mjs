@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { preDocxRunVertical } from "./reviewed-docx-run-vertical.mjs";
 
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const pins = {
@@ -12,6 +13,7 @@ const pins = {
   "lib/media-source-inspection.ts": ["8dc9b23ce3045474f89da95e3d1fa56b1850b2eb3cdab91168bc39480798e99b", "d51fea54af6b29cc26ffc2887b39ec95c4cdd8768f6a56416ba9920e0df698ec"],
 };
 export function preTimedTextIntegration(file, bytes) {
+  bytes = preDocxRunVertical(file, bytes);
   if (!Object.hasOwn(pins, file) || sha(bytes) !== pins[file][1]) return bytes;
   const archived = execFileSync("git", ["show", `c02444cfe0098e10c95317723945a1dfc136ca2e:${file}`],
     { windowsHide: true, maxBuffer: 1_048_576 });

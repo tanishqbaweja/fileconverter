@@ -43,6 +43,12 @@ including HSL tint/shade (legacy Word rounding may differ slightly). Unresolved 
 automatic color uses browser text color. Theme and settings metadata each cap
 at 1 MiB. Only generated color values enter HTML; no external theme is fetched.
 This color change needs its own production-browser and memory evidence.
+The private converter preserves [Word run alignment](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.verticaltextalignment?view=openxml-3.0.1)
+as semantic HTML superscript/subscript. It resolves document defaults, named
+paragraph and character styles, and direct values; an explicit baseline resets
+an inherited shift. Exact Word font sizing and custom raised/lowered positions
+are not reproduced. [The offline fixture](evidence/2026-11-21-docx-run-vertical.json)
+verifies exact formatting and text, not browser qualification.
 Fonts, exact page/table
 layout, graphics and ancillary parts are not fully
 preserved; the UI discloses those limits. Paragraph outline/heading inheritance

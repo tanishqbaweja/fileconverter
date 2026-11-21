@@ -11,15 +11,17 @@ const METADATA_BYTES = 1048576, MAX_STYLES = 1024, MAX_CHAIN = 64;
 export type Element = { name: string; local: string; uri: string; attributes: Map<string, string>; parent?: Element;
   namespaces: Map<string, string>; namespaceChars: number; depth: number };
 export type DocxEmphasis = { bold: boolean; italic: boolean; underline: boolean; strike: boolean };
+export type DocxRunVertical = "baseline" | "superscript" | "subscript";
 type ParagraphAlignment = "start" | "end" | "center" | "justify" | "unsupported";
 type CssAlignment = "left" | "right" | "center" | "justify";
 export type DocxParagraphLayout = { alignment?: ParagraphAlignment; bidi?: boolean };
-type Style = { type: string; base?: string; outline?: number; emphasis: Partial<DocxEmphasis>; numbering?: { numId?: number }; color?: DocxColor; layout?: DocxParagraphLayout };
-type Resolved = { outline: number | undefined; levels: number; toggleMask: number; underline?: boolean; numId?: number; color?: DocxColor; layout: DocxParagraphLayout };
+type Style = { type: string; base?: string; outline?: number; emphasis: Partial<DocxEmphasis>; numbering?: { numId?: number }; color?: DocxColor; vertical?: DocxRunVertical; layout?: DocxParagraphLayout };
+type Resolved = { outline: number | undefined; levels: number; toggleMask: number; underline?: boolean; numId?: number; color?: DocxColor; vertical?: DocxRunVertical; layout: DocxParagraphLayout };
 export type DocxOutlineModel = { definitionCount: number; outline(styleId?: string): number | undefined;
   numbering(styleId?: string): { numId?: number; styleIds: readonly string[] };
   alignment(styleId?: string, direct?: DocxParagraphLayout): CssAlignment | undefined;
   color(paragraphStyleId?: string, characterStyleId?: string, direct?: DocxColor): string | undefined;
+  vertical(paragraphStyleId?: string, characterStyleId?: string, direct?: DocxRunVertical): DocxRunVertical | undefined;
   emphasis(paragraphStyleId?: string, characterStyleId?: string, direct?: Partial<DocxEmphasis>): DocxEmphasis };
 
 export function docxEmphasisKey(local: string | null): keyof DocxEmphasis | undefined {
@@ -36,6 +38,11 @@ export function parseDocxEmphasisValue(local: string, value: string | undefined)
   return value === undefined || !["0", "false", "off"].includes(value);
 }
 const toggleMask = (value: Partial<DocxEmphasis>) => (value.bold ? 1 : 0) | (value.italic ? 2 : 0) | (value.strike ? 8 : 0);
+
+export function parseDocxRunVertical(value?: string): DocxRunVertical {
+  if (value === "baseline" || value === "superscript" || value === "subscript") return value;
+  throw new Error("DOCX run vertical alignment must be baseline, superscript or subscript.");
+}
 
 export function parseDocxOutlineLevel(value: string | undefined): number {
   if (value === undefined || !/^\+?\d{1,3}$/.test(value) || Number(value) > 9)
@@ -100,7 +107,7 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
   const stylePart = parts.get("styles");
   const styles = new Map<string, Style>(), defaults: Partial<DocxEmphasis> = {};
   let defaultStyle: string | undefined, documentOutline: number | undefined, defaultNumbering: { numId?: number } | undefined;
-  const defaultRun: { color?: DocxColor } = {};
+  const defaultRun: { color?: DocxColor; vertical?: DocxRunVertical } = {};
   const defaultLayout: DocxParagraphLayout = {};
   if (stylePart !== undefined) {
     const entry = entries.get(stylePart);
@@ -143,15 +150,19 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
       } else if (word(element.parent, "rPr")) {
         const key = element.uri === WORD ? docxEmphasisKey(element.local) : undefined;
         let properties: Partial<DocxEmphasis> | undefined;
-        let colorOwner: { color?: DocxColor } | undefined;
+        let runOwner: typeof defaultRun | undefined;
         if (current && element.parent?.parent === current.element && ["paragraph", "character"].includes(current.value.type)) {
-          properties = current.value.emphasis; colorOwner = current.value;
+          properties = current.value.emphasis; runOwner = current.value;
         } else if (word(element.parent?.parent, "rPrDefault") && word(element.parent?.parent?.parent, "docDefaults") && element.parent?.parent?.parent?.depth === 2) {
-          properties = defaults; colorOwner = defaultRun;
+          properties = defaults; runOwner = defaultRun;
         }
-        if (colorOwner && word(element, "color")) {
-          if (colorOwner.color !== undefined) throw new Error("DOCX style/defaults repeats a run color.");
-          colorOwner.color = parseDocxColor(name => attribute(element, name));
+        if (runOwner && word(element, "color")) {
+          if (runOwner.color !== undefined) throw new Error("DOCX style/defaults repeats a run color.");
+          runOwner.color = parseDocxColor(name => attribute(element, name));
+        }
+        if (runOwner && word(element, "vertAlign")) {
+          if (runOwner.vertical !== undefined) throw new Error("DOCX style/defaults repeats run vertical alignment.");
+          runOwner.vertical = parseDocxRunVertical(attribute(element, "val"));
         }
         if (key && properties) {
           if (properties[key] !== undefined) throw new Error("DOCX style/defaults repeats a supported run property.");
@@ -191,6 +202,7 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
     const value: Resolved = { outline: style.outline ?? inherited?.outline, levels,
       toggleMask: (inherited?.toggleMask ?? 0) ^ toggleMask(style.emphasis), underline: style.emphasis.underline ?? inherited?.underline,
       numId: style.numbering?.numId ?? inherited?.numId, color: style.color ?? inherited?.color,
+      vertical: style.vertical ?? inherited?.vertical,
       layout: { alignment: style.layout?.alignment ?? inherited?.layout.alignment,
         bidi: style.layout?.bidi ?? inherited?.layout.bidi } };
     visiting.delete(id); resolved.set(id, value); return value;
@@ -225,6 +237,10 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
       return resolveColor(direct ??
         (characterId !== undefined && styles.get(characterId)?.type === "character" ? resolved.get(characterId)?.color : undefined) ??
         paragraphStyle(paragraphId)?.color ?? defaultRun.color);
+    },
+    vertical(paragraphId, characterId, direct) {
+      return direct ?? (characterId !== undefined && styles.get(characterId)?.type === "character"
+        ? resolved.get(characterId)?.vertical : undefined) ?? paragraphStyle(paragraphId)?.vertical ?? defaultRun.vertical;
     },
     numbering(id) {
       const resolvedStyle = paragraphStyle(id), styleIds: string[] = [];
