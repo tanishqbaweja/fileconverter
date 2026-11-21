@@ -5,8 +5,17 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const colorDriverSha = "063e6fad65c4fcff92cdfb0c10a4f28a96bbfd8d710a9dcc8848f2777b2c95e1";
+const colorAlignmentDriverSha = "9feffae36b6747b337a11ba43870437cd16590ce688607d2a4766857467e195d";
+export function preDocxRunVerticalDriver(bytes) {
+  if (sha(bytes) !== "2d2240f89371dd2ab7b9532cb04efd4a46d8f9d636cd2b3b8f3bf70e5b05cadc") return bytes;
+  const archived = execFileSync("git", ["show", "30974930514809dce6cc5a6b92e2250a49e37d13:scripts/qualify-docx-html.mjs"],
+    { windowsHide: true, maxBuffer: 1048576 });
+  assert.equal(sha(archived), colorAlignmentDriverSha);
+  return archived;
+}
 export function preDocxColorAlignmentDriver(bytes) {
-  if (sha(bytes) !== "9feffae36b6747b337a11ba43870437cd16590ce688607d2a4766857467e195d") return bytes;
+  bytes = preDocxRunVerticalDriver(bytes);
+  if (sha(bytes) !== colorAlignmentDriverSha) return bytes;
   const archived = execFileSync("git", ["show", "648e9c90d3f0617fd60cd0c8df84caf1224a15b0:scripts/qualify-docx-html.mjs"],
     { windowsHide: true, maxBuffer: 1048576 });
   assert.equal(sha(archived), colorDriverSha);

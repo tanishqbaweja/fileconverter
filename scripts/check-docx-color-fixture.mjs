@@ -9,17 +9,19 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { build } from "esbuild";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
-import { DOCX_COLOR_CASES, DOCX_PARAGRAPH_ALIGNMENT_CASES, DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG, docxColorOracleCases } from "./lib/docx-color-oracle-controls.mjs";
+import { DOCX_COLOR_CASES, DOCX_PARAGRAPH_ALIGNMENT_CASES, DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG, DOCX_RUN_VERTICAL_FIXTURE_FLAG, docxColorOracleCases } from "./lib/docx-color-oracle-controls.mjs";
 
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
 const checkAlignment = process.argv[2] === DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG;
-assert.equal(process.argv.length, checkAlignment ? 3 : 2);
+const checkVertical = checkAlignment && process.argv[3] === DOCX_RUN_VERTICAL_FIXTURE_FLAG;
+assert.equal(process.argv.length, checkVertical ? 4 : checkAlignment ? 3 : 2);
 const runtime = await createOwnedRuntimeScratch("docx-color-preflight-");
 let report;
 try {
   const python = process.env.WITHIN_DOCX_FIXTURE_PYTHON ?? "python";
   const helper = path.join(root, "scripts/lib/docx-color-fixtures.py");
-  const run = (...args) => execute(python, ["-I", "-B", helper, ...args, ...(checkAlignment ? [DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG] : [])], {
+  const run = (...args) => execute(python, ["-I", "-B", helper, ...args, ...(checkAlignment ? [DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG] : []),
+    ...(checkVertical ? [DOCX_RUN_VERTICAL_FIXTURE_FLAG] : [])], {
     cwd: root, env: runtime.env, windowsHide: true, timeout: 15000, maxBuffer: 1048576,
   });
   const input = path.join(runtime.directory, "color.docx");
@@ -30,9 +32,10 @@ try {
   assert.equal(generated.fixedZipTimestamps, true);
   assert.equal(generated.semanticCases, DOCX_COLOR_CASES);
   if (checkAlignment) assert.equal(generated.expectedAlignedParagraphs, DOCX_PARAGRAPH_ALIGNMENT_CASES);
+  if (checkVertical) assert.equal(generated.expectedVerticalSegments, DOCX_COLOR_CASES);
   assert.ok(generated.anchorContentBytes > 2 * 65536);
   const control = [];
-  for (const [name, html, accepts] of docxColorOracleCases((await run("reference")).stdout, { checkAlignment })) {
+  for (const [name, html, accepts] of docxColorOracleCases((await run("reference")).stdout, { checkAlignment, checkVertical })) {
     const file = path.join(runtime.directory, name + ".html");
     await writeFile(file, html, { flag: "wx" });
     let exitCode = 0;
@@ -71,6 +74,10 @@ try {
     assert.equal(validated.alignmentCases, DOCX_PARAGRAPH_ALIGNMENT_CASES);
     assert.equal(validated.allParagraphAlignmentAndStructureVerified, true);
     assert.equal(warnings.filter(w => w.includes("have no equivalent")).length, 1);
+  }
+  if (checkVertical) {
+    assert.equal(validated.verticalSegments, DOCX_COLOR_CASES);
+    assert.equal(validated.allRunVerticalAlignmentVerified, true);
   }
   assert.equal(metrics.inputBytes, inputBytes.length);
   assert.equal(maxChunk, 65536); assert.equal(peakPending, 1); assert.equal(pending, 0);

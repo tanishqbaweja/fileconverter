@@ -33,14 +33,15 @@ import { boundedErrorDetails } from "./lib/bounded-error-details.mjs";
 import { createDocxCleanupDiagnostic } from "./lib/docx-cleanup-diagnostic.mjs";
 import { cleanupOwnedChromium, queryObservedPidCensus } from "./lib/owned-chromium-cleanup.mjs";
 import { reconcileChromiumBirths } from "./lib/reconcile-chromium-births.mjs";
-import { DOCX_COLOR_CASES, DOCX_PARAGRAPH_ALIGNMENT_CASES, DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG, DOCX_COLOR_SYSTEM_DISK_MINIMUM_BYTES, docxColorOracleCases } from "./lib/docx-color-oracle-controls.mjs";
+import { DOCX_COLOR_CASES, DOCX_PARAGRAPH_ALIGNMENT_CASES, DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG, DOCX_RUN_VERTICAL_FIXTURE_FLAG, DOCX_COLOR_SYSTEM_DISK_MINIMUM_BYTES, docxColorOracleCases } from "./lib/docx-color-oracle-controls.mjs";
 
 assert.equal(process.platform, "win32");
 const memoryDiagnostic = process.argv[2] === "--outline-memory-diagnostic";
 const outlineSmall = process.argv[2] === "--outline-small-control";
 const tableVertical = process.argv[2] === "--table-vertical-control";
 const numberingControl = process.argv[2] === "--numbering-control";
-const colorAlignmentControl = process.argv[2] === "--color-alignment-control";
+const runVerticalControl = process.argv[2] === "--color-alignment-vertical-control";
+const colorAlignmentControl = process.argv[2] === "--color-alignment-control" || runVerticalControl;
 const colorControl = process.argv[2] === "--color-control" || colorAlignmentControl;
 const hyperlinkControl = process.argv[2] === "--hyperlink-control";
 const hyperlinkFresh = process.argv[2] === "--hyperlink-direct-scaling-fresh";
@@ -101,6 +102,7 @@ if (tableVertical) report.scope = "Native two-by-two Word merge with a nested ta
 if (numberingControl) report.scope = "Native Word numbered/bullet/inherited/restarted lists and nested tables through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
 if (colorControl) report.scope = "Native Word RGB, automatic, inherited and theme text color through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
 if (colorAlignmentControl) report.scope = "Combined native DOCX colors, inherited/direct paragraph alignment and RTL layout edges with independently validated headings, repeated async selected-handle writes and adverse recovery; not scaling, native picker, full Word layout or public qualification";
+if (runVerticalControl) report.scope = "Combined native DOCX color, paragraph alignment, and baseline/superscript/subscript checked on every formatted segment, with repeats and adverse recovery; not scaling, native picker, full Word layout or public qualification";
 if (hyperlinkControl) report.scope = "Native Word explicit links, unsafe-target inactivation, forward/backward bookmarks, styled text and nested tables through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
 if (hyperlinkScaling) { report.scope = "Current production DOCX hyperlinks: genuine stored-ZIP content scaling with fixed1024relationships/64bookmarks and every paragraph/link independently validated; same original whole-tree/cleanup limits, no service changes or public acceptance";
   report.hyperlinkScaling = { freshLargestOnly: hyperlinkFresh, firstSessionPlannedRepeats: 3, freshSessionPlannedRepeats: 1, crossSessionComparisonVerified: false }; }
@@ -176,7 +178,7 @@ assert parser.csp and parser.current is None
 print(json.dumps({'sha256':h.hexdigest(),'paragraphs':len(parser.paragraphs),'tableCells':parser.tags['td'],'strong':parser.tags['strong'],'italic':parser.tags['em'],'csp':parser.csp,'validator':'independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts'}))
 `;
 const semanticFixtureArgs = (...args) => [tableFixtureHelper, ...args,
-  ...(colorAlignmentControl ? [DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG] : [])];
+  ...(colorAlignmentControl ? [DOCX_COLOR_ALIGNMENT_FIXTURE_FLAG] : []), ...(runVerticalControl ? [DOCX_RUN_VERTICAL_FIXTURE_FLAG] : [])];
 const validateArgs = file => smallSemantic ? semanticFixtureArgs("validate", file) : ["-c", validator, file];
 let runtime, server, chrome, chromeBirth, browser, page, context, monitor, timer, pending = null, observerError = null, traceStarted = false;
 let realmSampler, realmPending = null, rejectSafetyStop;
@@ -247,7 +249,7 @@ try {
     : '<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="default-src \'none\'"></head><body>' +
     '<p><strong><em>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</em></strong></p>' +
     '<table><tr><td><p>Cell one</p></td><td><p>Cell two</p></td></tr></table><p>Inserted</p></body></html>';
-  const validatorCases = colorControl ? docxColorOracleCases(referenceHtml, { checkAlignment: colorAlignmentControl }) : [["positive", referenceHtml, true], ["wrong-text", referenceHtml.replace("Cell two", "wrong"), false],
+  const validatorCases = colorControl ? docxColorOracleCases(referenceHtml, { checkAlignment: colorAlignmentControl, checkVertical: runVerticalControl }) : [["positive", referenceHtml, true], ["wrong-text", referenceHtml.replace("Cell two", "wrong"), false],
     ["active-markup", referenceHtml.replace("</body>", "<script>alert(1)</script></body>"), false]];
   if (smallSemantic && !colorControl) validatorCases.push(["missing-column-span", referenceHtml.replace(' colspan="2"', ""), false],
     ["lost-nested-table", referenceHtml.replace("<table><tr><td colspan=", "<tr><td colspan="), false]);
@@ -278,6 +280,7 @@ try {
     { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
   else await writeFile(input, packageBytes(body), { flag: "wx" });
   if (colorAlignmentControl) assert.equal(report.tableFixture.expectedAlignedParagraphs, DOCX_PARAGRAPH_ALIGNMENT_CASES);
+  if (runVerticalControl) assert.equal(report.tableFixture.expectedVerticalSegments, DOCX_COLOR_CASES);
   // Finite generated cancellation fixture BEFORE browser conversion, never a user-file copy.
   if (hyperlinkScaling) report.hyperlinkCancellationFixture = JSON.parse((await execute(python, [scalingFixtureHelper, "generate", cancellation, "2048"],
     { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
@@ -511,6 +514,10 @@ try {
           assert.equal(validated.allParagraphAlignmentAndStructureVerified, true);
           assert.equal(state.warnings.filter(message => message.includes("have no equivalent")).length, 1);
         }
+        if (runVerticalControl) {
+          assert.equal(validated.verticalSegments, DOCX_COLOR_CASES);
+          assert.equal(validated.allRunVerticalAlignmentVerified, true);
+        }
       }
       await waitEmpty(); assert.deepEqual(await leftovers(), []);
       const cleanup = await Promise.race([safetyStop, stable()]); await drain();
@@ -702,6 +709,7 @@ try {
   if (numberingControl) report.status = "passed-private-docx-numbering-and-recovery-not-scaling-or-promotion";
   if (colorControl) report.status = "passed-private-docx-color-and-recovery-not-scaling-or-promotion";
   if (colorAlignmentControl) report.status = "passed-private-docx-color-alignment-and-recovery-not-scaling-or-promotion";
+  if (runVerticalControl) report.status = "passed-private-docx-color-alignment-vertical-and-recovery-not-scaling-or-promotion";
   if (hyperlinkControl) report.status = "passed-private-docx-hyperlinks-and-recovery-not-scaling-or-promotion";
   if (hyperlinkScaling) report.status = hyperlinkFresh ? "passed-private-docx-hyperlink-fresh-largest-control-not-full-route" : "passed-private-docx-hyperlink-scaling-repeats-not-full-route";
   if (hyperlinkFresh) { report.completedDocumentScalingControlVerified = false; report.freshLargestDocumentControlVerified = true; }

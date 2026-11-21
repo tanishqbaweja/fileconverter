@@ -36,9 +36,12 @@ ALIGNMENT = (
     ("p", "text-align:right"),
     ("p", None),
 )
+# This semantic matrix is independent of the authored style chains below.
+VERTICAL = (("sup",), ("sub", "sup", None, "sub"), ("sup", "sub", None, "sup"),
+            ("sup", "sub", "sup"), ("sup",), (None,))
 
 
-def generate(file, aligned=False):
+def generate(file, aligned=False, vertical=False):
     import docx
     from docx.enum.style import WD_STYLE_TYPE
     from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -122,6 +125,17 @@ def generate(file, aligned=False):
         property_element(paragraphs[3]._p.pPr, "outlineLvl", "0")
         paragraphs[4].alignment = WD_ALIGN_PARAGRAPH.RIGHT
         paragraphs[5].alignment = WD_ALIGN_PARAGRAPH.DISTRIBUTE
+    if vertical:
+        def baseline(run):
+            run._r.get_or_add_rPr().get_or_add_vertAlign().set(qn("w:val"), "baseline")
+        defaults.get_or_add_vertAlign().set(qn("w:val"), "superscript")
+        base.font.subscript = True
+        strong.font.superscript = True
+        baseline(paragraphs[1].runs[2])
+        paragraphs[2].runs[1].font.subscript = True
+        baseline(paragraphs[2].runs[2])
+        paragraphs[3].runs[1].font.subscript = True
+        baseline(paragraphs[5].runs[0])
     archive = BytesIO()
     document.save(archive)
     assert archive.tell() <= 131072
@@ -154,29 +168,40 @@ def generate(file, aligned=False):
         assert paragraphs[4].alignment == WD_ALIGN_PARAGRAPH.RIGHT
         assert paragraphs[5].alignment == WD_ALIGN_PARAGRAPH.DISTRIBUTE
         result["expectedAlignedParagraphs"] = len(ALIGNMENT)
+    if vertical:
+        reopened_defaults = reopened.styles.element.find(qn("w:docDefaults")).find(qn("w:rPrDefault")).find(qn("w:rPr"))
+        assert reopened_defaults.find(qn("w:vertAlign")).get(qn("w:val")) == "superscript"
+        assert paragraphs[1].style.base_style.font.subscript is True
+        assert paragraphs[1].runs[1].style.base_style.font.superscript is True
+        assert paragraphs[1].runs[2]._r.rPr.find(qn("w:vertAlign")).get(qn("w:val")) == "baseline"
+        assert paragraphs[2].runs[1].font.subscript is True
+        result["expectedVerticalSegments"] = sum(map(len, VERTICAL))
     print(json.dumps(result))
 
 
-def reference(aligned=False):
-    def segment(text, color, strong):
+def reference(aligned=False, vertical=False):
+    def segment(text, color, strong, shift):
         value = escape(text)
+        if shift:
+            value = f"<{shift}>{value}</{shift}>"
         if strong:
             value = "<strong>" + value + "</strong>"
         return f'<span style="color:{color}">{value}</span>'
 
     expected = ALIGNED_EXPECTED if aligned else EXPECTED
     layout = ALIGNMENT if aligned else [("p", None)] * len(expected)
-    def paragraph(runs, tag, style):
+    shifts = VERTICAL if vertical else [((None,) * len(row)) for row in expected]
+    def paragraph(runs, tag, style, expected_shifts):
         style_attr = f' style="{style}"' if style else ""
-        return f"<{tag}{style_attr}>" + "".join(segment(*item) for item in runs) + f"</{tag}>"
+        return f"<{tag}{style_attr}>" + "".join(segment(*item, shift) for item, shift in zip(runs, expected_shifts, strict=True)) + f"</{tag}>"
     return ('<!doctype html><html><head><meta http-equiv="Content-Security-Policy" '
             'content="default-src \'none\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'">'
-            '</head><body>' + "".join(paragraph(runs, *style) for runs, style in zip(expected, layout, strict=True))
+            '</head><body>' + "".join(paragraph(runs, *style, shift) for runs, style, shift in zip(expected, layout, shifts, strict=True))
             + "</body></html>")
 
 
 class Oracle(HTMLParser):
-    def __init__(self, aligned=False):
+    def __init__(self, aligned=False, vertical=False):
         super().__init__(convert_charrefs=True)
         self.stack = []
         self.paragraphs = []
@@ -186,6 +211,7 @@ class Oracle(HTMLParser):
         self.root_count = self.body_count = 0
         self.styles = []
         self.layout = ALIGNMENT if aligned else [("p", None)] * len(EXPECTED)
+        self.vertical = vertical
 
     def handle_starttag(self, tag, attrs):
         parent = self.stack[-1] if self.stack else None
@@ -204,7 +230,11 @@ class Oracle(HTMLParser):
             assert set(attributes) == {"style"}
             match = re.fullmatch(r"color:(#[0-9a-f]{6}|CanvasText)", attributes["style"])
             assert match
-            self.run = [match[1], False, hashlib.sha256(), 0]
+            self.run = [match[1], False, hashlib.sha256(), 0, None]
+        elif tag in ("sup", "sub"):
+            assert self.vertical and not attrs and parent in ("span", "strong")
+            assert self.run is not None and self.run[3] == 0 and self.run[4] is None
+            self.run[4] = tag
         else:
             if tag in ("p", "h1"):
                 assert len(self.paragraphs) < len(self.layout)
@@ -229,7 +259,7 @@ class Oracle(HTMLParser):
     def handle_endtag(self, tag):
         assert self.stack and self.stack.pop() == tag
         if tag == "span":
-            self.runs.append((self.run[0], self.run[1], self.run[2].hexdigest(), self.run[3]))
+            self.runs.append((self.run[0], self.run[1], self.run[2].hexdigest(), self.run[3], self.run[4]))
             self.run = None
         if tag in ("p", "h1"):
             assert len(self.paragraphs) < len(EXPECTED)
@@ -238,9 +268,10 @@ class Oracle(HTMLParser):
 
     def handle_data(self, data):
         tag = self.stack[-1] if self.stack else None
-        if tag in ("span", "strong"):
+        if tag in ("span", "strong", "sup", "sub"):
             # Require every character in an emphasized segment to have the same nesting.
-            assert (tag == "strong") == self.run[1]
+            assert ("strong" in self.stack) == self.run[1]
+            assert (tag if tag in ("sup", "sub") else None) == self.run[4]
             chunk = data.encode()
             self.run[2].update(chunk)
             self.run[3] += len(chunk)
@@ -263,8 +294,8 @@ class Oracle(HTMLParser):
         assert decl.lower() == "doctype html"
 
 
-def validate(file, aligned=False):
-    oracle = Oracle(aligned)
+def validate(file, aligned=False, vertical=False):
+    oracle = Oracle(aligned, vertical)
     decoder = codecs.getincrementaldecoder("utf-8")("strict")
     digest = hashlib.sha256()
     size = 0
@@ -281,14 +312,19 @@ def validate(file, aligned=False):
     assert oracle.csp == ["default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'"]
     assert "".join(oracle.styles) in ("", "body{font-family:system-ui,sans-serif;line-height:1.5;max-width:80ch;margin:2rem auto;padding:0 1rem}"
                                           "p{white-space:pre-wrap}table{border-collapse:collapse}td{vertical-align:top;padding:.25rem .5rem}")
-    gold = [tuple((color, strong, hashlib.sha256(text.encode()).hexdigest(), len(text.encode()))
-                  for text, color, strong in p) for p in (ALIGNED_EXPECTED if aligned else EXPECTED)]
+    expected = ALIGNED_EXPECTED if aligned else EXPECTED
+    shifts = VERTICAL if vertical else [((None,) * len(row)) for row in expected]
+    gold = [tuple((color, strong, hashlib.sha256(text.encode()).hexdigest(), len(text.encode()), shift)
+                  for (text, color, strong), shift in zip(p, row, strict=True)) for p, row in zip(expected, shifts, strict=True)]
     assert oracle.paragraphs == gold, "Expected per-run text, color, structure or emphasis differs"
     result = {"bytes": size, "sha256": digest.hexdigest(), "semanticCases": SEMANTIC_CASES,
               "allRunTextColorAndEmphasisVerified": True, "independentHardcodedOracle": True}
     if aligned:
         result["alignmentCases"] = len(oracle.paragraphs)
         result["allParagraphAlignmentAndStructureVerified"] = True
+    if vertical:
+        result["verticalSegments"] = sum(map(len, VERTICAL))
+        result["allRunVerticalAlignmentVerified"] = True
     print(json.dumps(result))
 
 
@@ -297,18 +333,22 @@ if __name__ == "__main__":
         raise RuntimeError("Fixture validation must run with assertions enabled")
     sys.stdout.reconfigure(encoding="utf-8", newline="\n")
     args = sys.argv[1:]
+    vertical = bool(args and args[-1] == "--run-vertical")
+    if vertical:
+        args.pop()
     aligned = bool(args and args[-1] == "--paragraph-alignment")
     if aligned:
         args.pop()
+    assert not vertical or aligned
     mode = args[0]
     if mode == "generate":
         assert len(args) == 2
-        generate(args[1], aligned)
+        generate(args[1], aligned, vertical)
     elif mode == "reference":
         assert len(args) == 1
-        print(reference(aligned))
+        print(reference(aligned, vertical))
     elif mode == "validate":
         assert len(args) == 2
-        validate(args[1], aligned)
+        validate(args[1], aligned, vertical)
     else:
         raise ValueError(mode)
