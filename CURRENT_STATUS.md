@@ -4,6 +4,19 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Small MOV and 3GP timed-text headless production controls passed
+
+Two serial fresh normal-service Chrome 158 sessions independently qualified
+small MOV (`qt  `) and 3GP (`3gp6`) with two real `tx3g` tracks each. All ten
+completed outputs matched the independent 6,144-cue, 2,155,445 B oracle.
+Both controls passed three same-page repeats, real-payload cancellation,
+injected write rejection and both recoveries. Whole-tree peaks 69.039/71.074
+MiB; max cleanup 14.621/15.926 MiB. All 1,833 native rows replayed; no forbidden
+requests or owned browser, fixture, output, or server leftovers. The separate
+small MP4 control below also passed. Larger/fresh-repeat, native picker and
+other-browser acceptance remain open. No public promotion or matched browser
+speed claim. [Receipt](evidence/2026-11-21-timed-text-mov-3gp-browser-controls.json).
+
 ## Verified: bounded Matroska/WebM source preview
 
 The preview now checks local indexed chapter, attachment, and tag headers past
@@ -51,8 +64,9 @@ same blank, max cleanup 6.098 MiB over loaded idle (unchanged 250/96 caps).
 No forbidden requests or retained output; owned process/profile cleanup and
 807-row raw journal independently checked. The first harness failure remains
 recorded. No public promotion, matched browser speedup, native-picker or
-manual claim. MOV/3GP and larger/fresh-session gates are open; do not repeat
-this small gate unchanged. [Receipt](evidence/2026-11-21-timed-text-mp4-browser-control.json).
+manual claim. The MOV/3GP small controls above have since passed; a larger
+or cold-repeat MP4 gate remains open. Do not repeat this small gate unchanged.
+[Receipt](evidence/2026-11-21-timed-text-mp4-browser-control.json).
 
 ## Next timed-text browser run: cancellation fixture verified offline
 

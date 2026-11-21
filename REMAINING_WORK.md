@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-21 M-03 / N-07 small MOV and 3GP timed-text controls **closed**. Each
+uses an independently muxed native brand and separate Chrome baseline. Ten
+exact physical outputs across three repeats and both recoveries per container,
+payload cancellation, injected write failure, privacy and cleanup verified.
+Whole-tree 69.039/71.074 MiB on unchanged 250 MiB gates; all 1,833 raw rows
+replayed. Together with the distinct MP4 pass, this closes the three small
+format smoke controls only. Larger controls, dedicated cold repeats,
+native-picker/other-browser and public qualification stay open. Do not replay
+these small controls unchanged. [Receipt](evidence/2026-11-21-timed-text-mov-3gp-browser-controls.json).
+
 2026-11-21 M-03 / N-07 small private MP4 timed-text browser gate **closed**.
 Five exact independently hashed outputs, three same-session repeats, observed
 payload cancellation, injected write rejection, both recoveries, privacy and

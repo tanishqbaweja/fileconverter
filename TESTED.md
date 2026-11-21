@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-11-21 small private MOV/3GP timed-text **headless production gates PASS**.
+Two independent owned Chrome 158 sessions: genuine `qt  `/`3gp6`, separate
+native track/time/text oracles, ten exact 2,155,445 B real-handle saves. Both
+had three same-page repeats, cancellation after 393,214/327,679 B observed,
+write rejection with no acknowledged output and both exact recoveries.
+69.0390625/71.07421875 MiB whole-tree, 14.62109375/15.92578125 MiB max cleanup,
+835+844 valid and 2+1 unavailable control samples. All 912+921 raw rows and
+control/case peaks replayed, zero forbidden requests, 36/45 observed process
+IDs and both owned servers/runtimes removed. 19 focused checks, lint, syntax,
+builds pass; no protected original access or public/scale/native-picker claim.
+[Receipt](evidence/2026-11-21-timed-text-mov-3gp-browser-controls.json).
+
 2026-11-21 small private MP4 timed-text **headless production gate PASS**.
 Actual Chrome 158 real selected-handle output: five exact 2,155,445 B
 files bound to disk and full-hashed against the independent 6,144-cue oracle.

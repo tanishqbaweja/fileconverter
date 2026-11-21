@@ -265,9 +265,13 @@ Local qualification can extract one explicitly selected `tx3g` track
 from non-fragmented MP4, MOV or 3GP as a standalone WebVTT. The app shows
 only unambiguous track IDs and doesn't guess which language to extract.
 Cue text and timing are retained; styling, positioning and language or
-default/forced metadata are not copied. Native browser destination and
-memory qualification remain open. See
-`evidence/2026-11-21-timed-text-private-integration.json`.
+default/forced metadata are not copied. Small headless Chrome controls for
+[MP4](evidence/2026-11-21-timed-text-mp4-browser-control.json) and
+[MOV/3GP](evidence/2026-11-21-timed-text-mov-3gp-browser-controls.json) passed
+repeat, cancellation, write-rejection/recovery, exact output, and full-tree
+memory checks using real file handles inside an owned browser test directory.
+Larger inputs, native-picker/external destinations, and other browsers are
+not established by these controls. The routes remain private.
 
 ## Tested storage-error recovery
 
