@@ -9,7 +9,17 @@ const pins = {
   "workers/docx-html-conversion.ts": ["a90176d2208e176eaa7f7e5e3f3c63c7f745610c6a5767c0da11fc036ee98264", "c69513e33acdaa645c0cccf7ec014065d42eb172387429fdbc75412e13337843"],
 };
 
+export function preDocxHtmlEncoding(file, bytes) {
+  if (file !== "workers/docx-html-conversion.ts" ||
+      sha(bytes) !== "30e7763523d3efafc0a6d5034fbc00d080b2bfe6e17a2be7c051e29dafdbca34") return bytes;
+  const archived = execFileSync("git", ["show", `eac518f1ad88dc51214971ebfdc50441bc0c7b3b:${file}`],
+    { windowsHide: true, maxBuffer: 1_048_576 });
+  assert.equal(sha(archived), pins[file][1], file);
+  return archived;
+}
+
 export function preDocxParagraphAlignment(file, bytes) {
+  bytes = preDocxHtmlEncoding(file, bytes);
   if (!Object.hasOwn(pins, file) || sha(bytes) !== pins[file][1]) return bytes;
   const archived = execFileSync("git", ["show", `80ebad431f150634c2d5e2101d160dfc0263107d:${file}`],
     { windowsHide: true, maxBuffer: 1_048_576 });

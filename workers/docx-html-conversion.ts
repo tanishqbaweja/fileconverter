@@ -452,17 +452,29 @@ function parseColumnCount(value: string | undefined): number {
 }
 
 function htmlWriter(runtime: DocxHtmlRuntime) {
-  const encoder = new TextEncoder(), buffer = new Uint8Array(OUTPUT_CHUNK_BYTES); let used = 0, flushed = 0;
+  const encoder = new TextEncoder(), buffer = new Uint8Array(OUTPUT_CHUNK_BYTES), splitScalar = new Uint8Array(4);
+  let used = 0, flushed = 0;
   const flush = async () => {
     if (!used) return;
     runtime.assertActive(); await runtime.write(buffer.subarray(0, used), "Writing DOCX HTML"); flushed += used; used = 0; runtime.assertActive();
   };
   const markup = async (value: string) => {
-    const bytes = encoder.encode(value);
-    for (let offset = 0; offset < bytes.length;) {
-      const size = Math.min(buffer.length - used, bytes.length - offset);
-      buffer.set(bytes.subarray(offset, offset + size), used); used += size; offset += size;
-      if (used === buffer.length) await flush();
+    for (let offset = 0; offset < value.length;) {
+      const { read, written } = encoder.encodeInto(offset ? value.slice(offset) : value, buffer.subarray(used));
+      offset += read; used += written;
+      if (used === buffer.length) {
+        await flush();
+      } else if (offset < value.length) {
+        // encodeInto does not split a scalar. Preserve the old exact chunk
+        // boundary by encoding just that scalar into four reusable bytes.
+        const units = value.codePointAt(offset)! > 0xffff ? 2 : 1;
+        const tail = buffer.length - used;
+        const scalar = encoder.encodeInto(value.slice(offset, offset + units), splitScalar);
+        buffer.set(splitScalar.subarray(0, tail), used); used += tail;
+        await flush();
+        buffer.set(splitScalar.subarray(tail, scalar.written));
+        used = scalar.written - tail; offset += units;
+      }
     }
   };
   return { markup, flush, async reserveRowSpan() {

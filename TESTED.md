@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-11-21 DOCX HTML direct UTF-8 encoding retained. Matched worker benchmark
+with 12 interleaved runs for each version/fixture: 332.647 → 287.846 ms
+median for 8,000 styled paragraphs; 41.252 → 40.703 ms genuine Word fixture;
+94.181 → 94.183 ms long Unicode. Same output SHA-256, warnings and exact
+write sizes, with 65,536 B ceiling/one pending write. The old fragment
+allocations copied 704,529 B on the short-paragraph control, eliminated by
+encoding into the reusable buffer; allocation volume is not heap size.
+Six UTF-8 boundary positions and existing row patches/cancel/write-error
+checks passed. 191 DOCX tests, build, TS, lint and 402 public evidence entries
+pass. No converted copy kept, no browser run, no end-to-end speed claim.
+`evidence/2026-11-21-docx-html-encoding-benchmark.json` retains all timings.
+
 2026-11-21 combined DOCX color/alignment production control prepared, **not
 run in a browser**. Genuine 38,065 B Word fixture / 295,513 B worker-preflight
 HTML; independent oracle checked 14 color/text/emphasis segments, six

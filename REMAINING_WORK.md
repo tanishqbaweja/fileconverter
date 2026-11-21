@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-21 P-08 / N-08 DOCX HTML writer now encodes UTF-8 directly into its
+reusable chunk, retaining exact byte/write boundaries and backpressure.
+Matched Node worker median improved 13.5% on 8,000 short styled paragraphs;
+the small real Word control changed little and long Unicode was flat.
+191 DOCX tests and build/TS/lint/402-entry audit passed. Browser memory,
+direct destination, browser speed and full-file transcode acceptance remain
+open; do not replay this isolated benchmark unchanged. Run the combined
+DOCX browser control with this writer once the host is safe.
+Evidence: `evidence/2026-11-21-docx-html-encoding-benchmark.json`.
+
 2026-11-21 N-08 combined color/alignment small browser gate is wired and its
 genuine fixture/independent oracle verified outside Chrome. 14 color and six
 alignment cases pass, 15 mutations reject, old color-only hashes match, and

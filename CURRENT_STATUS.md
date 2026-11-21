@@ -4,6 +4,18 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Latest implementation: DOCX HTML encoding
+
+The writer encodes into its reusable 64 KiB chunk; a four-byte scratch area
+preserves exact chunk boundaries when a UTF-8 character crosses the edge.
+Matched in-process Node worker results (old → new median): styled short
+paragraphs 332.647 → 287.846 ms (13.5% less time), genuine color/alignment
+fixture 41.252 → 40.703 ms, long Unicode 94.181 → 94.183 ms. All three
+output hashes, warnings, and write-size sequences match. This is not a
+browser, disk, or video throughput claim. All 191 DOCX tests, build, TS,
+scoped lint and the 402-entry evidence audit passed; no browser ran on full C:.
+[Detailed benchmark](evidence/2026-11-21-docx-html-encoding-benchmark.json).
+
 ## Next DOCX browser run: combined color and alignment
 
 One headless run now covers both pending small controls:

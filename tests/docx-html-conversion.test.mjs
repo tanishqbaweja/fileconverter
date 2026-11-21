@@ -7,6 +7,7 @@ import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import { reviewDocxHtmlIntegration } from "../scripts/lib/reviewed-docx-html-integration.mjs";
+import { preDocxHtmlEncoding } from "../scripts/lib/reviewed-docx-paragraph-alignment.mjs";
 import { reconcileChromiumBirths } from "../scripts/lib/reconcile-chromium-births.mjs";
 const bundled = await build({ entryPoints: ["workers/docx-html-conversion.ts"], bundle: true, format: "esm", write: false, platform: "browser" });
 const { runDocxToHtml } = await import("data:text/javascript;base64," + Buffer.from(bundled.outputFiles[0].contents).toString("base64"));
@@ -19,6 +20,16 @@ test("historical comparisons reverse only the exact reviewed private integration
     assert.equal(reviewDocxHtmlIntegration(file, reviewed.historicalBytes).reviewedDocxHtmlChange, false);
     assert.throws(() => reviewDocxHtmlIntegration(file, Buffer.concat([bytes, Buffer.from("\n")])));
   }
+});
+
+test("the former HTML writer can be authenticated only for the exact reviewed encoding change", async () => {
+  const path = "workers/docx-html-conversion.ts", current = await readFile(path);
+  const historical = preDocxHtmlEncoding(path, current);
+  assert.notDeepEqual(historical, current);
+  assert.match(historical.toString(), /const bytes = encoder\.encode\(value\)/);
+  assert.equal(preDocxHtmlEncoding(path, historical), historical);
+  const unknown = Buffer.concat([current, Buffer.from("\n// unreviewed\n")]);
+  assert.equal(preDocxHtmlEncoding(path, unknown), unknown);
 });
 function fixture(document, extra = {}) {
   assert.ok(document.length < 2 * 1024 * 1024, "Unit fixture only, not large-file buffering evidence");
@@ -52,7 +63,8 @@ async function convert(document, { extra, failWrite, failPatch, cancel } = {}) {
       patches.push({ position, value: Buffer.from(bytes).toString() });
       target.set(bytes, offset);
     } });
-  return { html: Buffer.concat(chunks).toString("utf8"), warnings, metrics, inputBytes: file.size, writes, peak, maximumChunkBytes, patches };
+  return { html: Buffer.concat(chunks).toString("utf8"), warnings, metrics, inputBytes: file.size, writes, peak, maximumChunkBytes, patches,
+    chunkSizes: chunks.map(chunk => chunk.length) };
 }
 test("DOCX HTML is a genuine private worker route, absent from normal public selection", () => {
   const profile = privateQualificationProfiles.find(row => row.id === "docx-to-html"); assert.ok(profile);
@@ -124,6 +136,24 @@ test("a row-span field near the chunk edge is reserved intact before a later pat
   assert.deepEqual(r.patches, [{ position: 65534, value: "00002" }]);
   assert.match(r.html, /rowspan="00002"><p>anchor/);
   assert.ok(r.html.includes("x".repeat(70000)));
+});
+
+test("UTF-8 scalars crossing every possible output edge retain bytes and exact 64 KiB writes", async () => {
+  const first = await convert(xml(wordParagraph("SENTINEL")));
+  const expected = Buffer.from(first.html);
+  const bodyOffset = expected.indexOf("SENTINEL");
+  assert.ok(bodyOffset > 0 && bodyOffset < 65536);
+  const trailer = expected.subarray(bodyOffset + "SENTINEL".length);
+  for (const symbol of ["é", "水", "😀"]) {
+    for (let leftBytes = 1; leftBytes < Buffer.byteLength(symbol); leftBytes++) {
+      const text = "x".repeat(65536 - leftBytes - bodyOffset) + symbol + " tail";
+      const r = await convert(xml(wordParagraph(text)));
+      const wanted = Buffer.concat([expected.subarray(0, bodyOffset), Buffer.from(text), trailer]);
+      assert.deepEqual(Buffer.from(r.html), wanted);
+      assert.deepEqual(r.chunkSizes, [65536, wanted.length - 65536]);
+      assert.equal(r.peak, 1);
+    }
+  }
 });
 
 test("active merge records and edge grid offsets have explicit finite limits", async () => {

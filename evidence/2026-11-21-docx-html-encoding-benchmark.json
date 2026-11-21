@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "status": "retained-byte-identical-docx-html-worker-encoding-improvement-browser-pending",
+  "requirementIds": [
+    "P-08",
+    "N-08"
+  ],
+  "sourceSha256": {
+    "workers/docx-html-conversion.ts": "30e7763523d3efafc0a6d5034fbc00d080b2bfe6e17a2be7c051e29dafdbca34",
+    "scripts/benchmark-docx-html-encoding.mjs": "be834acc15cc70aedccea49995af0c8912b9adda84359888bc30d85bcaa12930",
+    "scripts/lib/reviewed-docx-paragraph-alignment.mjs": "c8c096165aa573d97f01b262875708877ade6cf4dc7f43cc6036fd68b812269f",
+    "tests/docx-html-conversion.test.mjs": "99f7392f456e41058c15cc21695f9113533469f328c1076e1f7af03829213580"
+  },
+  "command": "node scripts/benchmark-docx-html-encoding.mjs",
+  "fixturePython": "Python with python-docx 1.2.0; WITHIN_DOCX_FIXTURE_PYTHON optional",
+  "hypothesis": "Writing UTF-8 into the existing output chunk instead of transient bytes per fragment removes allocations and can improve conversion of many short paragraphs.",
+  "measurementNotes": "Twelve interleaved matched samples per implementation and fixture after two warmup pairs. Allocation counts are observed TextEncoder.encode return arrays per one separate run, not retained heap or full-process memory. Report every result, not just the favorable case.",
+  "bytesWarningsAndWriteSizesEqual": true,
+  "combinedFixtureIndependentOracleReceipt": "evidence/2026-11-21-docx-color-alignment-fixture-preflight.json",
+  "utf8BoundaryTests": "Two-, three- and four-byte Unicode scalars at all six crossing positions preserve full bytes and exact write lengths; historic row-span patch, cancellation and write-failure tests still pass.",
+  "focusedChecks": {
+    "passed": 191,
+    "failed": 0,
+    "skipped": 0
+  },
+  "productionBuildPassed": true,
+  "typescriptPassed": true,
+  "affectedLintPassed": true,
+  "publicEvidenceEntriesMatched": 402,
+  "systemDriveFreeBytes": 0,
+  "protectedOriginalAccessed": false,
+  "productionBrowserLaunched": false,
+  "registryChanged": false,
+  "browserSpeedupOrMemoryQualified": false,
+  "goalComplete": false,
+  "decision": "Retain the changed production DOCX HTML writer. Do not repeat the same Node benchmark; verify the changed writer in the already-prepared combined production browser run when the host passes preflight.",
+  "benchmark": {
+    "scope": "identical Node worker conversion and in-process sink; not browser IO or memory acceptance",
+    "node": "v24.7.0",
+    "platform": "win32",
+    "arch": "x64",
+    "baselineHead": "eac518f1ad88dc51214971ebfdc50441bc0c7b3b",
+    "baselineSha256": "c69513e33acdaa645c0cccf7ec014065d42eb172387429fdbc75412e13337843",
+    "candidateSha256": "30e7763523d3efafc0a6d5034fbc00d080b2bfe6e17a2be7c051e29dafdbca34",
+    "sampleCount": 12,
+    "warmupPairs": 2,
+    "output": [
+      {
+        "name": "genuine-python-docx-combined",
+        "bytes": 38065,
+        "sha256": "43780ac38b356a0c15e662ba912d43c8d09eeb6c460a855a2185e14c6761c45d",
+        "result": {
+          "digest": "0a49ceff83a1347228f4abf7725f957db714223a6f5e9951abe22e3f8d1fb085",
+          "size": 295513,
+          "writes": 5,
+          "maxWrite": 65536,
+          "peakPending": 1,
+          "writeSizesDigest": "49894c9f33b8f1ed4b46d04472a91e34fefff0edcf1b86f6a616c0726febab53",
+          "warningsDigest": "ce0b72c959dd2e86cf60bccc4211fec83c053da654e9950a2e0977b02c2d3b6f"
+        },
+        "encodingAllocations": {
+          "baseline": {
+            "encodeCalls": 106,
+            "encodedArrayBytes": 295513,
+            "encodeIntoCalls": 0
+          },
+          "candidate": {
+            "encodeCalls": 0,
+            "encodedArrayBytes": 0,
+            "encodeIntoCalls": 110
+          }
+        },
+        "stats": {
+          "baseline": {
+            "medianMs": 41.252300000000105,
+            "p90Ms": 47.08960000000002,
+            "rawMs": [
+              42.037000000000035,
+              44.663299999999936,
+              47.08960000000002,
+              41.13119999999981,
+              41.26910000000021,
+              49.509199999999964,
+              44.010699999999815,
+              40.007500000000164,
+              41.12519999999995,
+              41.2355,
+              38.36680000000001,
+              38.677799999999934
+            ]
+          },
+          "candidate": {
+            "medianMs": 40.70259999999996,
+            "p90Ms": 41.863599999999906,
+            "rawMs": [
+              41.43999999999994,
+              41.261300000000006,
+              41.83630000000005,
+              41.863599999999906,
+              41.04299999999989,
+              42.562200000000075,
+              39.97900000000004,
+              40.36220000000003,
+              38.34739999999988,
+              38.91030000000001,
+              38.1391000000001,
+              39.6558
+            ]
+          }
+        }
+      },
+      {
+        "name": "many-short-styled-paragraphs",
+        "bytes": 1033017,
+        "sha256": "5bd7d159ee8ceb979723af632c91e5f9be151138e2649a58f2d0e571ce7df1db",
+        "result": {
+          "digest": "528eb32a6d118f65b5443f2e623817ccec413914ccc949b103943b286de3a52e",
+          "size": 704529,
+          "writes": 11,
+          "maxWrite": 65536,
+          "peakPending": 1,
+          "writeSizesDigest": "6f9b883717a6e254177c84f23903594263c0a92330181399877e1358cc8e868a",
+          "warningsDigest": "cf364dac228e38f98260d3384eedf10a8d9b809a90ee297fc02a32ee80be7ae6"
+        },
+        "encodingAllocations": {
+          "baseline": {
+            "encodeCalls": 64002,
+            "encodedArrayBytes": 704529,
+            "encodeIntoCalls": 0
+          },
+          "candidate": {
+            "encodeCalls": 0,
+            "encodedArrayBytes": 0,
+            "encodeIntoCalls": 56012
+          }
+        },
+        "stats": {
+          "baseline": {
+            "medianMs": 332.6467000000007,
+            "p90Ms": 348.8784999999998,
+            "rawMs": [
+              139.10890000000018,
+              339.6071000000002,
+              300.7087999999999,
+              348.8784999999998,
+              342.5154000000002,
+              334.8658000000005,
+              340.2006999999994,
+              300.22189999999955,
+              284.0812999999998,
+              330.4276000000009,
+              324.10239999999976,
+              414.03239999999823
+            ]
+          },
+          "candidate": {
+            "medianMs": 287.8460999999995,
+            "p90Ms": 296.72379999999976,
+            "rawMs": [
+              120.72490000000016,
+              203.07630000000017,
+              287.63859999999977,
+              296.72379999999976,
+              291.1104999999998,
+              283.65609999999924,
+              292.65599999999995,
+              288.0535999999993,
+              295.21009999999933,
+              284.79399999999987,
+              331.52230000000054,
+              282.84530000000086
+            ]
+          }
+        }
+      },
+      {
+        "name": "long-unicode-and-escaped-text",
+        "bytes": 2871050,
+        "sha256": "2099b668e85dd860b407507d28f37149050514dd79ff9616ff242b94089430b2",
+        "result": {
+          "digest": "61c59d537159dfda1e3ddf59c88883172f7826be0ec6a6337d38db72b672d7aa",
+          "size": 2870537,
+          "writes": 44,
+          "maxWrite": 65536,
+          "peakPending": 1,
+          "writeSizesDigest": "967fdbf2f327b89c6716fb1e864e1817a5f12259d14953340f0aadc051a6791d",
+          "warningsDigest": "cf364dac228e38f98260d3384eedf10a8d9b809a90ee297fc02a32ee80be7ae6"
+        },
+        "encodingAllocations": {
+          "baseline": {
+            "encodeCalls": 435,
+            "encodedArrayBytes": 2870537,
+            "encodeIntoCalls": 0
+          },
+          "candidate": {
+            "encodeCalls": 0,
+            "encodedArrayBytes": 0,
+            "encodeIntoCalls": 485
+          }
+        },
+        "stats": {
+          "baseline": {
+            "medianMs": 94.18065000000024,
+            "p90Ms": 97.45979999999872,
+            "rawMs": [
+              94.96690000000126,
+              93.87209999999868,
+              93.95850000000064,
+              95.02169999999933,
+              97.19959999999992,
+              97.45979999999872,
+              82.98109999999906,
+              93.89919999999984,
+              94.40279999999984,
+              92.93409999999858,
+              101.10109999999986,
+              92.97390000000087
+            ]
+          },
+          "candidate": {
+            "medianMs": 94.1825000000008,
+            "p90Ms": 96.79559999999947,
+            "rawMs": [
+              95.3760999999995,
+              93.97370000000046,
+              95.81970000000001,
+              87.11729999999989,
+              93.46359999999913,
+              96.79559999999947,
+              94.39130000000114,
+              93.13690000000133,
+              100.6221999999998,
+              91.52660000000105,
+              93.07150000000001,
+              96.73970000000008
+            ]
+          }
+        }
+      }
+    ],
+    "ownedScratchRemoved": true,
+    "browserLaunched": false
+  }
+}
