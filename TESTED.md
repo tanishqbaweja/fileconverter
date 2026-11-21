@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-21 private DOCX run text colors implemented. 188/188 focused DOCX and
+worker lifecycle tests pass, including six new RGB/theme/cascade/invalid-
+metadata/bounded-write checks. TypeScript, affected lint, production build and
+unchanged 402-route public evidence audit pass. Initial 91/93 found a legacy
+shade rounding difference and unrecognized registry preimage. The renderer
+documents full-precision HSL with final byte rounding; historical adapters
+authenticate exact before/after hashes, not arbitrary changes or new runtime
+qualification. No browser, output or media fixture run. C: reported zero free
+bytes. Next is new color-specific browser qualification, not an old test replay.
+
 2026-11-20 actual specialist original startup FAILED at380.58203125MiB over SAME
 320790528B blank, unchanged250MiB limit. Receipt44735542199/fullSHA59ee51e7…b5b6e,
 executed074866e6, full protected original unchanged. Same1920x804/24fps/4Mbps,

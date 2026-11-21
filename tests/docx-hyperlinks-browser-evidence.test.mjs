@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
+import { preDocxColors } from "../scripts/lib/reviewed-docx-colors.mjs";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const raw = await readFile("evidence/2026-11-20T11-26-08-834Z-docx-html-qualification.json");
 assert.equal(sha(raw),"f2895157d1ef2259b812eaf7736a816942324df1e35e70c18b7e50944394bcfb");
@@ -15,7 +16,7 @@ test("genuine private production Word hyperlink fixture has three repeat outputs
   assert.deepEqual(r.cases.map(c=>c.kind),["complete","complete","complete","payload-cancel","write-error","complete"]);
   for(const file of ["workers/docx-hyperlinks.ts","workers/docx-html-conversion.ts","workers/docx-outline.ts","workers/docx-numbering.ts",
     "workers/conversion.worker.ts","lib/capability-registry.ts","scripts/lib/docx-hyperlink-fixtures.py"])
-    assert.equal(sha(await readFile(file)),r.sourcePins[file],file);
+    assert.equal(sha(preDocxColors(file, await readFile(file))),r.sourcePins[file],file);
   assert.equal(r.fixture.bytes,37974); assert.equal(r.tableFixture.generator,"python-docx"); assert.equal(r.tableFixture.version,"1.2.0");
   assert.equal(r.tableFixture.anchorContentBytes,210000); assert.equal(r.tableFixture.realHyperlinkRelationships,true);
   for(const c of r.cases.filter(c=>c.kind==="complete")){

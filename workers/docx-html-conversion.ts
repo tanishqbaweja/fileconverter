@@ -5,6 +5,7 @@ import {
 import { readDocxOutlineModel, parseDocxOutlineLevel, docxEmphasisKey, parseDocxEmphasisValue, type DocxOutlineModel, type DocxEmphasis } from "./docx-outline";
 import { readDocxNumberingModel, parseDocxNumberingInteger, type DocxNumberingModel, type DocxNumberingReference, type DocxListMarker } from "./docx-numbering";
 import { readDocxHyperlinkModel, docxBookmarkId, docxHtmlAttribute, type DocxHyperlinkModel } from "./docx-hyperlinks";
+import { parseDocxColor, type DocxColor } from "./docx-colors";
 
 const WORD = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const XML = "http://www.w3.org/XML/1998/namespace";
@@ -17,7 +18,7 @@ type Block = "p" | "table" | "tr" | "td";
 type Merge = { width: number; rows: number; position: number };
 type Table = { previous?: Map<number, Merge>; current?: Map<number, Merge>;
   column: number; before?: number; after?: number; rowOpened: boolean; propertiesSeen: boolean };
-type Run = { direct: Partial<DocxEmphasis>; styleId?: string; propertiesSeen: boolean; contentStarted: boolean; opened: boolean; close: string };
+type Run = { direct: Partial<DocxEmphasis>; color?: DocxColor; styleId?: string; propertiesSeen: boolean; contentStarted: boolean; opened: boolean; close: string };
 type Paragraph = { opened: boolean; contentStarted: boolean; propertiesSeen: boolean; styleId?: string; outline?: number; tag: string; muted: boolean; numbering?: DocxNumberingReference };
 type Cell = { opened: boolean; propertiesSeen: boolean; columnSpan?: number; vertical?: "restart" | "continue"; continued?: boolean };
 type Frame = { name: string; local: string | null; declarations: Map<string, string>; namespaceChars: number;
@@ -31,7 +32,7 @@ type DocxHtmlRuntime = DocxRuntime & { patch(position: number, chunk: Uint8Array
  */
 export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
   runtime.warn("DOCX HTML preserves main-document paragraphs, table rows/cells, horizontal grid spans, and standard vertical merges with empty continuation cells. Omitted edge grid positions use empty HTML cells. Direct bold/italic/underline/strike, tabs, line breaks, Unicode and accepted tracked insertions are preserved. Tracked deletions and moved-from text are excluded.");
-  runtime.warn("Named styles (referenced/default paragraph and character) preserve outline hierarchy and supported bold/italic/underline/strike emphasis with direct overrides. Underline patterns/colors are normalized to a single underline. Legacy horizontal merges, table-style effects, complex-script properties, other font/run styling, fonts, colors, borders, page layout, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
+  runtime.warn("Named styles (referenced/default paragraph and character) preserve outline hierarchy and supported bold/italic/underline/strike emphasis and text colors with direct overrides. Text colors use bounded RGB and theme mapping; automatic color uses the browser text color, not Word's background-dependent choice. Underline patterns/colors are normalized to a single underline. Legacy horizontal merges, table-style effects, complex-script properties, fonts, shading, borders, page layout, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
   let outlines: DocxOutlineModel, numbering: DocxNumberingModel, hyperlinks: DocxHyperlinkModel;
   const source = await openDocxMainDocument(runtime, async entries => {
     outlines = await readDocxOutlineModel(runtime, entries); numbering = await readDocxNumberingModel(runtime, entries);
@@ -96,6 +97,8 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
     if (run.opened || paragraph?.muted) return;
     run.opened = true;
     const emphasis = outlines.emphasis(paragraph?.styleId, run.styleId, run.direct);
+    const color = outlines.color(paragraph?.styleId, run.styleId, run.color);
+    if (color) { await writer.markup(`<span style="color:${color}">`); run.close = "</span>"; }
     for (const [enabled, tag] of [[emphasis.bold, "strong"], [emphasis.italic, "em"], [emphasis.underline, "u"], [emphasis.strike, "s"]] as const)
       if (enabled) { await writer.markup(`<${tag}>`); run.close = `</${tag}>` + run.close; }
   };
@@ -376,6 +379,10 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
         run.propertiesSeen = true;
       }
       const emphasisKey = docxEmphasisKey(local);
+      if (run && local === "color" && stack.at(-1)?.local === "rPr" && stack.at(-2)?.run === run) {
+        if (run.color !== undefined) throw new Error("DOCX run repeats a color property.");
+        run.color = parseDocxColor(name => wordValue(element.attributes, declarations, resolve, name));
+      }
       if (run && stack.at(-1)?.local === "rPr" && stack.at(-2)?.run === run && (emphasisKey || local === "rStyle")) {
         const val = element.attributes.find(attr => {
           if (attr.name === "xmlns" || attr.name.startsWith("xmlns:")) return false;
@@ -418,10 +425,10 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
 }
 
 function wordValue(attributes: { name: string; value: string }[], declarations: Map<string, string>,
-  resolve: (name: string, attribute: boolean, current: Map<string, string>) => { uri: string; local: string }) {
+  resolve: (name: string, attribute: boolean, current: Map<string, string>) => { uri: string; local: string }, local = "val") {
   return attributes.find(attr => {
     if (attr.name === "xmlns" || attr.name.startsWith("xmlns:")) return false;
-    const name = resolve(attr.name, true, declarations); return name.uri === WORD && name.local === "val";
+    const name = resolve(attr.name, true, declarations); return name.uri === WORD && name.local === local;
   })?.value;
 }
 

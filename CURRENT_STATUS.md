@@ -1,8 +1,28 @@
 # Current project checkpoint
 
-Updated 2026-11-20. Read this first after resuming; then follow the cited receipts.
+Updated 2026-11-21. Read this first after resuming; then follow the cited receipts.
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
+
+## Latest implementation: private DOCX text color
+
+Direct RGB/automatic and inherited document-default, paragraph and character
+run colors now stream to static HTML. Referenced internal theme/settings XML
+are capped at 1 MiB each, retain at most 12 palette slots and 12 mappings, and
+never fetch external parts. Theme RGB/system lastClr and HSL tint/shade are
+supported; legacy Word rounding may differ. Unresolved theme color uses saved
+RGB or browser text color, with one content-free warning. No raw CSS emitted.
+The 64 KiB awaited writer and private registry status are unchanged.
+
+188 DOCX/lifecycle checks, production build, TypeScript, affected lint and
+402 public evidence entries PASS. This is source/build evidence only, not
+runtime/browser/memory qualification for the new color behavior. Earlier
+hyperlink/numbering receipts still authenticate their exact historical source
+without being treated as proof of current color output. C: reported zero free
+bytes; no browser launched, conversion output created or unrelated data removed.
+Next: genuine colored Word fixture + independent HTML oracle, then headless
+small repeat/adverse-path/memory gate when host is safe. No unchanged video run.
+See `evidence/2026-11-21-docx-colors-source-checkpoint.json`.
 
 ## Active implementation: private VP9 CPU specialist
 

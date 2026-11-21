@@ -1,18 +1,21 @@
 import { openZipEntryStream, type ZipEntry } from "./archive-conversion";
 import { assertXmlCharacters, decodeXmlEntities, parseEndElement, parseStartElement, readMarkupTokens, type DocxRuntime } from "./docx-conversion";
+import { parseDocxColor, readDocxColors, type DocxColor } from "./docx-colors";
 
 const WORD = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const RELS = "http://schemas.openxmlformats.org/package/2006/relationships";
 const XML = "http://www.w3.org/XML/1998/namespace";
-const STYLE_RELATIONSHIP = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles";
+const PART_RELATIONSHIPS = new Map(["styles", "theme", "settings"].map(type =>
+  ["http://schemas.openxmlformats.org/officeDocument/2006/relationships/" + type, type]));
 const METADATA_BYTES = 1048576, MAX_STYLES = 1024, MAX_CHAIN = 64;
 export type Element = { name: string; local: string; uri: string; attributes: Map<string, string>; parent?: Element;
   namespaces: Map<string, string>; namespaceChars: number; depth: number };
 export type DocxEmphasis = { bold: boolean; italic: boolean; underline: boolean; strike: boolean };
-type Style = { type: string; base?: string; outline?: number; emphasis: Partial<DocxEmphasis>; numbering?: { numId?: number } };
-type Resolved = { outline: number | undefined; levels: number; toggleMask: number; underline?: boolean; numId?: number };
+type Style = { type: string; base?: string; outline?: number; emphasis: Partial<DocxEmphasis>; numbering?: { numId?: number }; color?: DocxColor };
+type Resolved = { outline: number | undefined; levels: number; toggleMask: number; underline?: boolean; numId?: number; color?: DocxColor };
 export type DocxOutlineModel = { definitionCount: number; outline(styleId?: string): number | undefined;
   numbering(styleId?: string): { numId?: number; styleIds: readonly string[] };
+  color(paragraphStyleId?: string, characterStyleId?: string, direct?: DocxColor): string | undefined;
   emphasis(paragraphStyleId?: string, characterStyleId?: string, direct?: Partial<DocxEmphasis>): DocxEmphasis };
 
 export function docxEmphasisKey(local: string | null): keyof DocxEmphasis | undefined {
@@ -46,25 +49,30 @@ const identifier = (value: string | undefined) => {
 // no DOM, complete-file buffer, external fetch or cross-job style cache.
 export async function readDocxOutlineModel(runtime: DocxRuntime, entries: ReadonlyMap<string, ZipEntry>): Promise<DocxOutlineModel> {
   const relationships = entries.get("word/_rels/document.xml.rels");
-  let stylePart: string | undefined;
+  const parts = new Map<string, string>();
   if (relationships) for await (const element of metadataElements(runtime, relationships, RELS, "Relationships")) {
-    if (element.uri !== RELS || element.local !== "Relationship" || element.depth !== 2 ||
-      attribute(element, "Type", "") !== STYLE_RELATIONSHIP) continue;
-    if (stylePart !== undefined) throw new Error("DOCX has ambiguous multiple styles relationships.");
+    if (element.uri !== RELS || element.local !== "Relationship" || element.depth !== 2) continue;
+    const kind = PART_RELATIONSHIPS.get(attribute(element, "Type", "") ?? "");
+    if (!kind) continue;
+    if (parts.has(kind)) throw new Error(`DOCX has ambiguous multiple ${kind} relationships.`);
     const target = attribute(element, "Target", "");
     if (attribute(element, "TargetMode", "") === "External" || !target || target.length > 2048 ||
         /[\\\u0000]/.test(target) || /^[a-z][a-z0-9+.-]*:/i.test(target) || target.startsWith("//"))
-      throw new Error("DOCX styles must reference a bounded internal package part.");
+      throw new Error(`DOCX ${kind} must reference a bounded internal package part.`);
     const resolved = new URL(target, "https://within.invalid/word/document.xml");
     if (resolved.origin !== "https://within.invalid" || resolved.search || resolved.hash)
-      throw new Error("DOCX styles relationship is not an internal package part.");
-    try { stylePart = decodeURIComponent(resolved.pathname).slice(1); }
-    catch { throw new Error("DOCX styles relationship has invalid URI encoding."); }
-    if (!stylePart || stylePart.split("/").some(part => !part || part === "." || part === "..") || /[\\\u0000]/.test(stylePart))
-      throw new Error("DOCX styles relationship has an unsafe part path.");
+      throw new Error(`DOCX ${kind} relationship is not an internal package part.`);
+    let part: string;
+    try { part = decodeURIComponent(resolved.pathname).slice(1); }
+    catch { throw new Error(`DOCX ${kind} relationship has invalid URI encoding.`); }
+    if (!part || part.split("/").some(part => !part || part === "." || part === "..") || /[\\\u0000]/.test(part))
+      throw new Error(`DOCX ${kind} relationship has an unsafe part path.`);
+    parts.set(kind, part);
   }
+  const stylePart = parts.get("styles");
   const styles = new Map<string, Style>(), defaults: Partial<DocxEmphasis> = {};
   let defaultStyle: string | undefined, documentOutline: number | undefined, defaultNumbering: { numId?: number } | undefined;
+  const defaultRun: { color?: DocxColor } = {};
   if (stylePart !== undefined) {
     const entry = entries.get(stylePart);
     if (!entry || entry.directory) throw new Error("DOCX referenced styles part is missing.");
@@ -106,8 +114,16 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
       } else if (word(element.parent, "rPr")) {
         const key = element.uri === WORD ? docxEmphasisKey(element.local) : undefined;
         let properties: Partial<DocxEmphasis> | undefined;
-        if (current && element.parent?.parent === current.element && ["paragraph", "character"].includes(current.value.type)) properties = current.value.emphasis;
-        else if (word(element.parent?.parent, "rPrDefault") && word(element.parent?.parent?.parent, "docDefaults") && element.parent?.parent?.parent?.depth === 2) properties = defaults;
+        let colorOwner: { color?: DocxColor } | undefined;
+        if (current && element.parent?.parent === current.element && ["paragraph", "character"].includes(current.value.type)) {
+          properties = current.value.emphasis; colorOwner = current.value;
+        } else if (word(element.parent?.parent, "rPrDefault") && word(element.parent?.parent?.parent, "docDefaults") && element.parent?.parent?.parent?.depth === 2) {
+          properties = defaults; colorOwner = defaultRun;
+        }
+        if (colorOwner && word(element, "color")) {
+          if (colorOwner.color !== undefined) throw new Error("DOCX style/defaults repeats a run color.");
+          colorOwner.color = parseDocxColor(name => attribute(element, name));
+        }
         if (key && properties) {
           if (properties[key] !== undefined) throw new Error("DOCX style/defaults repeats a supported run property.");
           properties[key] = parseDocxEmphasisValue(element.local, attribute(element, "val"));
@@ -136,7 +152,7 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
     if (levels > MAX_CHAIN) throw new Error("DOCX style inheritance is cyclic or exceeds64 levels.");
     const value: Resolved = { outline: style.outline ?? inherited?.outline, levels,
       toggleMask: (inherited?.toggleMask ?? 0) ^ toggleMask(style.emphasis), underline: style.emphasis.underline ?? inherited?.underline,
-      numId: style.numbering?.numId ?? inherited?.numId };
+      numId: style.numbering?.numId ?? inherited?.numId, color: style.color ?? inherited?.color };
     visiting.delete(id); resolved.set(id, value); return value;
   };
   for (const [id, style] of styles) if (["paragraph", "character"].includes(style.type)) resolve(id);
@@ -148,7 +164,13 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
     }
     return resolved.get(id ?? defaultStyle ?? "");
   };
+  const resolveColor = await readDocxColors(runtime, entries, parts.get("theme"), parts.get("settings"), metadataElements);
   return { definitionCount: styles.size, outline: id => paragraphStyle(id)?.outline ?? documentOutline,
+    color(paragraphId, characterId, direct) {
+      return resolveColor(direct ??
+        (characterId !== undefined && styles.get(characterId)?.type === "character" ? resolved.get(characterId)?.color : undefined) ??
+        paragraphStyle(paragraphId)?.color ?? defaultRun.color);
+    },
     numbering(id) {
       const resolvedStyle = paragraphStyle(id), styleIds: string[] = [];
       let currentId = id !== undefined && styles.get(id)?.type === "paragraph" ? id : defaultStyle;

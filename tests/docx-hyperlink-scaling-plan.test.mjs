@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { createHash } from "node:crypto";
+import { preDocxColors } from "../scripts/lib/reviewed-docx-colors.mjs";
 const plan=JSON.parse(await readFile("evidence/2026-11-20-docx-hyperlink-scaling-plan.json"));
 const driver=await readFile("scripts/qualify-docx-html.mjs","utf8");
 test("distinct current-model scaling3x2 plus a clean largest1x plan retains original limits and fixed metadata",()=>{
@@ -17,8 +18,8 @@ test("distinct current-model scaling3x2 plus a clean largest1x plan retains orig
   assert.match(driver,/freshLargestDocumentControlVerified = true/);
   assert.match(driver,/scalingFixtureHelper, "validate", binding\.file/);
 });
-test("prior private qualification remains source-exact for every production module; only test tooling changes",async()=>{
+test("prior private qualification authenticates every historical production module, not later color changes",async()=>{
   const r=JSON.parse(await readFile("evidence/2026-11-20T11-26-08-834Z-docx-html-qualification.json"));
   for(const [file,pin]of Object.entries(r.sourcePins))if(/^(workers|lib|app)\//.test(file))
-    assert.equal(createHash("sha256").update(await readFile(file)).digest("hex"),pin,file);
+    assert.equal(createHash("sha256").update(preDocxColors(file, await readFile(file))).digest("hex"),pin,file);
 });

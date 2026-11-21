@@ -5,6 +5,7 @@ import { gunzipSync } from "node:zlib";
 import test from "node:test";
 import { deriveDocxHyperlinkScalingSeries,renderDocxHyperlinkScalingSeries } from "../scripts/lib/docx-hyperlink-scaling-series.mjs";
 import { reconcileChromiumBirths } from "../scripts/lib/reconcile-chromium-births.mjs";
+import { preDocxColors } from "../scripts/lib/reviewed-docx-colors.mjs";
 const sha=b=>createHash("sha256").update(b).digest("hex");
 const seriesFile="evidence/2026-11-20T11-46-04-089Z-docx-hyperlink-scaling-series.json",raw=await readFile(seriesFile);
 assert.equal(sha(raw),"91558d4cf0367104185aed16e0cfd093b23bf18ee6ef87364cd55a8825018bae");
@@ -25,7 +26,7 @@ test("actual source-pinned current hyperlink scaling3x2 plus distinct clean larg
   assert.deepEqual(derived.rows.map(r=>r.outputBytes),[9295737,9295737,9295737,148682577,148682577,148682577,148682577]);
   const rendered=renderDocxHyperlinkScalingSeries(series);
   for(const [suffix,contents]of Object.entries(rendered))assert.equal(contents,(await readFile(seriesFile.replace(/\.json$/,"."+suffix))).toString());
-  for(const [file,pin]of Object.entries(reports[0].sourcePins))assert.equal(sha(await readFile(file)),pin,file);
+  for(const [file,pin]of Object.entries(reports[0].sourcePins))assert.equal(sha(preDocxColors(file, await readFile(file))),pin,file);
 });
 test("all1768 native rows are retained; missing2 active samples remain unavailable and are not converted to zeros",()=>{
   assert.deepEqual(journals.map(j=>j.length),[1226,542]);

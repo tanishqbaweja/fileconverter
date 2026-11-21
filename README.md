@@ -37,6 +37,12 @@ whole-session peaks187.27/184.85MiB, max cleanup69.69MiB, unchanged250/96MiB gat
 See [the measured scaling series](evidence/2026-11-20T11-46-04-089Z-docx-hyperlink-scaling-series.html).
 This is not a universal-flat-memory, leak-free or speedup claim. It remains
 private; other browsers and native-picker/external-drive qualification are open.
+The private converter also preserves direct and inherited run text colors.
+It resolves bounded internal RGB theme palettes and document color mappings,
+including HSL tint/shade (legacy Word rounding may differ slightly). Unresolved colors use the saved RGB when available;
+automatic color uses browser text color. Theme and settings metadata each cap
+at 1 MiB. Only generated color values enter HTML; no external theme is fetched.
+This color change needs its own production-browser and memory evidence.
 Fonts, exact page/table
 layout, graphics and ancillary parts are not fully
 preserved; the UI discloses those limits. Paragraph outline/heading inheritance

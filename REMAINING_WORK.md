@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-21 N-08 private DOCX foreground color implemented: direct/default/
+paragraph/character RGB, theme palette + settings mapping, HSL tint/shade,
+and one-warning fallback to saved RGB or browser text color. Theme/settings
+each capped at 1 MiB; 12 palette slots and 12 mappings, no external fetch or
+raw CSS. Legacy Word intermediate rounding and unsupported theme slot
+transforms are not reproduced exactly. 188 targeted tests, build, TS, lint
+and 402-route public evidence audit pass. Color-specific browser repeat,
+write-failure/cancel, memory and scaling qualification still open. No
+promotion or repeat of failed VP9. C: had zero free bytes during this cycle.
+More at `evidence/2026-11-21-docx-colors-source-checkpoint.json`.
+
 2026-11-20 M-09 specialist ORIGINAL runtime gate FAILED, not a solution despite
 native26.76% static reduction/small qualification. Actual380.58203125MiB over
 original blank vs250MiB,155.083s untouched source1920x804/24fps/4Mbps; no full

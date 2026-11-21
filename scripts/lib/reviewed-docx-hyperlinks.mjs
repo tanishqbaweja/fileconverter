@@ -4,6 +4,7 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { preDocxColors } from "./reviewed-docx-colors.mjs";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const pins = {
   "lib/capability-registry.ts": ["3be48c5f6b0fcbd49233d1b84eb9bceca38620468005f90e27cda963141b0340", "8441cf882fe64a188928ac6f6672d2a1f38cbd963bc98de3d8e9fb45263a8798"],
@@ -11,6 +12,7 @@ const pins = {
 };
 export function preDocxHyperlinks(file, bytes) {
   assert.ok(Object.hasOwn(pins, file));
+  bytes = preDocxColors(file, bytes);
   const [before, after] = pins[file];
   if (sha(bytes) !== after) return bytes;
   const archived = execFileSync("git", ["show", `6b8aefe3:${file}`], { windowsHide: true, maxBuffer: 1048576 });
