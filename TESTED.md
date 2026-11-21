@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-11-21 corrected production direct MKV-to-MP4 **protected original 3+1
+headless PASS**. Three same-page jobs and one clean normal-service session
+used the full exact 2,958,573,265 B original. Each produced actual
+2,962,151,594 B MP4 and matched the same exact native/input/output independently
+qualified complete packet, PCM and 296,160-frame evidence. Fresh full disk
+SHA-256, structure and edits; no repeated native decode. Browser job times
+33.943 / 38.141 / 22.917 / 22.943 s. Full-tree deltas
+213.074 / 156.707 / 184.559 / 211.629 MiB versus unchanged 250 MiB.
+Max per-job stable cleanup 47.473 MiB; max end-of-session stable cleanup
+74.465 MiB over loaded idle, both under 96 MiB. Replayed 2,082 raw rows and
+all 1,083 valid conversion rows, zero unavailable in conversion. Read cap
+256 KiB; write/queue cap 1 MiB and one pending operation. Zero app stage,
+zero forbidden requests, cleanup and pre/post original size/SHA-256 passed.
+Full-original adverse cases, matched performance, current direct scaling,
+manual picker, and public release not verified.
+[JSON](evidence/2026-11-21T18-17-03-912Z-mkv-hevc-header-core-production-direct-original-repeats.json),
+[CSV](evidence/2026-11-21T18-17-03-912Z-mkv-hevc-header-core-production-direct-original-repeats.csv),
+[HTML](evidence/2026-11-21T18-17-03-912Z-mkv-hevc-header-core-production-direct-original-repeats.html).
+
 2026-11-21 corrected direct MKV-to-MP4 **small headless production control
 PASS**. Unmodified production worker, only two authenticated private core
 assets served, real OPFS-backed selected handles and zero app-managed stage.

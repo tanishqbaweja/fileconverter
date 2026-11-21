@@ -4,7 +4,29 @@ Updated 2026-11-21. Read this first after resuming; then follow the cited receip
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
-## Critical path: corrected direct-save MKV headless control passed
+## Critical path: corrected production direct-save passed the full original 3+1
+
+The unmodified production worker remuxed all 2,958,573,265 B of `test.mkv`
+three times on one page and once in fresh normal-service headless Chrome.
+Every actual output was 2,962,151,594 B and exactly matched the independently
+qualified all-packet/PCM/296,160-frame output SHA-256. Fresh disk SHA,
+structure and edit-list checks passed; no new full-decode claim.
+Times were 33.943 / 38.141 / 22.917 / 22.943 s (74–123 MiB/s);
+worst full-tree peak **213.074 MiB** versus 250, worst stable cleanup
+**74.465 MiB** over loaded idle versus 96. Replayed 2,082 native rows
+(1,083 conversion, zero unavailable during conversion). Zero app-managed
+stage or forbidden requests. No retained output or owned browser/server
+scratch. Original size and full SHA-256 unchanged.
+
+Next: qualify this **actual production direct-handle path** at progressively
+larger real media sizes and verify release delivery/eligibility before public
+promotion. Do not rerun the protected 3+1 unchanged. The old staged failure
+stands; raw timing here is not proof of a matched speedup.
+[JSON](evidence/2026-11-21T18-17-03-912Z-mkv-hevc-header-core-production-direct-original-repeats.json),
+[CSV](evidence/2026-11-21T18-17-03-912Z-mkv-hevc-header-core-production-direct-original-repeats.csv),
+[HTML](evidence/2026-11-21T18-17-03-912Z-mkv-hevc-header-core-production-direct-original-repeats.html).
+
+## Corrected direct-save MKV small headless control passed
 
 Three 11,894,121 B production direct-handle outputs matched the exact MP4
 and passed fresh packet/timing and full decoded video/PCM checks. Cancellation
@@ -14,9 +36,8 @@ no forbidden requests or owned leftovers; `test.mkv` size/SHA-256 unchanged.
 Normal full Chrome tree: 158.699 MiB over blank across the five cases, 42.789
 MiB over loaded idle at stable cleanup; replayed 245 complete measurement rows.
 The three successful outputs used page reloads, not same-page stress repeats.
-Next: the protected-original same-page three plus one clean-session direct
-repeat gate with the identical core and unchanged whole-tree budget. Do not
-repeat the small control unchanged. No speed comparison or public promotion.
+The protected-original 3+1 is now recorded above. Do not repeat this small
+control unchanged. No speed comparison or public promotion.
 [Passing browser report](evidence/2026-11-21T18-11-17-379Z-mkv-hevc-header-core-production-direct-small.json).
 
 ### First browser attempt (retained)
@@ -418,14 +439,15 @@ destination coverage remain open in N-08. Return to the retained M-09 CPU-fallba
 allocation controls for the next distinct low-memory implementation hypothesis;
 do not rerun the unchanged300.87MiB fallback or405.11MiB MKV failure.
 
-## Current critical path
+## Historical staged-path repeat failure (not the corrected direct path)
 
 The corrected private MKV-to-MP4 core preserves the complete original's packets,
 timestamps, decoded video and audio. Its production-staged repeat gate is still
 FAILED: first two full outputs validated, third job reached **405.11328125 MiB**
 above the SAME original blank, over the unchanged **250 MiB** whole-tree limit.
 The route is withheld from public selection; withdrawal is not implementation
-completion. No validated third output or clean-session repeat pass exists.
+completion. No validated third output or clean-session repeat pass exists
+for this staged path. The separate corrected direct path passed 3+1 above.
 
 [Reconciled diagnosis](evidence/2026-11-17-mkv-staged-attribution-reconciliation.json):
 the exact native birth of the large child was classified by the already-retained
@@ -464,7 +486,7 @@ or public promotion. [Checkpoint](evidence/2026-11-16-docx-numbering-checkpoint.
 Its historical whole-portable result is 2887/2887; that count does NOT include
 new tests added after that checkpoint.
 
-## Next distinct work and stop rules
+## Historical November 17 stop rules for the staged path
 
 Historical November17 checkpoint verification: **39/39 PASS**, zero skips/failures,
 11.60 seconds, including unchanged saver and historical TypeScript overlay

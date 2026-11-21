@@ -4,6 +4,8 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
 import { hevcHeaderLoopReference } from "../scripts/lib/mkv-hevc-header-core-reference.mjs";
+import { readProductionDirectSmallReference } from "../scripts/lib/mkv-production-direct-small-reference.mjs";
+import { renderProductionDirectOriginal, replayProductionDirectOriginal } from "../scripts/report-mkv-production-direct-original.mjs";
 
 const read = file => readFile(new URL(`../${file}`, import.meta.url));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
@@ -90,4 +92,35 @@ test("first small receipt preserves missed cancellation independently of the suc
   assert.equal(a.ownedRuntimeRemoved, true);
   assert.equal(r.fixtureRuntimeRemoved, true);
   assert.deepEqual(r.originalAfter, original);
+});
+
+test("protected direct mode can bind small recovery only to the exact current worker sources and native core", async () => {
+  const bytes = await read(receipt("18-11-17-379Z")), r = JSON.parse(bytes);
+  const proof = readProductionDirectSmallReference(bytes, r.candidateBuild, r.sourcePins);
+  assert.equal(proof.workerSha256, r.arms[0].releaseWorker.sha256);
+  assert.equal(proof.sameProductionSourcesAndNativeCore, true);
+  assert.match(proof.recoveryScope, /not full-original adverse cases/);
+  assert.throws(() => readProductionDirectSmallReference(bytes, { ...r.candidateBuild, runId: "another-build" }, r.sourcePins));
+  assert.throws(() => readProductionDirectSmallReference(bytes, r.candidateBuild, { ...r.sourcePins, "workers/media-remux.ts": "0".repeat(64) }));
+  const failedBytes = await read(receipt("18-08-48-264Z"));
+  assert.throws(() => readProductionDirectSmallReference(failedBytes, r.candidateBuild, r.sourcePins));
+  const driver = (await read("scripts/qualify-mkv-direct-reuse.mjs")).toString();
+  assert.match(driver, /if \(headerProductionDirectOriginal\) await arm\("production-direct", protectedPath, null, baseline, count\)/);
+  assert.match(driver, /headerProtectedRetention \? \[MKV_RETENTION_LIMITS\.jobs\] : \[3, 1\]/);
+  assert.match(driver, /if \(headerProductionDirectOriginal\) assert.equal\(workerSha256, baseline.productionDirectRecoveryReference.workerSha256\)/);
+});
+
+test("full original 3+1 direct-save evidence replays every native tree sample and recreates the public-safe report artifacts", async () => {
+  const file = "evidence/2026-11-21T18-17-03-912Z-mkv-hevc-header-core-production-direct-original-repeats.json";
+  const r = await replayProductionDirectOriginal(file);
+  assert.equal(r.sha256, "2e078ebc78a8660f8c3ddfe1b6eeed9c85c0bda8d65c707d3c4c0f979d364e2f");
+  assert.equal(r.outputSha256, "64f8a3c3fc8812857ec0c0fd2ec446622100e389e8377911d6d1e0b976fc7b36");
+  assert.deepEqual(r.jobs.map(j => j.incrementalMiB), [213.07421875, 156.70703125, 184.55859375, 211.62890625]);
+  assert.deepEqual(r.jobs.map(j => j.validSamples), [311, 351, 210, 211]);
+  assert.ok(r.jobs.every(j => j.unavailableSamples === 0));
+  assert.deepEqual(r.sessions.map(s => [s.rows, s.sessionCleanup]), [[1477, 74.46484375], [605, 21.6171875]]);
+  const artifacts = renderProductionDirectOriginal(r);
+  for (const [ext, contents] of Object.entries(artifacts)) assert.equal((await read(file.replace(/\.json$/, `.${ext}`))).toString(), contents);
+  assert.doesNotMatch(artifacts.html, /<script|https?:\/\/|test\.mkv|user-data-dir/);
+  assert.equal(artifacts.csv.trim().split("\n").length, 5);
 });
