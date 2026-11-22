@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-22 UTC M-03 / CI corrected MKV release delivery **CI gate added;
+hosted proof pending**. Tracked native source, pinned Emscripten and the
+same recipe produce a new candidate for exact ten-artifact/ABI/memory
+comparison and scratch-only static packaging. No binary or media upload
+beyond the compact verification receipt. Need actual hosted result,
+served-layout browser qualification and remaining full-scale/release gates.
+
 2026-11-22 UTC P-08 **bounded BYOB fill investigated and rejected**.
 Four actual control/fill/fill/control 5.35 GB jobs, exact output/fidelity,
 bounded complete-tree memory, privacy and cleanup. Native crossings fell

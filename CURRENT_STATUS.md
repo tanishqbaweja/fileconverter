@@ -4,6 +4,16 @@ Updated 2026-11-22 (local). Read this first after resuming; then follow the cite
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Corrected MKV reproducibility and private package gate added
+
+The branch CI workflow rebuilds the corrected core from tracked sources with
+the pinned non-Docker SDK. It compares all ten rebuilt artifacts, provenance,
+Wasm memory and ABI to the qualified build, then assembles the separately
+named loader/Wasm/license inside owned scratch. It uploads a compact receipt
+only and always runs owned cleanup. Local tests verify the gate and actual
+cached files; a fresh hosted rebuild remains to be confirmed. The default
+public asset tree and registry are unchanged; no deployment or browser claim.
+
 ## 5.35 GB matched read experiment: do not adopt the fill strategy
 
 Four real normal-Chrome jobs used the same exact source, output handle

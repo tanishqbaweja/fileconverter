@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-11-22 UTC corrected MKV native reproducibility/package gate **local
+contract PASS**: 38 focused tests, scoped lint, workflow YAML and diff
+validation. Actual cached loader/Wasm/license and fixed private asset paths
+checked. Added separate hosted build against the ten authenticated references;
+a local contract PASS does not count as a fresh compiler or served-browser
+result. No media input, package publication or registry change.
+
 2026-11-22 UTC corrected MKV **matched 5.35 GB read-fill candidate REJECTED**.
 Instrumented order control/fill/fill/control; fresh normal Chrome 158 per
 arm, same physical source, exact production worker/Wasm and direct handle.

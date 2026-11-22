@@ -1,0 +1,80 @@
+name: Verify corrected MKV engine reproduction
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, media-options]
+    paths:
+      - ".github/workflows/reproduce-corrected-mkv.yml"
+      - "media/ffmpeg/**"
+      - "public/engines/remux/**"
+      - "scripts/verify-mkv-hevc-header-reproduction.mjs"
+      - "scripts/ci-owned-runtime.mjs"
+      - "scripts/lib/mkv-header-native-cache.mjs"
+      - "scripts/lib/mkv-hevc-header-core-reference.mjs"
+      - "scripts/lib/owned-runtime-scratch.mjs"
+      - "scripts/lib/wasm-*.mjs"
+      - "lib/mkv-corrected-direct-qualification.ts"
+      - "fixtures/qualification-tools/**"
+      - "tests/mkv-hevc-header-reproduction.test.mjs"
+
+permissions:
+  contents: read
+
+jobs:
+  corrected-mkv-reproduction:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/media-options'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      WITHIN_MKV_EXACT_AAC: '1'
+      WITHIN_MKV_H264_VFR: '1'
+      WITHIN_MKV_H264_PROBE_DECODER: '1'
+      WITHIN_MKV_H264_STARTUP: '1'
+      WITHIN_MKV_HEVC_KNOWN_DTS: '1'
+      WITHIN_MKV_HEVC_HEADER_PARSER: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.7.0
+      - name: Own repository-local runtime scratch
+        run: node scripts/ci-owned-runtime.mjs prepare
+      - name: Check native source derivation and reproduction guard
+        run: |
+          node --test tests/mkv-edit-list-build-recipe.test.mjs tests/mkv-hevc-header-parser-candidate.test.mjs tests/mkv-hevc-header-reproduction.test.mjs
+      - name: Install build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends autoconf automake ca-certificates curl libtool make patch pkg-config xz-utils
+      - name: Activate pinned Emscripten SDK without Docker
+        run: |
+          sdk="$TMPDIR/emsdk"
+          test ! -e "$sdk" && test ! -L "$sdk"
+          git clone --filter=blob:none --no-checkout https://github.com/emscripten-core/emsdk.git "$sdk"
+          git -C "$sdk" checkout 224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f
+          test "$(git -C "$sdk" rev-parse HEAD)" = 224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f
+          "$sdk/emsdk" install 6.0.4
+          "$sdk/emsdk" activate 6.0.4
+      - name: Rebuild and compare all ten qualified artifacts
+        id: verify
+        shell: bash
+        run: |
+          source "$TMPDIR/emsdk/emsdk_env.sh"
+          node media/ffmpeg/build-mkv-edit-list-candidate.mjs --verify-hevc-header-reproduction
+          node scripts/verify-mkv-hevc-header-reproduction.mjs
+          git diff --exit-code HEAD -- public lib/capability-registry.ts
+      - name: Retain compact verification receipt only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: corrected-mkv-reproduction-receipt-${{ github.run_id }}
+          path: ${{ steps.verify.outputs.receipt }}
+          if-no-files-found: error
+          retention-days: 7
+      - name: Remove owned SDK, newly compiled files and private static package
+        if: always()
+        env:
+          NODE_DISABLE_COMPILE_CACHE: 1
+        run: node scripts/ci-owned-runtime.mjs cleanup

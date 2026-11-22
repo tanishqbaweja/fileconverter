@@ -141,9 +141,13 @@ function runRecipe(script, env) {
   });
 }
 
-async function buildCandidate() {
+async function buildCandidate(verifyHeaderReproduction = false) {
   assert.equal(process.env.GITHUB_ACTIONS, "true", "Use the isolated hosted candidate job");
-  if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${hevcHeaderParser ? hevcHeaderParserBuildRef : hevcKnownDts ? hevcKnownDtsBuildRef : startup ? h264StartupBuildRef : probeDecoder ? h264ProbeDecoderBuildRef : h264Vfr ? h264VfrBuildRef : exactAacBuildRef}`);
+  if (verifyHeaderReproduction) {
+    assert.ok(hevcHeaderParser && exactAac && h264Vfr && probeDecoder && startup && hevcKnownDts);
+    assert.ok(["refs/heads/main", "refs/heads/media-options"].includes(process.env.GITHUB_REF));
+    assert.equal(process.env.GITHUB_JOB, "corrected-mkv-reproduction");
+  } else if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${hevcHeaderParser ? hevcHeaderParserBuildRef : hevcKnownDts ? hevcKnownDtsBuildRef : startup ? h264StartupBuildRef : probeDecoder ? h264ProbeDecoderBuildRef : h264Vfr ? h264VfrBuildRef : exactAacBuildRef}`);
   const ciOwner = process.env.WITHIN_CI_RUNTIME_OWNER, ciRoot = path.dirname(ciOwner);
   assert.equal(path.dirname(ciRoot), work);
   assert.match(path.basename(ciRoot), /^ci-[A-Za-z0-9]{6}$/);
@@ -216,6 +220,7 @@ async function buildCandidate() {
 assert.equal(process.platform, "linux");
 const args = process.argv.slice(2);
 if (args.length === 0) await buildCandidate();
+else if (args.length === 1 && args[0] === "--verify-hevc-header-reproduction") await buildCandidate(true);
 else {
   assert.equal(args.length, 3);
   assert.ok(["--prepare", "--prepare-mov"].includes(args[0]));
