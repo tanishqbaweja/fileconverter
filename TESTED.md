@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-11-22 UTC **single served 5.35 GB renderer diagnostic complete**.
+Exact output SHA/structure and cleanup; 42.076 s, 225.309 MiB complete
+Chrome over blank and 26.938 MiB idle-cleanup delta. Three real light
+allocator traces: loaded, running after 1,084,028,692 B output, stable
+cleanup. Same-renderer Blink main 3.125/38.375/6.625 MiB, Blink workers
+0.750/5.500/0.750 MiB, live ArrayBuffers 4,656/1,319,488/1,056 B. Active
+24 MiB Wasm, one pending operation, page and old/new worker realm IDs
+distinguished, 776 native rows/386 conversion/zero unavailable.
+No forced GC, no replaced responses, no disposables left and protected
+original unchanged. These overlapping allocator counters are diagnostic
+only; the original 5.35 GB repeat failure still stands.
+[Report](evidence/2026-11-22T08-00-55-184Z-mkv-hevc-header-core-production-static-scale-5gb-renderer-diagnostic.json).
+
+2026-11-22 UTC **offline renderer reconciliation PASS**, no browser replay.
+Authenticated raw 5.35 GB static repeat peak and exact retained birth
+census establish the growing child was a renderer, not the older staged
+service. 14.563 MiB blank, 38.949 MiB loaded, 115.176/113.590 MiB stable
+cleanup; job-three renderer peak 247.176 MiB. All bytes still included in
+the actual 250.781 MiB failure. This proves role and lifecycle trajectory,
+not allocator or app call site. Original receipt and native data unchanged.
+[Reconciliation](evidence/2026-11-22-mkv-static-scale-renderer-reconciliation.json).
+
 2026-11-22 UTC corrected MKV **served-static 5.35 GB repeat FAIL**. Job
 1/2 exact 5,350,648,699 B outputs, independent SHA/structure/edit checks,
 58.712/37.884 s, 193.102/246.801 MiB. Job 3 exceeded unchanged 250 MiB

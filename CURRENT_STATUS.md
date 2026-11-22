@@ -4,6 +4,39 @@ Updated 2026-11-22 (local). Read this first after resuming; then follow the cite
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Active 5.35 GB renderer allocator profile captured
+
+One served-static diagnostic save produced the exact 5,350,648,699 B
+MP4 (42.076 s) with no response substitution. Whole-Chrome peak
+225.309 MiB, stable cleanup 26.938 MiB over idle; this was one perturbing
+diagnostic, not a repeat or release pass. Output and owned scratch were
+removed and the protected original was unchanged.
+
+Same renderer birth across loaded / active after 1 GiB / stable cleanup:
+OS private 42.598 / 170.266 / 58.840 MiB, Blink main-thread heap size
+3.125 / 38.375 / 6.625 MiB and workers 0.750 / 5.500 / 0.750 MiB.
+Live ArrayBuffer partition allocations were 4,656 / 1,319,488 / 1,056 B.
+Native Wasm was 24 MiB in the active checkpoint. The conversion worker
+was replaced; the same page stayed alive. DOM listener counters were
+179 pre-job, 456 active and 183 after stable cleanup. These are phase
+witnesses, not proof of a listener leak or allocation call site; allocator
+families overlap and must not be added. Inspect page-side progress/
+listener lifecycle next. Do not revive read-fill tuning, force GC,
+exclude a process, or replay the failed repeat unchanged.
+[Diagnostic](evidence/2026-11-22T08-00-55-184Z-mkv-hevc-header-core-production-static-scale-5gb-renderer-diagnostic.json).
+
+## Failed 5.35 GB repeat attributed to a same-birth renderer
+
+The failed run's retained birth census identifies PID 25708 as a
+**renderer**, not the on-device utility process seen in the separate
+staged failure. The exact native PID, parent, creation time and FILETIME
+match. Its stable private memory was 14.563 MiB blank, 38.949 MiB loaded,
+and 115.176 / 113.590 MiB after the first two cleanups. The 247.176 MiB
+renderer spike on job three was not a monotonic cleanup staircase. The
+whole Chrome failure stays 250.781 MiB with every process included.
+Allocation and call-site cause are still unknown.
+[Offline reconciliation](evidence/2026-11-22-mkv-static-scale-renderer-reconciliation.json).
+
 ## Static package 5.35 GB repeat gate failed at 250.781 MiB on job three
 
 The first two same-page saves from the actual static package passed:
@@ -18,10 +51,10 @@ all recorded process births cleared and protected original unchanged.
 One same-birth Chrome child (PID 25708) grew from 14.563 MiB at the last
 blank sample to 247.176 MiB at the actual peak: **232.613 MiB diagnostic
 growth**, included in the unchanged complete-tree acceptance calculation.
-It predates the blank baseline, so the old late-birth filter left its
-role unclassified. Future failure attribution uses exact birth identity
-and growth to include that case in the existing single census. Role and
-cause remain unverified; don't bypass the cap or replay unchanged.
+It predates the blank baseline, so the later census skipped it. The
+independent earlier witness was reconciled above. Future attribution
+uses exact birth identity and growth to include early births, too.
+Allocator cause remains unverified; don't bypass the cap or replay unchanged.
 [Report](evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats.json),
 [CSV](evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats.csv),
 [HTML](evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats.html).

@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "scope": "offline renderer role reconciliation; not browser replay, allocator attribution or acceptance",
+  "originalReceipt": {
+    "file": "evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats.json",
+    "sha256": "f06bcbf41fecf4a45561df91a8510d160cd18d5fe69f6c75705232fa086badbe"
+  },
+  "archive": {
+    "file": "evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats-production-direct-session1-native.json.gz",
+    "bytes": 103588,
+    "sha256": "6ba4887313d1baacf32e42eb360196bb98fa2a92b729080746354d4978cb27a1",
+    "decodedSha256": "6452185e20a33680494aed5caa8a6c456fb299d5950ba266aaae3e37dfc03806"
+  },
+  "helper": {
+    "file": "scripts/lib/birth-type-capture.mjs",
+    "sha256": "fb76463e1e90d87ffb8a2d13b3cb6b7a53db3ffffdff2aab4c1b954f7655a398",
+    "directlyPinned": true
+  },
+  "rootRole": {
+    "status": "classified-from-retained-same-birth-observer",
+    "reason": null,
+    "type": "browser",
+    "utilitySubtype": null,
+    "sandboxType": null
+  },
+  "role": {
+    "status": "classified-from-retained-same-birth-observer",
+    "reason": null,
+    "type": "renderer",
+    "utilitySubtype": null,
+    "sandboxType": null
+  },
+  "nativeBirth": {
+    "pid": 25708,
+    "parentPid": 24412,
+    "createdAt": "2026-11-22T07:50:18.8010139Z",
+    "creationFileTime": "134398074188010139",
+    "executableName": "chrome.exe",
+    "privateBytes": 259182592,
+    "rssBytes": 294887424,
+    "type": "unknown",
+    "utilitySubtype": null,
+    "sandboxType": null
+  },
+  "blankBirthBytes": 15269888,
+  "growthMiB": 232.61328125,
+  "phases": [
+    {
+      "name": "blank",
+      "samples": 29,
+      "firstMiB": 14.5625,
+      "lastMiB": 14.5625,
+      "peakMiB": 14.5625
+    },
+    {
+      "name": "loaded-idle",
+      "samples": 29,
+      "firstMiB": 38.94921875,
+      "lastMiB": 38.94921875,
+      "peakMiB": 38.94921875
+    },
+    {
+      "name": "job-1",
+      "samples": 539,
+      "firstMiB": 48.453125,
+      "lastMiB": 174.39453125,
+      "peakMiB": 198.87109375
+    },
+    {
+      "name": "cleanup-1",
+      "samples": 28,
+      "firstMiB": 115.17578125,
+      "lastMiB": 115.17578125,
+      "peakMiB": 115.17578125
+    },
+    {
+      "name": "job-2",
+      "samples": 348,
+      "firstMiB": 108.96875,
+      "lastMiB": 163.3046875,
+      "peakMiB": 205.17578125
+    },
+    {
+      "name": "cleanup-2",
+      "samples": 28,
+      "firstMiB": 113.58984375,
+      "lastMiB": 113.58984375,
+      "peakMiB": 113.58984375
+    },
+    {
+      "name": "job-3",
+      "samples": 113,
+      "firstMiB": 134.13671875,
+      "lastMiB": 129.78125,
+      "peakMiB": 247.17578125
+    }
+  ],
+  "stableRendererRetentionMiB": [
+    76.2265625,
+    74.640625
+  ],
+  "acceptance": {
+    "incrementalPrivateMiB": 250.78125,
+    "failed": true,
+    "limitMiB": 250,
+    "allProcessesIncluded": true,
+    "baselineChanged": false
+  },
+  "allocatorOrCodeCauseProven": false,
+  "conversionReplayed": false,
+  "originalEvidenceChanged": false
+}

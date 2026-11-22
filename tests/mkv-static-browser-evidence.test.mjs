@@ -6,6 +6,8 @@ import { gunzipSync } from "node:zlib";
 import { mkvStaticSmallReference, readMkvStaticSmallReference } from "../scripts/lib/mkv-static-small-reference.mjs";
 import { chooseMkvBudgetRoleCandidates } from "../scripts/lib/owned-burst-role.mjs";
 import { summarizeProtectedWindow } from "../scripts/lib/mkv-protected-repeat-contract.mjs";
+import { reconcileNativeBirthRole } from "../scripts/lib/native-birth-role.mjs";
+import { summarizeLifecycleTrace } from "../scripts/lib/lifecycle-allocation-attribution.mjs";
 
 const read = file => readFile(new URL(`../${file}`, import.meta.url));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
@@ -82,6 +84,15 @@ test("served static 5.35 GB third-run budget failure stays failed and keeps the 
   assert.equal(target.nativeBirth.type, "unknown");
   assert.equal(target.blankBirthBytes, 15269888);
   assert.equal(target.growthMiB, 232.61328125);
+  const role = reconcileNativeBirthRole(target.nativeBirth, a.observer.birthTypeCapture);
+  assert.equal(role.type, "renderer");
+  assert.equal(role.utilitySubtype, null);
+  assert.equal(reconcileNativeBirthRole({ ...target.nativeBirth, parentPid: 1 }, a.observer.birthTypeCapture).type, null);
+  const reconciliation = JSON.parse(await read("evidence/2026-11-22-mkv-static-scale-renderer-reconciliation.json"));
+  assert.deepEqual(reconciliation.role, role);
+  assert.deepEqual(reconciliation.stableRendererRetentionMiB, [76.2265625, 74.640625]);
+  assert.equal(reconciliation.acceptance.incrementalPrivateMiB, a.memory.incrementalPrivateMiB);
+  assert.equal(reconciliation.allocatorOrCodeCauseProven, false);
 });
 
 test("budget role selection compares exact process births, never a reused PID", () => {
@@ -92,4 +103,51 @@ test("budget role selection compares exact process births, never a reused PID", 
   const r = chooseMkvBudgetRoleCandidates({ peak: { processes: [later] }, samples: [baselineRow],
     blank: { stable: true, lastTimestamp: timestamp }, rootPid: 1 });
   assert.deepEqual(r, [{ nativeBirth: later, blankBirthBytes: null, growthMiB: 80 }]);
+});
+
+test("single served 5.35 GB renderer run binds active and cleanup allocator views without treating them as acceptance", async () => {
+  const file = "evidence/2026-11-22T08-00-55-184Z-mkv-hevc-header-core-production-static-scale-5gb-renderer-diagnostic.json";
+  const bytes = await read(file), r = JSON.parse(bytes), [a] = r.arms, [c] = a.cases;
+  assert.equal(sha(bytes), "f2ccee3783cfd1a7cff58ee984534680b95a2d5bfe4ddf6588d770380f382024");
+  assert.equal(r.status, "completed-production-static-5gb-renderer-diagnostic-not-acceptance");
+  assert.equal(r.publicAcceptance, false); assert.equal(a.retention.forcedGc, false);
+  assert.equal(a.retention.acceptanceMetric, false);
+  assert.equal(a.retention.allocation.noEngineChanges, true);
+  assert.equal(a.retention.allocationCallsiteCauseProven, false);
+  assert.equal(c.rendererCheckpointActive, true);
+  assert.equal(c.rendererCheckpointTrigger.outputBytes, 1084028692);
+  assert.equal(c.state, "complete");
+  assert.equal(c.validation.outputSha256, "bc0d3bac6d8a18b9589b74bdb1bc7c035e1c7b4ee25d40c260360e1b5a38a835");
+  assert.ok(c.outputRemoved && a.ownedRuntimeRemoved && r.fixtureRuntimeRemoved && a.birthCleanup.allObservedBirthsAbsent);
+  assert.deepEqual(r.originalBefore, r.originalAfter);
+  const dumps = a.retention.allocation.checkpoints, rendererRows = [];
+  assert.deepEqual(dumps.map(d => d.phase), ["loaded-before-media", "active-after-1gib", "stable-cleanup"]);
+  assert.deepEqual(dumps.map(d => d.state.jobState), ["idle", "running", "complete"]);
+  for (const d of dumps) {
+    assert.equal(d.error, null); assert.equal(d.detached, true);
+    const zipped = await read(d.rawArchive.path);
+    assert.equal(sha(zipped), d.rawArchive.sha256);
+    const raw = gunzipSync(zipped, { maxOutputLength: 8 * 1048576 });
+    assert.equal(sha(raw), d.rawArchive.restoredSha256);
+    assert.deepEqual(summarizeLifecycleTrace(JSON.parse(raw), { success: true, dumpGuid: d.summary.guid }, d.processes), d.summary);
+    assert.equal(d.summary.allocatorValuesOverlap, true);
+    assert.equal(d.summary.summedAllocatorTotal, null);
+    const renderer = d.summary.processes.filter(p => p.pid === 27484 && p.allocators.malloc);
+    assert.equal(renderer.length, 1);
+    const [p] = renderer;
+    assert.equal(reconcileNativeBirthRole(p.identity, a.observer.birthTypeCapture).type, "renderer");
+    assert.equal(p.identity.creationFileTime, "134398080891756229");
+    rendererRows.push(p);
+  }
+  assert.deepEqual(rendererRows.map(p => p.identity.privateBytes), [44666880, 178536448, 61698048]);
+  assert.deepEqual(rendererRows.map(p => p.allocators["blink_gc/main"].size / 1048576), [3.125, 38.375, 6.625]);
+  assert.deepEqual(rendererRows.map(p => p.allocators["blink_gc/workers"].size / 1048576), [0.75, 5.5, 0.75]);
+  assert.deepEqual(rendererRows.map(p => p.allocators["partition_alloc/partitions/array_buffer"].allocated_objects_size), [4656, 1319488, 1056]);
+  assert.equal(dumps[0].realms.targets.find(t => t.type === "page").targetId, dumps[2].realms.targets.find(t => t.type === "page").targetId);
+  assert.notEqual(dumps[1].realms.targets.find(t => t.type === "worker").targetId, dumps[2].realms.targets.find(t => t.type === "worker").targetId);
+  const archive = await read(a.archive.file); assert.equal(sha(archive), a.archive.sha256);
+  const active = summarizeProtectedWindow(JSON.parse(gunzipSync(archive, { maxOutputLength: 32 * 1048576 })), c.conversionWindow, a.blank.privateBytes);
+  assert.equal(active.incrementalPrivateMiB, 225.30859375);
+  assert.equal(a.memory.incrementalPrivateMiB, active.incrementalPrivateMiB);
+  assert.equal(a.memory.cleanupAboveIdleMiB, 26.9375);
 });

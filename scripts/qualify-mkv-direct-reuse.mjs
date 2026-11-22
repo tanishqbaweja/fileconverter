@@ -83,13 +83,14 @@ const headerProtectedRepeats = headerProtectedRetention || headerStagedOriginalR
 const headerProtected = headerProtectedRepeats || process.argv[2] === "--hevc-header-parser-protected";
 const headerProductionStaticSmall = process.argv[2] === "--hevc-header-parser-production-static-small-cache";
 const headerProductionStaticRepeats = process.argv[2] === "--hevc-header-parser-production-static-scale-5gb-repeats-cache";
-const headerProductionStatic = headerProductionStaticSmall || headerProductionStaticRepeats;
+const headerProductionStaticRetention = process.argv[2] === "--hevc-header-parser-production-static-scale-5gb-renderer-diagnostic-cache";
+const headerProductionStatic = headerProductionStaticSmall || headerProductionStaticRepeats || headerProductionStaticRetention;
 const largeScalingRepeats = headerProductionStaticRepeats || process.argv[2] === "--hevc-header-parser-scale-5gb-repeats";
 const headerProductionDirectReadAb = process.argv[2] === "--hevc-header-parser-production-direct-scale-5gb-read-ab-cache";
 const headerProductionDirectNear10GbIoProfile = process.argv[2] === "--hevc-header-parser-production-direct-scale-near10gb-io-profile-cache";
 const headerProductionDirectIoProfile = headerProductionDirectNear10GbIoProfile || headerProductionDirectReadAb;
 const headerProductionDirectNear10Gb = headerProductionDirectNear10GbIoProfile || process.argv[2] === "--hevc-header-parser-production-direct-scale-near10gb-cache";
-const headerProductionDirectScaling = headerProductionStaticRepeats || headerProductionDirectNear10Gb || headerProductionDirectReadAb || process.argv[2] === "--hevc-header-parser-production-direct-scale-5gb-cache";
+const headerProductionDirectScaling = headerProductionStaticRepeats || headerProductionStaticRetention || headerProductionDirectNear10Gb || headerProductionDirectReadAb || process.argv[2] === "--hevc-header-parser-production-direct-scale-5gb-cache";
 const near10GbScaling = headerProductionDirectNear10Gb || process.argv[2] === "--hevc-header-parser-scale-near10gb";
 const headerStagedCachedCore = headerStagedOriginalRepeats || process.argv[2] === "--hevc-header-parser-production-staged-cache";
 const headerStagedIntegration = headerStagedCachedCore || process.argv[2] === "--hevc-header-parser-production-staged";
@@ -234,12 +235,13 @@ if (headerProductionStatic) {
   report.scope = headerProductionStaticSmall ? "Small Chrome content and recovery gate against genuinely served private static assets. No fulfilled/modified browser responses. Not large-repeat, manual-picker or public acceptance."
     : "Three same-page and one clean-session 5.35 GB direct remuxes on static private package assets from the real loopback server. Every output independently SHA/structure checked against full native content proof. No overridden responses or public, native-picker, near-10 GB or matched-speed claim.";
 }
+if (headerProductionStaticRetention) report.scope = "One real 5.35 GB served-static browser conversion for renderer attribution; three bounded light allocator checkpoints: pre-input, active after 1 GiB output, stable cleanup. Identical content and full-tree cap with no GC or service change. Sampling perturbs the browser; not the failed repeat replay, steady-state allocator causation, or acceptance.";
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${headerProductionStatic ? `hevc-header-core-production-static-${headerProductionStaticSmall ? "small" : "scale-5gb-repeats"}` : headerProductionDirect ? `hevc-header-core-production-direct-${headerProductionDirectOriginal ? "original-repeats" : headerProductionDirectScaling ? `scale-${near10GbScaling ? "near10gb" : "5gb"}${headerProductionDirectReadAb ? "-read-ab" : headerProductionDirectIoProfile ? "-io-profile" : ""}` : "small"}` : headerStagedOriginalRepeats ? "hevc-header-core-production-staged-original-repeats" : headerStagedIntegration ? "hevc-header-core-production-staged" : near10GbScaling ? "hevc-header-core-scale-near10gb" : largeScaling ? `hevc-header-core-scale-5gb${largeScalingRepeats ? "-repeats" : ""}` : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${headerProductionStatic ? `hevc-header-core-production-static-${headerProductionStaticSmall ? "small" : headerProductionStaticRetention ? "scale-5gb-renderer-diagnostic" : "scale-5gb-repeats"}` : headerProductionDirect ? `hevc-header-core-production-direct-${headerProductionDirectOriginal ? "original-repeats" : headerProductionDirectScaling ? `scale-${near10GbScaling ? "near10gb" : "5gb"}${headerProductionDirectReadAb ? "-read-ab" : headerProductionDirectIoProfile ? "-io-profile" : ""}` : "small"}` : headerStagedOriginalRepeats ? "hevc-header-core-production-staged-original-repeats" : headerStagedIntegration ? "hevc-header-core-production-staged" : near10GbScaling ? "hevc-header-core-scale-near10gb" : largeScaling ? `hevc-header-core-scale-5gb${largeScalingRepeats ? "-repeats" : ""}` : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env, timeout = 90000) => execute(file, args, { cwd: root, env, windowsHide: true, timeout, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env, near10GbScaling ? 180000 : 90000)).stdout);
@@ -739,10 +741,11 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     }, protectedMode);
     const remove = name => page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
     await open(); result.loaded = await stable(drain, samples);
-    if (headerProtectedRetention) {
+    if (headerProtectedRetention || headerProductionStaticRetention) {
       const debugPath = (await readFile(path.join(profile, "DevToolsActivePort"), "utf8")).trim().split(/\r?\n/)[1];
       assert.match(debugPath, /^\/devtools\/browser\/[a-f0-9-]+$/);
-      retention = await createMkvRetentionDiagnostic({ root, reportBase: path.join(root, "outputs/reports", `${stamp}-mkv-retention`),
+      retention = await createMkvRetentionDiagnostic({ root, reportBase: path.join(root, "outputs/reports",
+        `${stamp}-${headerProductionStaticRetention ? "mkv-static-renderer" : "mkv-retention"}`),
         socketUrl: `ws://127.0.0.1:${debugPort}${debugPath}`, origin: server.baseURL, browser, page,
         getProcesses: async () => { await drain(); const row = samples.findLast(s => s.privateBytes !== null && Array.isArray(s.processes)); assert.ok(row); return row.processes; } });
       assert.equal((await retention.capture("loaded-before-media", true)).error, null);
@@ -798,6 +801,19 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
           protectedWindows.push(row.conversionWindow);
         }
         await guard(page.locator('[data-testid="convert-button"]').click());
+      }
+      if (headerProductionStaticRetention) {
+        const observed = await guard(page.waitForFunction(() => {
+          const s = window.__WITHIN_TEST__?.getState(), outputBytes = s?.metrics?.outputBytes ?? 0;
+          if (s?.jobState === "running" && outputBytes >= 1073741824) return { state: s.jobState, outputBytes };
+          if (["complete", "error", "cancelled"].includes(s?.jobState)) return { state: s.jobState, outputBytes };
+          return false;
+        }, undefined, { timeout: 90000 }));
+        row.rendererCheckpointTrigger = await observed.jsonValue(); await observed.dispose();
+        if (row.rendererCheckpointTrigger.state === "running") {
+          const checkpoint = await guard(retention.capture("active-after-1gib", true));
+          row.rendererCheckpointActive = checkpoint.error === null && checkpoint.state?.jobState === "running";
+        }
       }
       await guard(page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState), undefined, { timeout: largeRun ? 180000 : 45000 }));
       if (largeRun) { protectedTerminal = Date.now(); row.conversionWindow.end = protectedTerminal; }
@@ -1039,6 +1055,10 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       await open(true); await job(true); await open(); await job();
     }
     result.cleanupStable = await guard(stable(drain, samples)); until = Date.now(); await drain();
+    if (headerProductionStaticRetention) {
+      assert.equal((await retention.capture("stable-cleanup", true)).error, null);
+      assert.equal(result.cases[0].rendererCheckpointActive, true, "No active allocator witness; diagnostic incomplete");
+    }
     if (headerProductionDirectIoProfile) assert.ok(result.cases[0].ioProfile, "Diagnostic did not produce valid timing; content and cleanup checks ran separately");
     assert.equal(errorSeen, undefined); assert.deepEqual(result.forbiddenRequests, []);
     if (staged) { assert.equal(result.workerResponses, 0); assert.ok(result.releaseWorker.requests > 0); }
@@ -1090,6 +1110,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     if (retention) {
       try { result.retention = await retention.close(); }
       catch (error) { result.retention = retention.report(); result.retentionCleanupError = boundedErrorDetails(error); fail(error); }
+      if (headerProductionStaticRetention) result.retention.scope = "one-served-5gb-renderer-diagnostic-not-acceptance";
     }
     until ??= Date.now();
     if (headerProductionDirectOriginal || headerProductionDirectScaling) for (const window of protectedWindows) window.end ??= until;
@@ -1198,7 +1219,7 @@ try {
     "scripts/lib/mkv-header-protected-reference.mjs", "scripts/lib/mkv-full-video-decode.mjs", protectedCompleteVideoReference.file,
     ...headerCoreH264References.map(ref => ref.file));
   if (headerProtectedRepeats) sourceFiles.push(headerProtectedReference.file);
-  if (headerProtectedRetention) sourceFiles.push("scripts/lib/mkv-retention-diagnostic.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/lifecycle-allocation-attribution.mjs");
+  if (headerProtectedRetention || headerProductionStaticRetention) sourceFiles.push("scripts/lib/mkv-retention-diagnostic.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/lifecycle-allocation-attribution.mjs");
   if (largeScaling) sourceFiles.push("scripts/lib/mkv-large-scaling.mjs", "scripts/lib/mkv-full-video-decode.mjs", "scripts/lib/mkv-hevc-header-core-reference.mjs",
     hevcHeaderLoopReference.file, "scripts/lib/mkv-header-protected-reference.mjs", headerProtectedReference.file,
     "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/mkv-scaling-sample-view.mjs");
@@ -1374,7 +1395,7 @@ try {
     if (headerProductionDirectReadAb) {
       assert.equal(report.readAb.result.comparable, true, "A/B incomplete; not optimization evidence");
       report.status = "completed-production-direct-5gb-read-ab-not-acceptance";
-    } else report.status = headerProductionStaticRepeats ? "passed-production-static-5gb-repeats-not-public-acceptance" : headerProductionDirectIoProfile ? "completed-production-direct-near10gb-io-attribution-not-acceptance" : headerProductionDirectScaling ? "passed-unmodified-production-direct-scaling-not-repeats-or-public-acceptance" : near10GbScaling ? "passed-first-real-near10gb-scaling-not-repeats-or-public-acceptance" : largeScalingRepeats ? "passed-real-5gb-scaling-repeats-not-public-acceptance" : "passed-first-real-5gb-scaling-not-repeats-or-public-acceptance";
+    } else report.status = headerProductionStaticRetention ? "completed-production-static-5gb-renderer-diagnostic-not-acceptance" : headerProductionStaticRepeats ? "passed-production-static-5gb-repeats-not-public-acceptance" : headerProductionDirectIoProfile ? "completed-production-direct-near10gb-io-attribution-not-acceptance" : headerProductionDirectScaling ? "passed-unmodified-production-direct-scaling-not-repeats-or-public-acceptance" : near10GbScaling ? "passed-first-real-near10gb-scaling-not-repeats-or-public-acceptance" : largeScalingRepeats ? "passed-real-5gb-scaling-repeats-not-public-acceptance" : "passed-first-real-5gb-scaling-not-repeats-or-public-acceptance";
   } else if (scalingLoopControl) {
     const created = await createSmallMkvScalingLoop(fixtureRuntime);
     const baseline = { browser: await inspectInstalledChromePin(), probe: await probe(created.file, fixtureRuntime.env),

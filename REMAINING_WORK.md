@@ -1,5 +1,24 @@
 # Remaining work audit
 
+2026-11-22 UTC M-03 / M-04 **bounded renderer allocator diagnostic
+complete**, still no repeat/public qualification. Exact fresh disk output
+and normal whole-tree cap passed in one instrumented run. Same renderer
+shows substantial transient Blink main-thread growth while active;
+worker lifecycle/ArrayBuffer observations and allocator spans are
+retained without summing overlapping counters. No exact historical
+failure allocation or code cause inferred. Next narrow the page-side
+progress/listener allocation site and test a targeted reduction with
+unchanged media fidelity, headless behavior and 250 MiB limit.
+[Report](evidence/2026-11-22T08-00-55-184Z-mkv-hevc-header-core-production-static-scale-5gb-renderer-diagnostic.json).
+
+2026-11-22 UTC M-03 / M-04 **renderer role resolved, allocator cause open**.
+The original 5.35 GB static-repeat failure had a separate same-birth
+census witness that identifies the 232.613 MiB-growth child as renderer.
+Stable cleanup plateaued approximately 75 MiB above loaded idle; no
+progressive between-job accumulation claim. Next bounded loaded/active/
+cleaned allocator evidence on one served real conversion, not unchanged
+repeat acceptance. [Report](evidence/2026-11-22-mkv-static-scale-renderer-reconciliation.json).
+
 2026-11-22 UTC M-03 / M-04 **actual served static 5.35 GB repeat gate
 failed on third same-page job**, not a packaging/load defect. First two
 independently validated exact outputs; third peak 250.781 MiB versus 250,
