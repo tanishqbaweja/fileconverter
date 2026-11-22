@@ -151,3 +151,44 @@ test("single served 5.35 GB renderer run binds active and cleanup allocator view
   assert.equal(a.memory.incrementalPrivateMiB, active.incrementalPrivateMiB);
   assert.equal(a.memory.cleanupAboveIdleMiB, 26.9375);
 });
+
+test("a real scale census separates explicit listener calls from live browser counters", async () => {
+  const file = "evidence/2026-11-22T08-11-06-118Z-mkv-hevc-header-core-production-static-scale-5gb-renderer-diagnostic.json";
+  const bytes = await read(file), r = JSON.parse(bytes), [a] = r.arms, [c] = a.cases;
+  assert.equal(sha(bytes), "f61a1d10849d2180d7a281c9d22b2ec662a1efe8c920af0cead469be651da1a5");
+  assert.equal(r.status, "completed-production-static-5gb-renderer-diagnostic-not-acceptance");
+  assert.equal(r.publicAcceptance, false);
+  assert.equal(a.staticPackage.browserResponseBodiesOverridden, 0);
+  assert.equal(r.peakLimitMiB, 250); assert.equal(r.cleanupLimitMiB, 96);
+  assert.equal(c.state, "complete"); assert.equal(c.metrics.outputBytes, 5350648699);
+  assert.equal(c.validation.outputSha256, r.productionDirectScaleContentReference.outputSha256);
+  assert.ok(c.outputRemoved && a.ownedRuntimeRemoved && r.fixtureRuntimeRemoved && a.birthCleanup.allObservedBirthsAbsent);
+  assert.deepEqual(r.originalBefore, r.originalAfter);
+  const { beforeStart, activeAfter1GiB, stableCleanup } = a.listenerRegistrationCensus;
+  const [, beforeDOM, activeDOM, , cleanupDOM] = a.retention.checkpoints;
+  assert.ok(beforeDOM.startedAt <= beforeStart.at && beforeStart.at <= c.conversionWindow.start);
+  assert.ok(activeAfter1GiB.at <= activeDOM.startedAt && activeDOM.completedAt - activeAfter1GiB.at < 1000);
+  assert.equal(activeAfter1GiB.jobState, "running");
+  assert.equal(activeAfter1GiB.outputBytes, 1075050607);
+  assert.deepEqual(activeAfter1GiB.calls, beforeStart.calls);
+  assert.deepEqual([beforeDOM, activeDOM, cleanupDOM].map(d => d.dom.jsEventListeners), [179, 423, 210]);
+  assert.deepEqual(stableCleanup.calls.window, { adds: 22, removes: 3 });
+  const sizes = [], embedder = [];
+  for (const dump of a.retention.allocation.checkpoints) {
+    const zipped = await read(dump.rawArchive.path);
+    assert.equal(sha(zipped), dump.rawArchive.sha256);
+    const raw = gunzipSync(zipped, { maxOutputLength: 8 * 1048576 });
+    assert.equal(sha(raw), dump.rawArchive.restoredSha256);
+    const [p] = dump.summary.processes.filter(p => p.pid === 29876 && p.allocators["blink_gc/main"]);
+    assert.equal(p.identity.creationFileTime, "134398087212425369");
+    assert.equal(reconcileNativeBirthRole(p.identity, a.observer.birthTypeCapture).type, "renderer");
+    sizes.push(p.allocators["blink_gc/main"].size / 1048576);
+    embedder.push(dump.realms.targets.find(t => t.type === "page").embedderHeapUsedBytes);
+  }
+  assert.deepEqual(sizes, [3, 33.375, 62.875]);
+  assert.deepEqual(embedder, [3022800, 31555312, 4982840]);
+  const native = await read(a.archive.file); assert.equal(sha(native), a.archive.sha256);
+  const active = summarizeProtectedWindow(JSON.parse(gunzipSync(native, { maxOutputLength: 32 * 1048576 })), c.conversionWindow, a.blank.privateBytes);
+  assert.equal(active.incrementalPrivateMiB, 225.0546875);
+  assert.equal(a.memory.cleanupAboveIdleMiB, 86.75390625);
+});

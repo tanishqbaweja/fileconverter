@@ -68,6 +68,7 @@ import { buildMkvIoProfileModule, extractMkvIoProfile, readMkvIoProfile } from "
 import { mkvReadAbOrder, summarizeMkvReadAb } from "./lib/mkv-byob-read-fill.mjs";
 import { stagePrivateMkvStaticPackage, verifyPrivateMkvStaticAssets } from "./lib/mkv-static-package.mjs";
 import { mkvStaticSmallReference, readMkvStaticSmallReference } from "./lib/mkv-static-small-reference.mjs";
+import { installPageListenerCensus } from "./lib/page-listener-census.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
@@ -83,7 +84,8 @@ const headerProtectedRepeats = headerProtectedRetention || headerStagedOriginalR
 const headerProtected = headerProtectedRepeats || process.argv[2] === "--hevc-header-parser-protected";
 const headerProductionStaticSmall = process.argv[2] === "--hevc-header-parser-production-static-small-cache";
 const headerProductionStaticRepeats = process.argv[2] === "--hevc-header-parser-production-static-scale-5gb-repeats-cache";
-const headerProductionStaticRetention = process.argv[2] === "--hevc-header-parser-production-static-scale-5gb-renderer-diagnostic-cache";
+const headerProductionStaticListenerCensus = process.argv[2] === "--hevc-header-parser-production-static-scale-5gb-listener-census-cache";
+const headerProductionStaticRetention = headerProductionStaticListenerCensus || process.argv[2] === "--hevc-header-parser-production-static-scale-5gb-renderer-diagnostic-cache";
 const headerProductionStatic = headerProductionStaticSmall || headerProductionStaticRepeats || headerProductionStaticRetention;
 const largeScalingRepeats = headerProductionStaticRepeats || process.argv[2] === "--hevc-header-parser-scale-5gb-repeats";
 const headerProductionDirectReadAb = process.argv[2] === "--hevc-header-parser-production-direct-scale-5gb-read-ab-cache";
@@ -236,6 +238,7 @@ if (headerProductionStatic) {
     : "Three same-page and one clean-session 5.35 GB direct remuxes on static private package assets from the real loopback server. Every output independently SHA/structure checked against full native content proof. No overridden responses or public, native-picker, near-10 GB or matched-speed claim.";
 }
 if (headerProductionStaticRetention) report.scope = "One real 5.35 GB served-static browser conversion for renderer attribution; three bounded light allocator checkpoints: pre-input, active after 1 GiB output, stable cleanup. Identical content and full-tree cap with no GC or service change. Sampling perturbs the browser; not the failed repeat replay, steady-state allocator causation, or acceptance.";
+if (headerProductionStaticListenerCensus) report.scope += " Also counts explicit main-world listener method calls by target family; does not observe isolated worlds, native registrations or on* properties, or equate calls to live listeners.";
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
@@ -643,6 +646,18 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     result.blank = await stable(drain, samples);
     await context.addInitScript(`window.__WITHIN_AUDIO_VALIDATION_CHUNK__=(${encodeBoundedValidationChunk.toString()});`);
     if (headerProductionDirect) await context.addInitScript(observeCorrectedDirectLaunches);
+    if (headerProductionStaticListenerCensus) {
+      result.listenerRegistrationCensus = {};
+      await context.addInitScript(installPageListenerCensus);
+    }
+    const captureListenerCalls = async phase => {
+      if (!headerProductionStaticListenerCensus) return;
+      result.listenerRegistrationCensus[phase] = await guard(page.evaluate(() => {
+        const state = window.__WITHIN_TEST__?.getState();
+        return { at: Date.now(), jobState: state?.jobState ?? null, outputBytes: state?.metrics?.outputBytes ?? null,
+          calls: window.__WITHIN_PAGE_LISTENER_CENSUS__() };
+      }));
+    };
     if (headerProductionStatic) context.on("response", response => {
       const url = response.url(), pathname = new URL(url).pathname;
       if (url !== server.baseURL + pathname || !baseline.candidate.assets.has(pathname)) return;
@@ -749,6 +764,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
         socketUrl: `ws://127.0.0.1:${debugPort}${debugPath}`, origin: server.baseURL, browser, page,
         getProcesses: async () => { await drain(); const row = samples.findLast(s => s.privateBytes !== null && Array.isArray(s.processes)); assert.ok(row); return row.processes; } });
       assert.equal((await retention.capture("loaded-before-media", true)).error, null);
+      await captureListenerCalls("loaded");
     }
     activeAt = Date.now();
     timer = setInterval(() => void drain().catch(fail), 500);
@@ -761,6 +777,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       result.cases.push(row);
       if (retention) assert.equal((await retention.capture(`job-${result.cases.length}-before`)).error, null);
       await guard(page.locator('[data-testid="format-select"]').selectOption(profileId));
+      await captureListenerCalls("beforeStart");
       if (cancel && (sustained || headerProductionDirectSmall)) {
         await guard(page.locator('[data-testid="convert-button"]').click());
         const minimumBytes = headerProductionDirectSmall ? 65536 : 2 * mib;
@@ -811,6 +828,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
         }, undefined, { timeout: 90000 }));
         row.rendererCheckpointTrigger = await observed.jsonValue(); await observed.dispose();
         if (row.rendererCheckpointTrigger.state === "running") {
+          await captureListenerCalls("activeAfter1GiB");
           const checkpoint = await guard(retention.capture("active-after-1gib", true));
           row.rendererCheckpointActive = checkpoint.error === null && checkpoint.state?.jobState === "running";
         }
@@ -1057,7 +1075,9 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     result.cleanupStable = await guard(stable(drain, samples)); until = Date.now(); await drain();
     if (headerProductionStaticRetention) {
       assert.equal((await retention.capture("stable-cleanup", true)).error, null);
+      await captureListenerCalls("stableCleanup");
       assert.equal(result.cases[0].rendererCheckpointActive, true, "No active allocator witness; diagnostic incomplete");
+      if (headerProductionStaticListenerCensus) assert.equal(result.listenerRegistrationCensus.activeAfter1GiB?.jobState, "running", "No active listener census; diagnostic incomplete");
     }
     if (headerProductionDirectIoProfile) assert.ok(result.cases[0].ioProfile, "Diagnostic did not produce valid timing; content and cleanup checks ran separately");
     assert.equal(errorSeen, undefined); assert.deepEqual(result.forbiddenRequests, []);
@@ -1220,6 +1240,7 @@ try {
     ...headerCoreH264References.map(ref => ref.file));
   if (headerProtectedRepeats) sourceFiles.push(headerProtectedReference.file);
   if (headerProtectedRetention || headerProductionStaticRetention) sourceFiles.push("scripts/lib/mkv-retention-diagnostic.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/lifecycle-allocation-attribution.mjs");
+  if (headerProductionStaticListenerCensus) sourceFiles.push("scripts/lib/page-listener-census.mjs");
   if (largeScaling) sourceFiles.push("scripts/lib/mkv-large-scaling.mjs", "scripts/lib/mkv-full-video-decode.mjs", "scripts/lib/mkv-hevc-header-core-reference.mjs",
     hevcHeaderLoopReference.file, "scripts/lib/mkv-header-protected-reference.mjs", headerProtectedReference.file,
     "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/mkv-scaling-sample-view.mjs");

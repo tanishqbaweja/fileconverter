@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-11-22 UTC M-03 / M-04 **explicit listener census completed; no
+repeat/public qualification**. No main-world explicit registration
+calls from pre-start through 1 GiB output while Chrome's live count
+rose substantially. Does not identify native/isolated-world/handler
+property sources or the failed run's allocation cause. Stable cleanup
+retained a larger Blink main heap size (62.875 MiB) despite page-realm
+embedder use returning under 5 MB. Next seek evidence distinguishing
+retained capacity and live data before another UI tuning candidate;
+do not rerun this census or conclude that listener growth caused the
+budget failure. Original full-tree 250 MiB and 96 MiB cleanup gates
+unchanged. [Report](evidence/2026-11-22T08-11-06-118Z-mkv-hevc-header-core-production-static-scale-5gb-renderer-diagnostic.json).
+
 2026-11-22 UTC M-03 / M-04 **bounded renderer allocator diagnostic
 complete**, still no repeat/public qualification. Exact fresh disk output
 and normal whole-tree cap passed in one instrumented run. Same renderer

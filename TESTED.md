@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-11-22 UTC **5.35 GB explicit page listener hypothesis narrowed**.
+Actual served-static headless conversion, exact 5,350,648,699 B validated
+MP4, 40.377 s; whole-tree 225.055 MiB from 370 valid conversion samples,
+zero unavailable, stable cleanup delta 86.754 MiB. From pre-start to
+1,075,050,607 B output, all six fixed main-world explicit method counters
+were unchanged despite Chromium live DOM listener counts 179 → 423.
+Stable cleanup counters added/removed two Window listeners; Chromium
+count 210. No worker, AbortSignal or other explicit calls in that window;
+no instrumentation of native/isolated worlds or handler properties.
+Same renderer Blink main size 3 / 33.375 / 62.875 MiB; page embedder used
+3,022,800 / 31,555,312 / 4,982,840 B. Do not sum or subtract the two
+gauges. In contrast to the prior diagnostic, excess renderer footprint
+persisted at stable cleanup. No allocation call-site or speed claim,
+no repeat/public acceptance. Output, fixture/profile/owned process
+cleanup and exact protected SHA passed. Three bounded raw snapshots and
+native journal retained, no production or threshold changes.
+[Report](evidence/2026-11-22T08-11-06-118Z-mkv-hevc-header-core-production-static-scale-5gb-renderer-diagnostic.json).
+
 2026-11-22 UTC **single served 5.35 GB renderer diagnostic complete**.
 Exact output SHA/structure and cleanup; 42.076 s, 225.309 MiB complete
 Chrome over blank and 26.938 MiB idle-cleanup delta. Three real light

@@ -4,6 +4,30 @@ Updated 2026-11-22 (local). Read this first after resuming; then follow the cite
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Listener census changes the next MKV investigation
+
+One new headless served-static 5.35 GB diagnostic completed in 40.377 s,
+with exactly 5,350,648,699 B of validated MP4, 225.055 MiB whole-tree
+peak over blank, and 86.754 MiB stable cleanup over loaded idle. The
+disposable input/output/profile were removed and protected SHA unchanged.
+There were **zero explicit main-world `addEventListener`/`removeEventListener`
+calls** between pre-start and 1,075,050,607 B of active output, even as
+Chrome's sampled live listener count moved 179 → 423. The prior
+listener-count rise is not evidence of accumulating explicit app
+registrations. The two measurements have different scope, and native
+registrations, other worlds, `on*` properties and activity after the
+checkpoint are not covered by the call counter.
+
+Same page renderer OS private: 39.820 / 157.723 / 116.266 MiB at
+loaded/active/cleanup. Blink main heap size: 3 / 33.375 / 62.875 MiB;
+page-realm embedder used bytes: 3,022,800 / 31,555,312 / 4,982,840.
+These are separate measurements, not quantities to subtract or sum.
+Next distinguish Blink retained heap capacity from live data and identify
+what drives its post-job footprint. Do not replay the listener census,
+change progress cadence based on listener counts, or treat this one run
+as repeat acceptance. The original 250.781 MiB failure still stands.
+[Listener census](evidence/2026-11-22T08-11-06-118Z-mkv-hevc-header-core-production-static-scale-5gb-renderer-diagnostic.json).
+
 ## Active 5.35 GB renderer allocator profile captured
 
 One served-static diagnostic save produced the exact 5,350,648,699 B
