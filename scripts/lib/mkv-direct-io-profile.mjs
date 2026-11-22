@@ -2,6 +2,7 @@
 // mutation, retained payloads, network reporting or public benchmark claim.
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { withMkvReadFill } from "./mkv-byob-read-fill.mjs";
 
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const warningPrefix = "MKV_IO_PROFILE_V1 ";
@@ -74,19 +75,22 @@ export async function instrumentMkvIoFactory(factory, options, now = () => perfo
   return native;
 }
 
-export function buildMkvIoProfileModule(bytes, expectedSha256) {
+export function buildMkvIoProfileModule(bytes, expectedSha256, byobMode) {
   assert.ok(Buffer.isBuffer(bytes) && bytes.length <= 131072);
   assert.match(expectedSha256, /^[a-f0-9]{64}$/);
   assert.equal(sha(bytes), expectedSha256);
   const source = bytes.toString("utf8"), anchor = "export default createWithinRemuxCore;";
   assert.deepEqual(Buffer.from(source, "utf8"), bytes);
   assert.equal(source.split(anchor).length, 2, "Diagnostic can only wrap the exact authenticated native factory export");
-  const patch = `export default options => (${instrumentMkvIoFactory.toString()})(createWithinRemuxCore, options);`;
+  assert.ok(byobMode === undefined || byobMode === "control" || byobMode === "fill");
+  const input = byobMode === "fill" ? `(${withMkvReadFill.toString()})(options)` : "options";
+  const patch = `export default options => (${instrumentMkvIoFactory.toString()})(createWithinRemuxCore, ${input});`;
   const out = source.replace(anchor, () => patch);
   assert.equal(out.replace(patch, () => anchor), source);
   const body = Buffer.from(out, "utf8");
   return { body, proof: { originalModuleSha256: expectedSha256, instrumentedModuleSha256: sha(body), instrumentedModuleBytes: body.length,
-    workerReplaced: false, wasmBytesChanged: false, productionAcceptance: false, scope: "timing diagnostic; JavaScript overhead is included" } };
+    workerReplaced: false, wasmBytesChanged: false, productionAcceptance: false, scope: "timing diagnostic; JavaScript overhead is included",
+    ...(byobMode ? { byobMode } : {}) } };
 }
 
 export function readMkvIoProfile(warnings, metrics, inputBytes) {

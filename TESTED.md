@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-11-22 UTC corrected MKV **matched 5.35 GB read-fill candidate REJECTED**.
+Instrumented order control/fill/fill/control; fresh normal Chrome 158 per
+arm, same physical source, exact production worker/Wasm and direct handle.
+Time 84.157/51.362/86.507/52.289 s; native read calls
+37,724/20,401/20,401/39,756. Read waits
+44.890/11.671/48.131/13.155 s; file API writes
+26.904/27.083/26.140/26.014 s. No consistent speed win. Each exact
+5,350,648,699 B output passed full disk SHA, MP4 structure and edits;
+memory peak 217.469/211.371/205.926/216.445 MiB over blank, worst cleanup
+7.508 MiB over idle. 4,015 raw rows, 2,516 valid conversion, one unavailable
+excluded. No stage, forbidden requests or owned media/profile leftovers,
+protected original unchanged. Candidate retained only as reproducible
+test code, never enabled in production. No uninstrumented acceptance.
+[Report](evidence/2026-11-22T07-21-26-089Z-mkv-hevc-header-core-production-direct-scale-5gb-read-ab.json).
+
 2026-11-21 UTC **near-10 GB I/O attribution completed, diagnostic only**.
 Exact Chrome 158.0.8127.36 production worker/Wasm, private timing-only JS
 loader, 83.396 s total, 22.669 s reads (73,443 calls, 9,507,307,521 B),

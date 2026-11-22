@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-11-22 UTC P-08 **bounded BYOB fill investigated and rejected**.
+Four actual control/fill/fill/control 5.35 GB jobs, exact output/fidelity,
+bounded complete-tree memory, privacy and cleanup. Native crossings fell
+46–49%, but runtime improved in one order and regressed in the other;
+awaited reads varied while file-API write times stayed close. This does
+not prove a repeatable speed gain or a cause for external wait variation.
+No production change. Do not replay unchanged. Remaining direct MKV work:
+reproducible corrected engine delivery and release qualification, full
+scale repeats, manual picker and other browser coverage; continue broader
+requirements and test new speed candidates only on a distinct hypothesis.
+[Report](evidence/2026-11-22T07-21-26-089Z-mkv-hevc-header-core-production-direct-scale-5gb-read-ab.json).
+
 2026-11-21 UTC P-08 **near-10 GB timing attribution recorded; matched
 optimization open**. 83.396 s diagnostic with exact output, 22.669 s read
 callbacks and 41.837 s awaiting file-API writes; only 1.248 s of write

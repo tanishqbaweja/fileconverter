@@ -65,6 +65,7 @@ import { headerStagedReference, readHeaderStagedReference } from "./lib/mkv-head
 import { productionDirectSmallReference, readProductionDirectSmallReference } from "./lib/mkv-production-direct-small-reference.mjs";
 import { near10GbContentReference, readNear10GbContentReference } from "./lib/mkv-near10gb-content-reference.mjs";
 import { buildMkvIoProfileModule, extractMkvIoProfile, readMkvIoProfile } from "./lib/mkv-direct-io-profile.mjs";
+import { mkvReadAbOrder, summarizeMkvReadAb } from "./lib/mkv-byob-read-fill.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
@@ -79,9 +80,11 @@ const headerProtectedRetention = process.argv[2] === "--hevc-header-parser-prote
 const headerProtectedRepeats = headerProtectedRetention || headerStagedOriginalRepeats || headerProductionDirectOriginal || process.argv[2] === "--hevc-header-parser-protected-repeats";
 const headerProtected = headerProtectedRepeats || process.argv[2] === "--hevc-header-parser-protected";
 const largeScalingRepeats = process.argv[2] === "--hevc-header-parser-scale-5gb-repeats";
-const headerProductionDirectIoProfile = process.argv[2] === "--hevc-header-parser-production-direct-scale-near10gb-io-profile-cache";
-const headerProductionDirectNear10Gb = headerProductionDirectIoProfile || process.argv[2] === "--hevc-header-parser-production-direct-scale-near10gb-cache";
-const headerProductionDirectScaling = headerProductionDirectNear10Gb || process.argv[2] === "--hevc-header-parser-production-direct-scale-5gb-cache";
+const headerProductionDirectReadAb = process.argv[2] === "--hevc-header-parser-production-direct-scale-5gb-read-ab-cache";
+const headerProductionDirectNear10GbIoProfile = process.argv[2] === "--hevc-header-parser-production-direct-scale-near10gb-io-profile-cache";
+const headerProductionDirectIoProfile = headerProductionDirectNear10GbIoProfile || headerProductionDirectReadAb;
+const headerProductionDirectNear10Gb = headerProductionDirectNear10GbIoProfile || process.argv[2] === "--hevc-header-parser-production-direct-scale-near10gb-cache";
+const headerProductionDirectScaling = headerProductionDirectNear10Gb || headerProductionDirectReadAb || process.argv[2] === "--hevc-header-parser-production-direct-scale-5gb-cache";
 const near10GbScaling = headerProductionDirectNear10Gb || process.argv[2] === "--hevc-header-parser-scale-near10gb";
 const headerStagedCachedCore = headerStagedOriginalRepeats || process.argv[2] === "--hevc-header-parser-production-staged-cache";
 const headerStagedIntegration = headerStagedCachedCore || process.argv[2] === "--hevc-header-parser-production-staged";
@@ -219,13 +222,14 @@ if (headerProductionDirectScaling) {
   report.productionDirectScaling = near10GbScaling ? "near10gb" : "5gb";
   report.scope = "One new Headless Chrome production direct-handle scaling run with normal services, authentic bounded I/O and zero app staging. Independently parse actual output and hash every regenerated source and written output byte against the exact prior complete-content proof and same native build. Fresh 250 MiB full-tree/96 MiB cleanup and privacy gates. Not a new native decode, repeat, matched speed, manual-picker or public acceptance.";
 }
-if (headerProductionDirectIoProfile) report.scope = "Private near-10 GB I/O-attribution diagnostic. Real production worker, same exact Wasm and output fidelity/cleanup checks, but the loader JavaScript alone adds timing wrappers and one numeric-only local report. Not an uninstrumented acceptance result, causal comparison, or release benchmark.";
+if (headerProductionDirectNear10GbIoProfile) report.scope = "Private near-10 GB I/O-attribution diagnostic. Real production worker, same exact Wasm and output fidelity/cleanup checks, but the loader JavaScript alone adds timing wrappers and one numeric-only local report. Not an uninstrumented acceptance result, causal comparison, or release benchmark.";
+if (headerProductionDirectReadAb) report.scope = "Instrumented 5.35 GB control/fill/fill/control comparison. Identical real production worker, native binary, fixture, normal Chrome, filesystem path type, and whole-tree/cleanup/byte-fidelity checks. The only experimental change is how the existing bounded read destination fills across short reads. Fresh owned browser sessions, no OS cache controls or public acceptance.";
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${headerProductionDirect ? `hevc-header-core-production-direct-${headerProductionDirectOriginal ? "original-repeats" : headerProductionDirectScaling ? `scale-${near10GbScaling ? "near10gb" : "5gb"}${headerProductionDirectIoProfile ? "-io-profile" : ""}` : "small"}` : headerStagedOriginalRepeats ? "hevc-header-core-production-staged-original-repeats" : headerStagedIntegration ? "hevc-header-core-production-staged" : near10GbScaling ? "hevc-header-core-scale-near10gb" : largeScaling ? `hevc-header-core-scale-5gb${largeScalingRepeats ? "-repeats" : ""}` : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${headerProductionDirect ? `hevc-header-core-production-direct-${headerProductionDirectOriginal ? "original-repeats" : headerProductionDirectScaling ? `scale-${near10GbScaling ? "near10gb" : "5gb"}${headerProductionDirectReadAb ? "-read-ab" : headerProductionDirectIoProfile ? "-io-profile" : ""}` : "small"}` : headerStagedOriginalRepeats ? "hevc-header-core-production-staged-original-repeats" : headerStagedIntegration ? "hevc-header-core-production-staged" : near10GbScaling ? "hevc-header-core-scale-near10gb" : largeScaling ? `hevc-header-core-scale-5gb${largeScalingRepeats ? "-repeats" : ""}` : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env, timeout = 90000) => execute(file, args, { cwd: root, env, windowsHide: true, timeout, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env, near10GbScaling ? 180000 : 90000)).stdout);
@@ -540,6 +544,10 @@ const port = async () => {
 async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
   const candidate = Boolean(baseline.candidate), staged = mode === "staged" || mode === "edit-list";
   const result = { mode, status: "running", requests: 0, workerResponses: 0, directEngineRequests: { module: 0, wasm: 0 }, forbiddenRequests: [], cases: [], failures: [] };
+  if (headerProductionDirectReadAb) {
+    result.byobMode = baseline.byobMode;
+    result.ioProfileModule = baseline.ioProfileModule.proof;
+  }
   if (repeatJobs) result.plannedProtectedJobs = protectedJobs;
   if (largeScalingRepeats) result.nativeJournalMode = "every-100ms-native-row-in-finite-repeat-archive-no-thinning";
   if (candidate) result.engineResponses = { module: 0, wasm: 0 };
@@ -1101,7 +1109,8 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     if (result.status !== "failed-not-acceptance" && (!result.memory || result.memory.incrementalPrivateMiB > 250 ||
         result.memory.cleanupAboveIdleMiB === null || result.memory.cleanupAboveIdleMiB > 96)) fail(new Error("Unchanged native peak/cleanup gate failed"));
     if (errorSeen) { result.status = "failed-not-acceptance"; result.failures.push(String(errorSeen).slice(0, 2048)); }
-    const archiveMode = repeatJobs ? `${mode}-session${report.arms.indexOf(result) + 1}` : mode;
+    const archiveMode = headerProductionDirectReadAb ? `${mode}-${report.arms.indexOf(result) + 1}-${result.byobMode}`
+      : repeatJobs ? `${mode}-session${report.arms.indexOf(result) + 1}` : mode;
     const raw = Buffer.from(JSON.stringify(samples)), packed = gzipSync(raw), file = `${prefix}-${archiveMode}-native.json.gz`;
     await writeFile(path.join(root, file), packed, { flag: "wx" }); result.archive = { file, bytes: packed.length, sha256: sha(packed), decodedSha256: sha(raw) };
   }
@@ -1149,6 +1158,7 @@ try {
   if (headerProductionDirectOriginal || headerProductionDirectScaling) sourceFiles.push("scripts/lib/mkv-production-direct-small-reference.mjs", productionDirectSmallReference.file);
   if (headerProductionDirectScaling && near10GbScaling) sourceFiles.push("scripts/lib/mkv-near10gb-content-reference.mjs", near10GbContentReference.file);
   if (headerProductionDirectIoProfile) sourceFiles.push("scripts/lib/mkv-direct-io-profile.mjs");
+  if (headerProductionDirectIoProfile) sourceFiles.push("scripts/lib/mkv-byob-read-fill.mjs");
   if (headerProtected) sourceFiles.push("scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file,
     "scripts/lib/mkv-header-protected-reference.mjs", "scripts/lib/mkv-full-video-decode.mjs", protectedCompleteVideoReference.file,
     ...headerCoreH264References.map(ref => ref.file));
@@ -1287,7 +1297,7 @@ try {
       report.productionDirectScaleContentReference = directContent;
       directRecovery = readProductionDirectSmallReference(await readFile(path.join(root, productionDirectSmallReference.file)), candidate.proof, report.sourcePins);
       report.productionDirectRecoveryReference = directRecovery;
-      if (headerProductionDirectIoProfile) {
+      if (headerProductionDirectNear10GbIoProfile) {
         const tools = candidate.proof.build.artifacts;
         const loader = [...candidate.assets.values()].find(asset => asset.type === "text/javascript");
         ioProfileModule = buildMkvIoProfileModule(loader.body, tools["within-direct.mjs"].sha256);
@@ -1301,7 +1311,21 @@ try {
     assert.equal(Number(baseline.probe.streams[0].nb_read_packets), scalingCase.expectedVideoPackets);
     if (near10GbScaling) assert.equal(Number(baseline.probe.streams[1].nb_read_packets), MKV_SCALE_NEAR10GB.expectedAudioPackets);
     report.fixture.sourceProbe = baseline.probe; report.fixture.sourcePacketHashes = baseline.packetHashes;
-    for (const count of largeScalingRepeats ? [3, 1] : [1]) {
+    if (headerProductionDirectReadAb) {
+      const tools = candidate.proof.build.artifacts;
+      const loader = [...candidate.assets.values()].find(asset => asset.type === "text/javascript");
+      const loaders = Object.fromEntries(["control", "fill"].map(mode => [mode, buildMkvIoProfileModule(loader.body, tools["within-direct.mjs"].sha256, mode)]));
+      assert.notEqual(loaders.control.proof.instrumentedModuleSha256, loaders.fill.proof.instrumentedModuleSha256);
+      report.readAb = { order: mkvReadAbOrder, unchangedWasmSha256: tools["within-direct.wasm"].sha256, freshBrowserPerArm: true, cacheFlushed: false };
+      for (const byobMode of mkvReadAbOrder) {
+        await arm("production-direct", created.file, fixtureRuntime, { ...baseline, byobMode, ioProfileModule: loaders[byobMode] });
+        const latest = report.arms.at(-1);
+        assert.equal(latest.ownedRuntimeRemoved, true, "Do not start another arm with unresolved scratch ownership");
+        console.log(JSON.stringify({ status: latest.status, byobMode, elapsedMs: latest.cases[0]?.ioProfile?.elapsedMs,
+          nativeReadCalls: latest.cases[0]?.ioProfile?.read.calls, peakMiB: latest.memory?.incrementalPrivateMiB, failures: latest.failures }));
+      }
+      report.readAb.result = summarizeMkvReadAb(report.arms);
+    } else for (const count of largeScalingRepeats ? [3, 1] : [1]) {
       if (headerProductionDirectScaling) await arm("production-direct", created.file, fixtureRuntime, baseline, count);
       else await arm("reuse", created.file, fixtureRuntime, baseline, count);
       assert.equal(report.arms.at(-1).ownedRuntimeRemoved, true);
@@ -1310,7 +1334,10 @@ try {
     assert.equal(await hashFile(created.file), report.fixture.sha256);
     assertInstalledChromePinsEqual(await inspectInstalledChromePin(), baseline.browser);
     if (largeScalingRepeats) assert.deepEqual(report.arms.map(a => a.cases.length), [3, 1]);
-    report.status = headerProductionDirectIoProfile ? "completed-production-direct-near10gb-io-attribution-not-acceptance" : headerProductionDirectScaling ? "passed-unmodified-production-direct-scaling-not-repeats-or-public-acceptance" : near10GbScaling ? "passed-first-real-near10gb-scaling-not-repeats-or-public-acceptance" : largeScalingRepeats ? "passed-real-5gb-scaling-repeats-not-public-acceptance" : "passed-first-real-5gb-scaling-not-repeats-or-public-acceptance";
+    if (headerProductionDirectReadAb) {
+      assert.equal(report.readAb.result.comparable, true, "A/B incomplete; not optimization evidence");
+      report.status = "completed-production-direct-5gb-read-ab-not-acceptance";
+    } else report.status = headerProductionDirectIoProfile ? "completed-production-direct-near10gb-io-attribution-not-acceptance" : headerProductionDirectScaling ? "passed-unmodified-production-direct-scaling-not-repeats-or-public-acceptance" : near10GbScaling ? "passed-first-real-near10gb-scaling-not-repeats-or-public-acceptance" : largeScalingRepeats ? "passed-real-5gb-scaling-repeats-not-public-acceptance" : "passed-first-real-5gb-scaling-not-repeats-or-public-acceptance";
   } else if (scalingLoopControl) {
     const created = await createSmallMkvScalingLoop(fixtureRuntime);
     const baseline = { browser: await inspectInstalledChromePin(), probe: await probe(created.file, fixtureRuntime.env),

@@ -4,6 +4,28 @@ Updated 2026-11-22 (local). Read this first after resuming; then follow the cite
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## 5.35 GB matched read experiment: do not adopt the fill strategy
+
+Four real normal-Chrome jobs used the same exact source, output handle
+type, production worker and Wasm, in fresh sessions ordered control /
+fill / fill / control. Only the experiment's private instrumented
+JavaScript loader changes the native-facing read. All four exact
+5,350,648,699 B MP4s passed independent hash/structure/edit checks and
+were deleted with owned scratch. Source `test.mkv` remained unchanged.
+
+Control times: **84.157 / 52.289 s**. Fill: **51.362 / 86.507 s**.
+Fill cut native read crossings to 20,401 in both arms (control 37,724 and
+39,756), but reversed from 39% faster to 65% slower. Input-read wait moved
+with elapsed time (control 44.890 / 13.155 s; fill 11.671 / 48.131 s);
+file-API writes stayed at 26.014–27.083 s. The source of read-wait variation
+is unproved; no OS cache flush. All whole-Chrome peaks were 205.926–217.469
+MiB. Replayed 4,015 native rows; one unavailable conversion sample was
+excluded, not zeroed. No product change or speedup; don't repeat this
+candidate unchanged. Next: qualify corrected-core release delivery and
+large repeat coverage. Keep broader scope open; new speed work needs a
+different, measured hypothesis.
+[Read A/B report](evidence/2026-11-22T07-21-26-089Z-mkv-hevc-header-core-production-direct-scale-5gb-read-ab.json).
+
 ## 9.51 GB timing diagnostic: browser I/O dominated this run
 
 The diagnostic used the exact production worker and Wasm; only the
@@ -22,12 +44,9 @@ original unchanged. Do not promote this instrumented run to production
 acceptance or infer it explains the prior 154.836 s. The earlier same
 diagnostic reached completion at 145.743 s before its parser failed.
 
-Next speed candidate: test reducing native-to-JS input crossings by filling
-the existing bounded 256 KiB read request across BYOB short reads. Preserve
-one outstanding read, cancellation, exact hashes, 1 MiB output cap and
-250 MiB full-tree limit. Compare identically on the same Chrome, handle and
-fixture, and reject if wait/memory worsens. Do not revive synchronous Blob
-reads or enlarge write buffers based on this near-limit diagnostic.
+The proposed bounded BYOB fill candidate was tested and rejected above.
+Do not revive synchronous Blob reads or enlarge write buffers based on
+this near-limit diagnostic.
 [Timing report](evidence/2026-11-21T18-50-22-864Z-mkv-hevc-header-core-production-direct-scale-near10gb-io-profile.json).
 
 ### Earlier unmatched timing and first diagnostic (retained)
