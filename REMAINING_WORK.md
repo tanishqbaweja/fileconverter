@@ -1,5 +1,24 @@
 # Remaining work audit
 
+2026-11-21 UTC P-08 **near-10 GB timing attribution recorded; matched
+optimization open**. 83.396 s diagnostic with exact output, 22.669 s read
+callbacks and 41.837 s awaiting file-API writes; only 1.248 s of write
+callback time outside the file API. Neither the older Chrome overlay nor
+the uninstrumented 154.836 s job is a matched measurement. At 249.738 MiB
+full-tree, keep the buffer/queue caps and exact acceptance checks. Next
+measure a bounded BYOB fill strategy against the existing read path under
+matched conditions, or proceed with independent release qualification if
+no implementation fits; never replay the diagnostics unchanged.
+[Report](evidence/2026-11-21T18-50-22-864Z-mkv-hevc-header-core-production-direct-scale-near10gb-io-profile.json).
+
+2026-11-21 UTC P-08 first actual 9.51 GB I/O timing diagnostic **incomplete**.
+Prior near-10 GB reference times also came from different Chrome versions.
+Exact production worker and Wasm were exercised, but an invalid parser
+assumption prevented attribution and post-job validation. Corrected the
+bounded counters and moved diagnostic failure after content and cleanup
+checks. No optimization or matched speed claim.
+[Attempt](evidence/2026-11-21T18-44-29-802Z-mkv-hevc-header-core-production-direct-scale-near10gb-io-profile.json).
+
 2026-11-21 UTC M-03 / M-04 / P-08 actual production direct **near-10 GB
 single scale gate closed**. 9.51 GB deterministic input and exact comparable
 output; complete-tree 221.348 MiB and stable cleanup 7.379 MiB. Fresh

@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+2026-11-21 UTC **near-10 GB I/O attribution completed, diagnostic only**.
+Exact Chrome 158.0.8127.36 production worker/Wasm, private timing-only JS
+loader, 83.396 s total, 22.669 s reads (73,443 calls, 9,507,307,521 B),
+43.085 s write callbacks including 41.837 s file-API waits (9,602 writes,
+all sequential, no positional file-API calls), 17.399 s native outside
+timed callbacks, 0.003 s final close. AVIO returned 202,435 fewer bytes than
+the physical input length (net, not unique coverage). Full input/output SHA and fresh output structure/edit validation
+still agree with the independently decoded reference. Complete tree
+249.738 MiB; cleanup 8.387 MiB; 1,300 raw rows and 766 valid conversion rows.
+No app stage, forbidden requests or owned output/source/profile leftovers;
+protected original unchanged. Cross-run variation and instrumentation rule
+out a paired proof of speed gain or a cause for the earlier 154.836 s time.
+[Report](evidence/2026-11-21T18-50-22-864Z-mkv-hevc-header-core-production-direct-scale-near10gb-io-profile.json).
+
+2026-11-21 UTC near-10 GB **first I/O diagnostic incomplete**. Unchanged
+production worker and Wasm; instrumentation changes only private loader JS.
+Browser terminal state complete (145.743 s, 248.297 MiB peak), but the
+parser falsely required cumulative demuxer reads to equal/exceed physical
+source size. Full output SHA/structure, timing synthesis and stable
+cleanup memory were not reached. Owned runtime/source/output removed;
+protected original SHA unchanged. Fix parser bounds and isolate diagnostic
+failures from content/cleanup checks. [Report](evidence/2026-11-21T18-44-29-802Z-mkv-hevc-header-core-production-direct-scale-near10gb-io-profile.json).
+
 2026-11-21 UTC actual production direct 9.51 GB **headless scale PASS**.
 Real 9,507,509,956 B source and 9,512,261,399 B MP4, zero app stage, fresh
 whole-disk SHA/MP4 structure/edits, 460,800-frame full-content proof

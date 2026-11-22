@@ -4,6 +4,45 @@ Updated 2026-11-22 (local). Read this first after resuming; then follow the cite
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## 9.51 GB timing diagnostic: browser I/O dominated this run
+
+The diagnostic used the exact production worker and Wasm; only the
+private module's JavaScript loader was instrumented. It wrote the exact
+9,512,261,399-byte MP4 in **83.396 s**. Awaited read callbacks accounted for
+**22.669 s** (73,443 calls), native file-API writes **41.837 s** (9,602 calls),
+the rest of the write callbacks **1.248 s**, and native time outside those
+callbacks **17.399 s**. Final file close was 3.37 ms; all file writes were
+sequential. The native residual also includes scheduling and bridge work,
+not just codec CPU; the write wait is not a disk-only measurement.
+
+Exact independent disk validation and finally cleanup passed. The full
+Chrome peak was **249.738 MiB**, stable cleanup **8.387 MiB** over idle;
+1,300 retained rows, 766 conversion samples, zero unavailable. Protected
+original unchanged. Do not promote this instrumented run to production
+acceptance or infer it explains the prior 154.836 s. The earlier same
+diagnostic reached completion at 145.743 s before its parser failed.
+
+Next speed candidate: test reducing native-to-JS input crossings by filling
+the existing bounded 256 KiB read request across BYOB short reads. Preserve
+one outstanding read, cancellation, exact hashes, 1 MiB output cap and
+250 MiB full-tree limit. Compare identically on the same Chrome, handle and
+fixture, and reject if wait/memory worsens. Do not revive synchronous Blob
+reads or enlarge write buffers based on this near-limit diagnostic.
+[Timing report](evidence/2026-11-21T18-50-22-864Z-mkv-hevc-header-core-production-direct-scale-near10gb-io-profile.json).
+
+### Earlier unmatched timing and first diagnostic (retained)
+
+The prior 91.319 s overlay ran Chrome 157.0.8103.51; the 154.836 s
+production pass ran 158.0.8127.36. Their loader/writer JavaScript also
+differs; these times are not a controlled regression comparison.
+An instrumented JavaScript-loader-only run finished in the browser but its
+early timing assertion wrongly required AVIO to read every container byte.
+The I/O breakdown and independent output validation were not recorded.
+Owned files were removed and the protected source matched. The successful
+follow-up above fixes the assertion and defers timing failure until after
+validation and stable cleanup.
+[First diagnostic](evidence/2026-11-21T18-44-29-802Z-mkv-hevc-header-core-production-direct-scale-near10gb-io-profile.json).
+
 ## Critical path: actual production direct-save reached 9.51 GB
 
 After the protected original 3+1 and 5.35 GB direct pass, the unchanged
