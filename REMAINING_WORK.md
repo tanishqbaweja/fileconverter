@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-22 UTC M-03 / T-05 **current exact served-static small MKV
+recovery reverified**. The updated page with OPFS coordination and
+unchanged worker/native core passed content, real-write cancellation,
+injected write failure, recovery, full-tree budget, and owned cleanup.
+New live gate rejects source or built page/worker drift before large
+fixture creation and checks the actual served app again before Chrome.
+Historical reports still replay against their original exact receipts.
+No large-repeat or public qualification; renderer retention open.
+[Receipt](evidence/2026-11-22T08-27-44-808Z-mkv-hevc-header-core-production-static-small.json).
+
 2026-11-22 UTC A-05 / T-05 **cross-tab OPFS cleanup race fixed**.
 Startup/manual sweeps now coordinate with active staged output, 7Z
 scratch, and test OPFS use across current-version tabs. Verified a
@@ -8,7 +18,8 @@ sweeps, and post-job cleanup that preserved unrelated storage. No
 manual-picker, headed, large, or public-memory acceptance inferred.
 Known fallback: worker-owned cleanup still runs without Web Locks;
 cross-tab sweep is unavailable. Older open tabs must reload. The app
-source change is not covered by historical exact MKV release references.
+source change is covered by the new small MKV reference above, not by
+historical large-run release evidence.
 [Receipt](evidence/2026-11-22T08-22-08-905Z-opfs-two-tab-cleanup.json).
 
 The earlier M-03 field-retention evidence for AVI/WebM/OGV to Matroska

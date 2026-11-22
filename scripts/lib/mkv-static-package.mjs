@@ -78,3 +78,29 @@ export async function verifyPrivateMkvStaticAssets(baseURL, staged) {
   }
   return passes;
 }
+
+// Authenticate the app bundle as well as the worker. The worker hash alone
+// stays unchanged when the page-side lifecycle or storage policy changes.
+export async function readBuiltMkvConverterPage(root) {
+  const client = path.join(root, "dist", "client");
+  const manifest = path.join(client, ".vite", "manifest.json");
+  const manifestStat = await lstat(manifest);
+  assert.ok(manifestStat.isFile() && manifestStat.size <= 131072);
+  const source = "app/converter/ConverterApp.tsx";
+  const entry = JSON.parse(await readFile(manifest, "utf8"))[source];
+  assert.equal(entry.src, source);
+  assert.match(entry.file, /^assets\/ConverterApp-[\w-]+\.js$/);
+  const asset = path.join(client, entry.file), stat = await lstat(asset);
+  assert.ok(stat.isFile() && stat.size > 0 && stat.size <= mib);
+  const bytes = await readFile(asset);
+  assert.equal(bytes.byteLength, stat.size);
+  return { relative: entry.file, bytes: stat.size, sha256: createHash("sha256").update(bytes).digest("hex") };
+}
+
+export async function verifyServedMkvConverterPage(root, baseURL) {
+  const local = new URL(baseURL);
+  assert.equal(local.origin, baseURL);
+  assert.equal(local.protocol, "http:"); assert.equal(local.hostname, "127.0.0.1"); assert.ok(local.port);
+  const { relative, ...binding } = await readBuiltMkvConverterPage(root);
+  return verifyStaticAsset(baseURL, relative, binding, mime["within-direct.mjs"]);
+}

@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-22 UTC **post-OPFS-change served-static MKV small gate PASS**.
+Status order complete/cancelled/complete/error/complete; three exact
+11,894,121 B independently validated outputs with unchanged SHA, cancel
+at 11,892,295 B observed, bounded-write rejection, both recoveries and
+owned cleanup. Normal headless Chrome, complete-tree 189.297 MiB over
+settled blank (233 valid, zero unavailable), 37.273 MiB cleanup over idle.
+Verified five actual unmodified responses for the new 355,546 B page
+bundle, unchanged compiled worker and exact served core; no browser
+response bodies substituted. All outputs and scratch removed, protected
+size/SHA untouched. New provenance gate authenticates source and built
+page before generating large fixtures and re-verifies the served bundle.
+186 focused checks/lint passed; no speed, repeat, headed, or public claim.
+[Receipt](evidence/2026-11-22T08-27-44-808Z-mkv-hevc-header-core-production-static-small.json).
+
 2026-11-22 UTC **cross-tab temporary storage production control PASS**.
 Stock headless Chrome 158.0.8127.36, two tabs of one origin: first held
 the job's real shared lock just before dispatch of TXT→HTML; second tab's

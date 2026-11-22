@@ -62,12 +62,11 @@ import { MKV_SCALE_NEAR10GB, createNear10GbScalingSource, assertNear10GbExtent, 
 import { verifyProductionWorkerBinding } from "./lib/production-worker-binding.mjs";
 import { loadQualifiedHeaderDirectAssets, loadQualifiedHeaderNativeCache, headerNativeCodeCache } from "./lib/mkv-header-native-cache.mjs";
 import { headerStagedReference, readHeaderStagedReference } from "./lib/mkv-header-staged-reference.mjs";
-import { productionDirectSmallReference, readProductionDirectSmallReference } from "./lib/mkv-production-direct-small-reference.mjs";
+import { assertMkvRecoveryPage, currentMkvProductionRecovery, readCurrentMkvProductionRecovery } from "./lib/mkv-current-production-recovery.mjs";
 import { near10GbContentReference, readNear10GbContentReference } from "./lib/mkv-near10gb-content-reference.mjs";
 import { buildMkvIoProfileModule, extractMkvIoProfile, readMkvIoProfile } from "./lib/mkv-direct-io-profile.mjs";
 import { mkvReadAbOrder, summarizeMkvReadAb } from "./lib/mkv-byob-read-fill.mjs";
-import { stagePrivateMkvStaticPackage, verifyPrivateMkvStaticAssets } from "./lib/mkv-static-package.mjs";
-import { mkvStaticSmallReference, readMkvStaticSmallReference } from "./lib/mkv-static-small-reference.mjs";
+import { readBuiltMkvConverterPage, stagePrivateMkvStaticPackage, verifyPrivateMkvStaticAssets, verifyServedMkvConverterPage } from "./lib/mkv-static-package.mjs";
 import { installPageListenerCensus } from "./lib/page-listener-census.mjs";
 
 assert.equal(process.platform, "win32");
@@ -622,6 +621,10 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       const workerFile = path.join(root, "dist/client", result.releaseWorker.asset.slice(1));
       result.productionWorkerBinding = await verifyProductionWorkerBinding({ baseURL: server.baseURL, asset: result.releaseWorker.asset,
         expectedBytes: (await lstat(workerFile)).size, expectedSha256: result.releaseWorker.sha256 });
+      if (headerProductionDirect) {
+        result.productionPageBinding = { ...await verifyServedMkvConverterPage(root, server.baseURL), browserResponses: 0 };
+        if (baseline.productionDirectRecoveryReference) assertMkvRecoveryPage(result.productionPageBinding, baseline.productionDirectRecoveryReference);
+      }
       if (headerProductionStatic) {
         assert.deepEqual(packageLayout.qualifiedBuild, { head: baseline.candidate.proof.head, runId: baseline.candidate.proof.runId });
         result.staticPackage = { snapshot: packageLayout.snapshot, assets: await verifyPrivateMkvStaticAssets(server.baseURL, packageLayout),
@@ -658,8 +661,13 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
           calls: window.__WITHIN_PAGE_LISTENER_CENSUS__() };
       }));
     };
-    if (headerProductionStatic) context.on("response", response => {
+    if (headerProductionDirect) context.on("response", response => {
       const url = response.url(), pathname = new URL(url).pathname;
+      if (result.productionPageBinding && url === `${server.baseURL}/${result.productionPageBinding.relative}`) {
+        if (response.status() === 200 && !response.fromServiceWorker()) result.productionPageBinding.browserResponses++;
+        else if (response.status() !== 304 || response.fromServiceWorker()) fail(new Error("Converter page bundle was not delivered by the production server"));
+      }
+      if (!headerProductionStatic) return;
       if (url !== server.baseURL + pathname || !baseline.candidate.assets.has(pathname)) return;
       try {
         const role = pathname.endsWith(".wasm") ? "wasm" : "module", headers = response.headers();
@@ -1082,7 +1090,10 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     if (headerProductionDirectIoProfile) assert.ok(result.cases[0].ioProfile, "Diagnostic did not produce valid timing; content and cleanup checks ran separately");
     assert.equal(errorSeen, undefined); assert.deepEqual(result.forbiddenRequests, []);
     if (staged) { assert.equal(result.workerResponses, 0); assert.ok(result.releaseWorker.requests > 0); }
-    else if (headerProductionDirect) { assert.equal(result.workerResponses, 0); assert.ok(result.releaseWorker.requests > 0); }
+    else if (headerProductionDirect) {
+      assert.equal(result.workerResponses, 0); assert.ok(result.releaseWorker.requests > 0);
+      assert.ok(result.productionPageBinding.browserResponses > 0);
+    }
     else assert.ok(result.workerResponses > 0);
     assert.ok(result.directEngineRequests.module > 0 && result.directEngineRequests.wasm > 0);
     if (candidate) {
@@ -1227,14 +1238,14 @@ try {
   if (headerStagedOriginalRepeats) sourceFiles.push("scripts/lib/mkv-header-staged-reference.mjs", headerStagedReference.file);
   if (headerStagedCachedCore) sourceFiles.push("scripts/lib/mkv-header-native-cache.mjs", ...headerNativeCodeCache.map(entry => entry.file));
   if (headerProductionDirect) sourceFiles.push("app/converter/ConverterApp.tsx", "lib/mkv-corrected-direct-qualification.ts", "workers/mkv-corrected-direct-output.ts",
+    "lib/opfs-activity.ts", "scripts/lib/mkv-static-package.mjs",
     "scripts/lib/mkv-header-native-cache.mjs", ...headerNativeCodeCache.map(entry => entry.file),
     "scripts/lib/production-worker-binding.mjs", "scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file);
-  if (headerProductionDirectOriginal || headerProductionDirectScaling) sourceFiles.push("scripts/lib/mkv-production-direct-small-reference.mjs", productionDirectSmallReference.file);
+  if (headerProductionDirectOriginal || headerProductionDirectScaling) sourceFiles.push("scripts/lib/mkv-current-production-recovery.mjs", currentMkvProductionRecovery.file);
   if (headerProductionDirectScaling && near10GbScaling) sourceFiles.push("scripts/lib/mkv-near10gb-content-reference.mjs", near10GbContentReference.file);
   if (headerProductionDirectIoProfile) sourceFiles.push("scripts/lib/mkv-direct-io-profile.mjs");
   if (headerProductionDirectIoProfile) sourceFiles.push("scripts/lib/mkv-byob-read-fill.mjs");
-  if (headerProductionStatic) sourceFiles.push("scripts/lib/mkv-static-package.mjs", "scripts/verify-mkv-hevc-header-reproduction.mjs");
-  if (headerProductionStaticRepeats) sourceFiles.push("scripts/lib/mkv-static-small-reference.mjs", mkvStaticSmallReference.file);
+  if (headerProductionStatic) sourceFiles.push("scripts/verify-mkv-hevc-header-reproduction.mjs");
   if (headerProtected) sourceFiles.push("scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file,
     "scripts/lib/mkv-header-protected-reference.mjs", "scripts/lib/mkv-full-video-decode.mjs", protectedCompleteVideoReference.file,
     ...headerCoreH264References.map(ref => ref.file));
@@ -1283,6 +1294,16 @@ try {
       report.currentCoreLoopReference = readHevcHeaderLoopReference(await readFile(path.join(root, hevcHeaderLoopReference.file)), candidate.proof);
     }
   }
+  if (headerProductionDirectOriginal || headerProductionDirectScaling) {
+    report.productionDirectRecoveryReference = readCurrentMkvProductionRecovery(
+      await readFile(path.join(root, currentMkvProductionRecovery.file)), candidate.proof, report.sourcePins);
+    assertMkvRecoveryPage(await readBuiltMkvConverterPage(root), report.productionDirectRecoveryReference);
+    const workers = [...assets].filter(name => /^\/assets\/conversion\.worker-[\w-]+\.js$/.test(name));
+    assert.equal(workers.length, 1);
+    assert.equal(await hashFile(path.join(root, "dist/client", workers[0].slice(1))),
+      report.productionDirectRecoveryReference.workerSha256, "Production worker bundle does not match small recovery");
+    if (headerProductionStaticRepeats) report.servedSmallRecoveryReference = report.productionDirectRecoveryReference;
+  }
   if (protectedMode) {
     if (headerProtected) {
       assertHevcHeaderParserCore(candidate.proof);
@@ -1328,9 +1349,7 @@ try {
       report.productionStagedRecoveryReference = baseline.productionStagedRecoveryReference;
     }
     if (headerProductionDirectOriginal) {
-      baseline.productionDirectRecoveryReference = readProductionDirectSmallReference(await readFile(path.join(root, productionDirectSmallReference.file)),
-        candidate.proof, report.sourcePins);
-      report.productionDirectRecoveryReference = baseline.productionDirectRecoveryReference;
+      baseline.productionDirectRecoveryReference = report.productionDirectRecoveryReference;
     }
     if (protectedRepeats) {
       for (const count of headerProtectedRetention ? [MKV_RETENTION_LIMITS.jobs] : [3, 1]) {
@@ -1372,10 +1391,7 @@ try {
       assert.equal(created.bytes, directContent.sourceBytes);
       assert.equal(report.fixture.sha256, directContent.sourceSha256, "Regenerated source must match every byte of the prior complete independent validation");
       report.productionDirectScaleContentReference = directContent;
-      directRecovery = readProductionDirectSmallReference(await readFile(path.join(root, productionDirectSmallReference.file)), candidate.proof, report.sourcePins);
-      report.productionDirectRecoveryReference = directRecovery;
-      if (headerProductionStaticRepeats) report.servedSmallRecoveryReference = readMkvStaticSmallReference(
-        await readFile(path.join(root, mkvStaticSmallReference.file)), candidate.proof, directRecovery.workerSha256);
+      directRecovery = report.productionDirectRecoveryReference;
       if (headerProductionDirectNear10GbIoProfile) {
         const tools = candidate.proof.build.artifacts;
         const loader = [...candidate.assets.values()].find(asset => asset.type === "text/javascript");

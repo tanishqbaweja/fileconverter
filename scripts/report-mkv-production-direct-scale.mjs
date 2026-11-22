@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 import { largeScalingReference, readLargeScalingReference } from "./lib/mkv-large-scaling-reference.mjs";
 import { near10GbContentReference, readNear10GbContentReference } from "./lib/mkv-near10gb-content-reference.mjs";
-import { readProductionDirectSmallReference, productionDirectSmallReference } from "./lib/mkv-production-direct-small-reference.mjs";
+import { assertMkvRecoveryPage, replayMkvProductionRecovery } from "./lib/mkv-current-production-recovery.mjs";
 import { summarizeProtectedWindow } from "./lib/mkv-protected-repeat-contract.mjs";
 import { mkvProtectedCopy } from "./lib/mkv-protected-copy-contract.mjs";
 
@@ -40,10 +40,11 @@ export async function replayProductionDirectScale(file) {
   assert.equal(job.metrics.peakPendingOperations, 1); assert.equal(job.metrics.pendingOperations, 0);
   assert.ok(job.outputRemoved && r.fixtureRuntimeRemoved && arm.ownedRuntimeRemoved && arm.serverCleanup.ownedRootAbsent);
   assert.ok(arm.browserCleanup.status === "owned-observed-pids-absent" || arm.birthCleanup?.allObservedBirthsAbsent);
-  const small = readProductionDirectSmallReference(await read(productionDirectSmallReference.file), r.candidateBuild, r.sourcePins);
+  const small = await replayMkvProductionRecovery(r, read);
   assert.deepEqual(r.productionDirectRecoveryReference, small);
   assert.equal(arm.releaseWorker.sha256, small.workerSha256);
   assert.equal(arm.productionWorkerBinding.sha256, small.workerSha256);
+  if (small.page) assertMkvRecoveryPage(arm.productionPageBinding, small);
   assert.equal(arm.releaseWorker.overrides, false); assert.equal(arm.workerResponses, 0);
   assert.deepEqual(arm.engineResponses, { module: 1, wasm: 1 }); assert.deepEqual(arm.engineResponses, arm.directEngineRequests);
   assert.deepEqual(arm.forbiddenRequests, []); assert.deepEqual(arm.failures, []); assert.deepEqual(r.failures, []);

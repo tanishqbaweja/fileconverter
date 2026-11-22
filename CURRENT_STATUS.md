@@ -4,6 +4,20 @@ Updated 2026-11-22 (local). Read this first after resuming; then follow the cite
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Current MKV small recovery gate refreshed
+
+The post-cleanup build passed the served-static MKV small gate: three
+byte-identical validated 11,894,121 B MP4s, cancellation after real
+destination writes, and recovery from an injected bounded-write error.
+Whole-Chromium 189.297 MiB over settled blank and 37.273 MiB cleanup
+over loaded idle. Browser and outputs removed; protected SHA unchanged.
+The actual served page bundle and unchanged worker were authenticated.
+Future large runs now require the new exact page/runtime and native-core
+receipt before generating large fixtures. No repeat, native picker, or
+public acceptance. Resume at the distinct renderer retention question;
+the failed 5.35 GB repeat result has not changed.
+[Small receipt](evidence/2026-11-22T08-27-44-808Z-mkv-hevc-header-core-production-static-small.json).
+
 ## Two-tab temporary-storage cleanup verified
 
 Fixed a production cleanup race: startup and manual sweeps now take an
@@ -14,8 +28,7 @@ scratch-file namespaces. No lock on ordinary direct saves.
 A real headless two-tab TXT-to-HTML control verified both deferrals,
 valid output, and successful cleanup preserving an unrelated file.
 Older open tabs must be reloaded to participate. No MKV release or
-memory claim; the changed app source needs fresh exact small evidence
-before the next source-pinned served-static MKV qualification.
+memory claim; the new exact small qualification is recorded above.
 [Receipt](evidence/2026-11-22T08-22-08-905Z-opfs-two-tab-cleanup.json).
 
 ## Listener census changes the next MKV investigation

@@ -6,7 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 import { headerProtectedReference, readHeaderProtectedReference } from "./lib/mkv-header-protected-reference.mjs";
-import { readProductionDirectSmallReference, productionDirectSmallReference } from "./lib/mkv-production-direct-small-reference.mjs";
+import { assertMkvRecoveryPage, replayMkvProductionRecovery } from "./lib/mkv-current-production-recovery.mjs";
 import { summarizeProtectedWindow } from "./lib/mkv-protected-repeat-contract.mjs";
 import { mkvProtectedCopy } from "./lib/mkv-protected-copy-contract.mjs";
 
@@ -28,7 +28,7 @@ export async function replayProductionDirectOriginal(file) {
   assert.deepEqual(r.arms.map(a => a.cases.length), [3, 1]);
   assert.notDeepEqual(r.arms[0].identity, r.arms[1].identity);
   const protectedProof = readHeaderProtectedReference(await readFile(path.join(root, headerProtectedReference.file)), r.candidateBuild);
-  const small = readProductionDirectSmallReference(await readFile(path.join(root, productionDirectSmallReference.file)), r.candidateBuild, r.sourcePins);
+  const small = await replayMkvProductionRecovery(r, relative => readFile(path.join(root, relative)));
   assert.deepEqual(r.protectedReference, protectedProof);
   assert.deepEqual(r.productionDirectRecoveryReference, small);
   const jobs = [], sessions = [];
@@ -40,6 +40,7 @@ export async function replayProductionDirectOriginal(file) {
     assert.deepEqual(a.failures, []);
     assert.equal(a.releaseWorker.sha256, small.workerSha256);
     assert.equal(a.productionWorkerBinding.sha256, small.workerSha256);
+    if (small.page) assertMkvRecoveryPage(a.productionPageBinding, small);
     assert.equal(a.releaseWorker.overrides, false); assert.equal(a.workerResponses, 0);
     assert.deepEqual(a.engineResponses, { module: a.cases.length, wasm: a.cases.length });
     assert.deepEqual(a.directEngineRequests, a.engineResponses);
