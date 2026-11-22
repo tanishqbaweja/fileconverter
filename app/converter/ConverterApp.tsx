@@ -6,6 +6,7 @@ import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinat
 import { createVpxCompiledCoreSlot } from "../../lib/vpx-compiled-core";
 import { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";
 import { MPEG2_JOB_PROFILE } from "../../lib/mpeg2-stage-policy";
+import { acquireOpfsActivity, batchUsesOpfs, describeOpfsSweep, sweepOpfsTemporaryStorage, usesStagedOutput } from "../../lib/opfs-activity";
 import { isTimedTextQualification, timedTextTrackChoices, TIMED_TEXT_QUALIFICATION_INPUTS } from "../../lib/timed-text-qualification";
 import { CORRECTED_DIRECT_MKV_PROFILE, CORRECTED_DIRECT_MKV_QUERY } from "../../lib/mkv-corrected-direct-qualification";
 import { runMpeg2QualificationJob, validateMpeg2QualificationRequest, type Mpeg2QualificationResult } from "../../lib/mpeg2-qualification-job";
@@ -440,6 +441,7 @@ export function ConverterApp() {
   const jobIdRef = useRef<string | null>(null);
   const cancellationSignalRef = useRef<Int32Array<SharedArrayBuffer> | null>(null);
   const activeOpfsNameRef = useRef<string | null>(null);
+  const releaseOpfsActivityRef = useRef<(() => void) | null>(null);
   const activeBatchRef = useRef<ActiveBatch | null>(null);
   const beginBatchItemRef = useRef<
     ((worker: Worker, batch: ActiveBatch, index: number) => Promise<void>) | null
@@ -645,18 +647,7 @@ export function ConverterApp() {
       const destinationForHandle = (
         handle: FileSystemFileHandle,
       ): typeof destination => {
-        if (
-          batch.correctedDirectMkv || (batch.profile.id !== "mp4-to-avi" &&
-          batch.profile.id !== "mov-to-avi" &&
-          batch.profile.id !== "3gp-to-avi" &&
-          batch.profile.id !== "mkv-to-avi" &&
-          batch.profile.id !== "mpeg-ts-to-avi" &&
-          batch.profile.id !== "mkv-to-mp4" &&
-          batch.profile.id !== "avi-to-3gp" &&
-          batch.profile.id !== "avi-to-mpeg-ts" &&
-          batch.profile.id !== "m2v-to-ogv" &&
-          batch.profile.id !== MPEG2_JOB_PROFILE)
-        ) {
+        if (!usesStagedOutput(batch.profile.id, batch.correctedDirectMkv)) {
           activeOpfsNameRef.current = null;
           return { mode: "handle", handle };
         }
@@ -705,10 +696,13 @@ export function ConverterApp() {
       abandonedOpfsName: string | null = null,
     ) => {
       cancellationSignalRef.current = null;
+      const releaseOpfs = releaseOpfsActivityRef.current;
+      releaseOpfsActivityRef.current = null;
       retired.terminate();
       if (workerRef.current === retired) workerRef.current = null;
       setWorkerReady(false);
       const restart = () => {
+        releaseOpfs?.();
         if (disposed) return;
         replacementTimer = window.setTimeout(() => {
           if (!disposed) installWorker();
@@ -906,6 +900,8 @@ export function ConverterApp() {
       beginBatchItemRef.current = null;
       window.clearTimeout(replacementTimer);
       workerRef.current?.terminate();
+      releaseOpfsActivityRef.current?.();
+      releaseOpfsActivityRef.current = null;
       staticCodeSlot.dispose();
       mpeg2CodeSlot.dispose();
       workerRef.current = null;
@@ -920,16 +916,9 @@ export function ConverterApp() {
   }, []);
 
   const clearAppTemporaryStorage = useCallback(async () => {
-    if (!navigator.storage?.getDirectory) return 0;
-    const root = await navigator.storage.getDirectory();
-    let removed = 0;
-    for await (const [name] of root.entries()) {
-      if (!name.startsWith("within-")) continue;
-      await root.removeEntry(name, { recursive: true });
-      removed += 1;
-    }
+    const result = await sweepOpfsTemporaryStorage(navigator.storage, navigator.locks);
     await refreshStorageEstimate();
-    return removed;
+    return result;
   }, [refreshStorageEstimate]);
 
   useEffect(() => {
@@ -945,13 +934,7 @@ export function ConverterApp() {
     }
     const cleanupTimer = window.setTimeout(() => {
       void clearAppTemporaryStorage()
-        .then((removed) => {
-          setCleanupMessage(
-            removed
-              ? `Removed ${removed} stale app-owned temporary ${removed === 1 ? "file" : "files"}.`
-              : "No app-owned temporary files detected.",
-          );
-        })
+        .then((result) => setCleanupMessage(describeOpfsSweep(result, true)))
         .catch(() => {
           setCleanupMessage("Temporary storage is unavailable in this browser.");
         })
@@ -1028,6 +1011,12 @@ export function ConverterApp() {
         if (!worker || jobIdRef.current || activeBatchRef.current || testBridgeStateRef.current?.workerStatus !== "ready") {
           throw new Error("The application conversion lifecycle is not ready.");
         }
+        const releaseOpfs = await acquireOpfsActivity(navigator.locks);
+        if (lifetime.signal.aborted || workerRef.current !== worker || jobIdRef.current || activeBatchRef.current) {
+          releaseOpfs();
+          throw new Error("The application conversion lifecycle is not ready.");
+        }
+        releaseOpfsActivityRef.current = releaseOpfs;
         jobIdRef.current = request.jobId;
         activeOpfsNameRef.current = request.destination.mode === "staged-handle" ? request.destination.stagingName : null;
         cancellationSignalRef.current = new Int32Array(request.cancellationBuffer!);
@@ -1037,6 +1026,8 @@ export function ConverterApp() {
         catch (error) {
           if (jobIdRef.current === request.jobId) {
             jobIdRef.current = null; activeOpfsNameRef.current = null; cancellationSignalRef.current = null;
+            releaseOpfsActivityRef.current = null;
+            releaseOpfs();
             setJobState("error"); setError(error instanceof Error ? error.message : String(error));
           }
           throw error;
@@ -1274,9 +1265,24 @@ export function ConverterApp() {
       index: 0,
       opfsNames: [],
     };
-    // Destination preflight above awaits browser APIs. Another start may have
+    let releaseOpfs: (() => void) | null = null;
+    try {
+      if (batchUsesOpfs(batch.profile.id, batch.testMode, batch.correctedDirectMkv)) {
+        releaseOpfs = await acquireOpfsActivity(navigator.locks);
+      }
+    } catch (error) {
+      if (!jobIdRef.current && !activeBatchRef.current && workerRef.current === worker) {
+        setError(error instanceof Error ? error.message : String(error));
+      }
+      return;
+    }
+    // Destination/lock preflight awaited browser APIs. Another start may have
     // acquired this lifecycle while those checks were pending.
-    if (jobIdRef.current || activeBatchRef.current || workerRef.current !== worker) return;
+    if (jobIdRef.current || activeBatchRef.current || workerRef.current !== worker) {
+      releaseOpfs?.();
+      return;
+    }
+    releaseOpfsActivityRef.current = releaseOpfs;
     activeBatchRef.current = batch;
     setWarnings([]);
     setOpfsNames([]);
@@ -1285,6 +1291,8 @@ export function ConverterApp() {
     try {
       await beginBatchItemRef.current(worker, batch, 0);
     } catch (startError) {
+      releaseOpfsActivityRef.current = null;
+      releaseOpfs?.();
       activeBatchRef.current = null;
       activeOpfsNameRef.current = null;
       jobIdRef.current = null;
@@ -2660,13 +2668,7 @@ export function ConverterApp() {
             onClick={() => {
               setCleanupMessage("Checking app-owned temporary storage…");
               void clearAppTemporaryStorage()
-                .then((removed) => {
-                  setCleanupMessage(
-                    removed
-                      ? `Removed ${removed} app-owned temporary ${removed === 1 ? "file" : "files"}.`
-                      : "No app-owned temporary files detected.",
-                  );
-                })
+                .then((result) => setCleanupMessage(describeOpfsSweep(result, false)))
                 .catch(() => {
                   setCleanupMessage(
                     "Temporary storage could not be cleared in this browser.",

@@ -1,0 +1,130 @@
+{
+  "scope": "Two headless tabs, real TXT-to-HTML through OPFS test adapter, deterministic wait before native dispatch. Not a scale or public memory qualification.",
+  "headless": true,
+  "failures": [],
+  "windowsHide": true,
+  "host": {
+    "acquiredAt": "2026-11-22T08:22:09.2658770Z",
+    "freePhysicalBytes": 11121950720,
+    "freeVirtualBytes": 14163640320,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "chrome": {
+    "version": "158.0.8127.36",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4723864,
+      "sha256": "3d9a55036ac018816c9631bb79f61e497a6cfb0adfdd89baada8fb8bf9c72d1f",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "23362423067811107",
+        "birthtimeNs": "1794949667830412900",
+        "mtimeNs": "1794449828023041000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\158.0.8127.36\\chrome.dll",
+      "bytes": 313662616,
+      "sha256": "df1049622b377e53600a3a23671e74728c43dc5ad0e4415180723b2fb9e0b444",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "10696049115838952",
+        "birthtimeNs": "1794949667840485000",
+        "mtimeNs": "1794449836633377000"
+      }
+    }
+  },
+  "blankPrivateBytes": 306647040,
+  "blankRangeBytes": 35049472,
+  "startupDeferred": true,
+  "manualDeferred": true,
+  "output": {
+    "bytes": 315,
+    "sha256": "9c646fb61dbc3894e1b6f263d9f6cd23ed0353f0da6acfa47d30c13d86bfd58a",
+    "validatedEscapedText": true
+  },
+  "postCompletionSweepPreservedSentinel": true,
+  "status": "passed-two-tab-temporary-storage-ownership",
+  "browserCleanup": {
+    "status": "owned-observed-pids-absent",
+    "identity": {
+      "pid": 36936,
+      "parentPid": 25308,
+      "createdAt": "2026-11-22T08:22:11.7793910Z"
+    },
+    "observedPids": [
+      36936,
+      13092,
+      14544,
+      22912,
+      25276,
+      28544,
+      29296,
+      31232,
+      31700,
+      32300,
+      33552,
+      36124,
+      36648,
+      37456,
+      29556,
+      6056,
+      6624,
+      21548,
+      22860,
+      29904,
+      30464,
+      8884,
+      18136,
+      22460,
+      15048,
+      28392,
+      1160,
+      23636,
+      10580,
+      19336,
+      30584,
+      23324,
+      34300,
+      24020,
+      16020,
+      14932,
+      26068
+    ],
+    "observations": [
+      {
+        "acquiredAt": "2026-11-22T08:22:18.219Z",
+        "current": [],
+        "unavailable": null
+      }
+    ],
+    "commandErrors": [],
+    "rootKillAttempted": true,
+    "rootIdentityMatched": true,
+    "individualChildKills": false,
+    "pidReuseTreatedConservatively": true,
+    "maximumCensusQueries": 4
+  },
+  "birthCleanup": {
+    "allObservedBirthsAbsent": true,
+    "observedPidCount": 37,
+    "reused": [],
+    "unresolved": [],
+    "noProcessesKilled": true
+  },
+  "ownedRuntimeRemoved": true,
+  "memory": {
+    "startedAt": 1795335736645,
+    "endedAt": 1795335737515,
+    "validSamples": 8,
+    "unavailableSamples": 0,
+    "peakPrivateBytes": 470245376,
+    "incrementalPrivateMiB": 156.01953125,
+    "acceptanceMetric": false
+  }
+}

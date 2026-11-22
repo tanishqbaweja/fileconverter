@@ -6,6 +6,7 @@ import {gunzipSync} from "node:zlib";
 import path from "node:path";
 import {readPreLeaseLifecycleSampler} from "./helpers/pre-cdp-lease-lifecycle.mjs";
 import {reviewDocxHtmlIntegration} from "../scripts/lib/reviewed-docx-html-integration.mjs";
+import {preMkvCorrectedDirectIntegration} from "../scripts/lib/reviewed-mkv-corrected-direct.mjs";
 const root=path.resolve(import.meta.dirname,".."),json=async f=>JSON.parse(await readFile(path.join(root,f))),
   file="evidence/2026-11-06-webcodecs-vp9-original-allocation-42231818045.json",r=await json(file),sha=s=>createHash("sha256").update(s).digest("hex");
 test("actual platform setup diagnostic is perturbing and over budget, never passing conversion or first-frame evidence",()=>{
@@ -40,6 +41,7 @@ test("all three bounded traces round-trip, full raw allocator details remain byt
   for(const [f,pin]of Object.entries(r.sourcePins)) {
     let bytes=await (f==="scripts/lib/cdp-realm-memory.mjs"?readPreLeaseLifecycleSampler(f):readFile(path.join(root,f)));
     if(f==="lib/capability-registry.ts")bytes=reviewDocxHtmlIntegration(f,bytes).historicalBytes;
+    if(f==="workers/media-remux.ts")bytes=preMkvCorrectedDirectIntegration(f,bytes);
     assert.equal(sha(bytes),pin,f);
   }
 });

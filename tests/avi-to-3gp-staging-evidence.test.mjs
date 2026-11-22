@@ -56,7 +56,7 @@ test("worst direct route remains below the unchanged process-tree cap", () => {
 });
 
 test("staging, final-copy cancellation, failure, and cleanup remain scoped", () => {
-  assert.match(app, /batch\.profile\.id !== "avi-to-3gp"/);
+  assert.match(app, /!usesStagedOutput\(batch\.profile\.id, batch\.correctedDirectMkv\)/);
   assert.match(worker, /profileId !== "avi-to-3gp"/);
   assert.match(worker, /Copying staged 3GP to selected destination/);
   assert.match(profiler, /activeProfileId === "avi-to-3gp"[\s\S]*Copying staged 3GP to selected destination/);

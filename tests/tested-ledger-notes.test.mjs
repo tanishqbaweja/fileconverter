@@ -46,7 +46,10 @@ test("all legacy unmarked chronological notes survive, including those between U
   const current = await readFile("TESTED.md", "utf8"), generator = await readFile("scripts/generate-tested-ledger.mjs", "utf8");
   const finalNote = JSON.parse(/const aiffSpecialistNote =\r?\n  ("(?:[^"\\]|\\.)*");/.exec(generator)[1]);
   const oldMargins = testedLedgerMargins(original, finalNote), newMargins = testedLedgerMargins(current, finalNote);
-  assert.deepEqual(newMargins, oldMargins);
+  // New hand-written results are prepended; the full original prefix must
+  // still be present byte-for-byte at the end of the current prefix.
+  assert.ok(newMargins.prefix.endsWith(oldMargins.prefix));
+  assert.equal(newMargins.suffix, oldMargins.suffix);
   const chronological = original.slice(original.indexOf("Updated "), original.indexOf("## What the labels mean"));
   assert.equal(chronological.length, 747796); assert.ok(current.includes(chronological));
 });

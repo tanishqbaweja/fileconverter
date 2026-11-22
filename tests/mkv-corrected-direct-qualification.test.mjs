@@ -29,7 +29,7 @@ test("corrected direct mode is explicit, private, and refuses remote and mismatc
   assert.ok(!publicProfilesFor("mkv").some(profile => profile.id === "mkv-to-mp4"));
   const [app, worker, remux] = (await Promise.all([read("app/converter/ConverterApp.tsx"), read("workers/conversion.worker.ts"), read("workers/media-remux.ts")])).map(bytes => bytes.toString());
   assert.match(app, /testCorrectedDirectMkv = testDirectoryMode/);
-  assert.match(app, /batch\.correctedDirectMkv \|\|/);
+  assert.match(app, /!usesStagedOutput\(batch\.profile\.id, batch\.correctedDirectMkv\)/);
   const guard = worker.indexOf("requireCorrectedDirectMkvQualification(message.correctedDirectMkv");
   assert.ok(guard > 0 && guard < worker.indexOf("destination = { writable: await openCorrectedDirectMkvOutput("));
   assert.ok(guard < worker.indexOf("destination = await openDestination("));

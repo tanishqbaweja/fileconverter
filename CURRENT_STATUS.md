@@ -4,6 +4,20 @@ Updated 2026-11-22 (local). Read this first after resuming; then follow the cite
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Two-tab temporary-storage cleanup verified
+
+Fixed a production cleanup race: startup and manual sweeps now take an
+exclusive origin-wide Web Lock, while storage-using conversions hold a
+shared lock for their batch, staged copy, and owned error cleanup. Sweeps
+defer visibly rather than touch active files; they only remove known
+scratch-file namespaces. No lock on ordinary direct saves.
+A real headless two-tab TXT-to-HTML control verified both deferrals,
+valid output, and successful cleanup preserving an unrelated file.
+Older open tabs must be reloaded to participate. No MKV release or
+memory claim; the changed app source needs fresh exact small evidence
+before the next source-pinned served-static MKV qualification.
+[Receipt](evidence/2026-11-22T08-22-08-905Z-opfs-two-tab-cleanup.json).
+
 ## Listener census changes the next MKV investigation
 
 One new headless served-static 5.35 GB diagnostic completed in 40.377 s,

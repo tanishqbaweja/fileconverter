@@ -6,6 +6,7 @@ import { conversionProfiles } from "../lib/capability-registry.ts";
 
 const source = (path) => readFileSync(path, "utf8");
 const app = source("app/converter/ConverterApp.tsx");
+const opfsActivity = source("lib/opfs-activity.ts");
 const protocol = source("lib/conversion-protocol.ts");
 const worker = source("workers/conversion.worker.ts");
 const destination = source("workers/random-access-destination.ts");
@@ -26,9 +27,10 @@ const aviMpegTsEvidence = JSON.parse(
 test("the current-browser MKV/MP4/MOV/3GP/MPEG-TS-to-AVI, MKV-to-MP4, AVI-to-3GP, and AVI-to-MPEG-TS routes use app-owned bounded staging", () => {
   assert.match(protocol, /mode: "staged-handle"/);
   assert.match(
-    app,
-    /batch\.profile\.id !== "mp4-to-avi"[\s\S]*batch\.profile\.id !== "mov-to-avi"[\s\S]*batch\.profile\.id !== "3gp-to-avi"[\s\S]*batch\.profile\.id !== "mkv-to-avi"[\s\S]*batch\.profile\.id !== "mpeg-ts-to-avi"[\s\S]*batch\.profile\.id !== "mkv-to-mp4"[\s\S]*batch\.profile\.id !== "avi-to-3gp"[\s\S]*batch\.profile\.id !== "avi-to-mpeg-ts"/,
+    opfsActivity,
+    /const stagedProfiles = new Set\(\[\s*"mp4-to-avi", "mov-to-avi", "3gp-to-avi", "mkv-to-avi", "mpeg-ts-to-avi",\s*"mkv-to-mp4", "avi-to-3gp", "avi-to-mpeg-ts", "m2v-to-ogv", MPEG2_JOB_PROFILE,/,
   );
+  assert.match(app, /!usesStagedOutput\(batch\.profile\.id, batch\.correctedDirectMkv\)/);
   assert.match(app, /`within-stage-\$\{batch\.profile\.id\}-\$\{jobId\}`/);
   assert.match(app, /name\?\.startsWith\("within-stage-"\)/);
   assert.match(worker, /destination\.mode === "staged-handle"/);
@@ -141,7 +143,7 @@ test("public MPEG-2 to OGV scopes bounded direct staging and final-copy cancella
     note.includes("256 KiB") &&
     note.includes("delete the temporary file"),
   ));
-  assert.match(app, /batch\.profile\.id !== "m2v-to-ogv"/);
+  assert.match(opfsActivity, /"m2v-to-ogv", MPEG2_JOB_PROFILE,/);
   assert.match(worker, /profileId !== "m2v-to-ogv"/);
   assert.match(worker, /"Copying staged OGV to selected destination"/);
   assert.match(profiler, /activeProfileId === "m2v-to-ogv" &&\s*activeDestinationMode === "direct-handle"/);

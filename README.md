@@ -753,10 +753,13 @@ Hard limits:
   rejected
 
 The worker is terminated after completion, cancellation, or failure. A failed or
-cancelled OPFS job truncates and removes its app-owned entry. On a normal app
-start, stale entries whose names begin with `within-` are removed. The storage
-panel also provides manual cleanup. These operations never enumerate, alter, or
-delete user-selected destination files.
+cancelled OPFS job truncates and removes its app-owned entry. Startup and manual
+cleanup remove only known converter scratch files, never directories or
+user-selected destination files. Tabs running this version coordinate with Web
+Locks: cleanup defers while any tab is using converter temporary storage. Retry
+from Storage management after the other tab finishes. Without Web Locks, jobs
+still clean up their own files, but the cross-tab sweep is disabled. Reload any
+older open converter tabs before using manual cleanup after an upgrade.
 Each FFmpeg job gets a four-byte shared atomic cancellation flag. Cancel sets
 it before posting the worker message, so native packet loops can stop even if
 synchronous Wasm temporarily prevents the worker from reading that message.

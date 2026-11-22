@@ -24,7 +24,11 @@ const pins = {
 };
 
 export function preMkvCorrectedDirectIntegration(file, bytes) {
-  if (!Object.hasOwn(pins, file) || sha(bytes) !== pins[file][1]) return bytes;
+  // Only the reviewed OPFS activity change is also reversible here. The live
+  // qualification paths keep requiring their exact original production pins.
+  const hash = sha(bytes);
+  const opfsActivityApp = file === "app/converter/ConverterApp.tsx" && hash === "27967d4d9342da03350348a00c8436dcc0fba0160dab9ffcea02a723ce80c0a8";
+  if (!Object.hasOwn(pins, file) || (hash !== pins[file][1] && !opfsActivityApp)) return bytes;
   const archived = execFileSync("git", ["show", `f3ecde6d234f407bbb55712110acefc2a0777d80:${file}`],
     { windowsHide: true, maxBuffer: 1_048_576 });
   assert.equal(sha(archived), pins[file][0], file);

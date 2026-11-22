@@ -101,7 +101,7 @@ test("actual dispatcher selects explicit profile40 and closed-stage handoff whil
   assert.match(close, /stageClosed: true/); assert.match(close, /workerScope.postMessage\(handoff\)/); assert.match(close, /await new Promise<void>\(\(\) => {}\)/);
   assert.match(app, /const worker = createStagedWorkerCoordinator\(/);
   assert.match(app, /if \(!testMode\) return;\s*const lifetime = new AbortController\(\);\s*window\.__WITHIN_TEST__ =/);
-  assert.match(app, /if \(jobIdRef.current \|\| activeBatchRef.current \|\| workerRef.current !== worker\) return;/);
+  assert.match(app, /if \(jobIdRef.current \|\| activeBatchRef.current \|\| workerRef.current !== worker\) \{\s*releaseOpfs\?\.\(\);\s*return;\s*\}/);
   const { conversionProfiles, privateQualificationProfiles, publicProfilesFor } = await import("../lib/capability-registry.ts");
   assert.equal(conversionProfiles.some(profile => profile.id === MPEG2_JOB_PROFILE), false, "Unpublished assets must not borrow the published-core manifest");
   const candidate = privateQualificationProfiles.find(profile => profile.id === MPEG2_JOB_PROFILE);

@@ -1,5 +1,19 @@
 # Remaining work audit
 
+2026-11-22 UTC A-05 / T-05 **cross-tab OPFS cleanup race fixed**.
+Startup/manual sweeps now coordinate with active staged output, 7Z
+scratch, and test OPFS use across current-version tabs. Verified a
+real TXT→HTML in headless Chrome with a second tab deferring both
+sweeps, and post-job cleanup that preserved unrelated storage. No
+manual-picker, headed, large, or public-memory acceptance inferred.
+Known fallback: worker-owned cleanup still runs without Web Locks;
+cross-tab sweep is unavailable. Older open tabs must reload. The app
+source change is not covered by historical exact MKV release references.
+[Receipt](evidence/2026-11-22T08-22-08-905Z-opfs-two-tab-cleanup.json).
+
+The earlier M-03 field-retention evidence for AVI/WebM/OGV to Matroska
+remains [partial](evidence/complex-legacy-web-source-field-retention-browser-2026-09-06.json).
+
 2026-11-22 UTC M-03 / M-04 **explicit listener census completed; no
 repeat/public qualification**. No main-world explicit registration
 calls from pre-start through 1 GiB output while Chrome's live count

@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-11-22 UTC **cross-tab temporary storage production control PASS**.
+Stock headless Chrome 158.0.8127.36, two tabs of one origin: first held
+the job's real shared lock just before dispatch of TXT→HTML; second tab's
+startup and manual sweeps deferred. The first produced 315 B of valid
+HTML with independently checked escaped text. A later manual sweep
+removed both known disposable files and preserved unrelated storage.
+Test OPFS adapter, two tabs, no public or stress-memory claim; native
+monitor retained an observed 156.020 MiB delta against a short,
+unstable witness (not a qualifying blank). Owned runtime/profile
+removed and observed browser births already gone. No large media or
+`test.mkv` touched. [Receipt](evidence/2026-11-22T08-22-08-905Z-opfs-two-tab-cleanup.json).
+Production build, TypeScript, lint, and 46 focused regressions passed.
+First broader portable run: 3,034/3,040 passed; six staging/ledger or
+historical-evidence assertions were corrected and passed in the focused
+rerun. The full portable suite was not rerun after those test/doc edits.
+
 2026-11-22 UTC **5.35 GB explicit page listener hypothesis narrowed**.
 Actual served-static headless conversion, exact 5,350,648,699 B validated
 MP4, 40.377 s; whole-tree 225.055 MiB from 370 valid conversion samples,

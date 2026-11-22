@@ -35,6 +35,7 @@ const currentMkvAviRegression = JSON.parse(
   ),
 );
 const app = readFileSync("app/converter/ConverterApp.tsx", "utf8");
+const opfsActivity = readFileSync("lib/opfs-activity.ts", "utf8");
 const worker = readFileSync("workers/conversion.worker.ts", "utf8");
 const nativeWrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
 const browser = readFileSync("tests/browser/media-remux.spec.ts", "utf8");
@@ -140,7 +141,8 @@ test("current Chrome MPEG-TS-to-AVI remains a genuine bounded packet copy with c
   assert.equal(currentMpegTsAvi.directSaveWorstIncrementalPrivateMiB, 248.328125);
   assert.equal(currentMpegTsAvi.acceptedTopology.maximumQueuedBytes, 262144);
   assert.equal(currentMpegTsAvi.acceptedTopology.maximumPendingOperations, 1);
-  assert.match(app, /batch\.profile\.id !== "mpeg-ts-to-avi"/);
+  assert.match(app, /!usesStagedOutput\(batch\.profile\.id, batch\.correctedDirectMkv\)/);
+  assert.match(opfsActivity, /"mpeg-ts-to-avi",/);
   assert.match(app, /async function removeAppOwnedOpfsEntry[\s\S]*attempt < 25[\s\S]*root\.removeEntry\(name\)/);
   assert.match(worker, /profileId !== "mpeg-ts-to-avi"/);
   assert.match(profiler, /"Copying staged AVI to selected destination"/);
@@ -168,7 +170,7 @@ test("current Chrome MOV-to-AVI remains a genuine bounded packet copy with crash
   assert.equal(currentMovAvi.directSaveWorstIncrementalPrivateMiB, 244.19140625);
   assert.equal(currentMovAvi.acceptedTopology.maximumQueuedBytes, 262144);
   assert.equal(currentMovAvi.acceptedTopology.maximumPendingOperations, 1);
-  assert.match(app, /batch\.profile\.id !== "mov-to-avi"/);
+  assert.match(opfsActivity, /"mov-to-avi",/);
   assert.match(worker, /profileId !== "mov-to-avi"/);
   assert.match(profiler, /"Copying staged AVI to selected destination"/);
   assert.match(browser, /to AVI worker crash removes staging and partial destination before restart/);
@@ -197,7 +199,7 @@ test("current Chrome 3GP-to-AVI remains a genuine bounded video-only packet copy
   assert.equal(currentThreeGpAvi.directSaveWorstIncrementalPrivateMiB, 244.98046875);
   assert.equal(currentThreeGpAvi.acceptedTopology.maximumQueuedBytes, 262144);
   assert.equal(currentThreeGpAvi.acceptedTopology.maximumPendingOperations, 1);
-  assert.match(app, /batch\.profile\.id !== "3gp-to-avi"/);
+  assert.match(opfsActivity, /"3gp-to-avi",/);
   assert.match(worker, /profileId !== "3gp-to-avi"/);
   assert.match(profiler, /"Copying staged AVI to selected destination"/);
   assert.match(browser, /to AVI worker crash removes staging and partial destination before restart/);
