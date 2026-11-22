@@ -4,6 +4,24 @@ const birth = text => {
   const m = /^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)(?:\.(\d{1,7}))?Z$/.exec(text ?? "");
   assert.ok(m); return `${m[1]}.${(m[2] ?? "").padEnd(6, "0").slice(0, 6)}Z`;
 };
+
+// The acceptance baseline uses the stable full-tree median. This selector
+// only prioritizes births for the existing single post-cancel diagnostic
+// census. An early renderer can grow too; do not rank only late births.
+export function chooseMkvBudgetRoleCandidates({ peak, samples, blank, rootPid }) {
+  assert.equal(blank.stable, true);
+  const lastBlank = samples.findLast(s => s.timestamp === blank.lastTimestamp &&
+    s.privateBytes !== null && Array.isArray(s.processes));
+  assert.ok(lastBlank, "Same-session last stable blank row must be retained");
+  const identity = p => `${p.pid}:${p.creationFileTime ?? birth(p.createdAt)}`;
+  const byBirth = new Map(lastBlank.processes.map(p => [identity(p), p.privateBytes]));
+  const rows = (peak?.processes ?? []).filter(p => p.pid !== rootPid).map(nativeBirth => {
+    const blankBirthBytes = byBirth.get(identity(nativeBirth)) ?? null;
+    return { nativeBirth, blankBirthBytes, growthMiB: (nativeBirth.privateBytes - (blankBirthBytes ?? 0)) / 1048576 };
+  }).filter(p => p.growthMiB >= 64);
+  return rows.sort((a, b) => b.growthMiB - a.growthMiB || a.nativeBirth.pid - b.nativeBirth.pid).slice(0, 4);
+}
+
 export function matchOwnedBurstRole(root, observed, tree) {
   const liveRoot = tree.processes.filter(p => p.pid === root.pid);
   assert.equal(liveRoot.length, 1); assert.equal(birth(liveRoot[0].createdAt), birth(root.createdAt));

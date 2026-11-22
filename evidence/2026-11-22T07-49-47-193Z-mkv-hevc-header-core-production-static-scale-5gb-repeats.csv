@@ -1,0 +1,4 @@
+Session,Job,Terminal,Peak MiB,Valid samples,Unavailable samples,Conversion seconds,Verified output bytes,Validated
+1,1,complete,193.102,539,0,58.712,5350648699,true
+1,2,complete,246.801,348,0,37.884,5350648699,true
+1,3,cancelled,250.781,113,0,unavailable,unavailable,false

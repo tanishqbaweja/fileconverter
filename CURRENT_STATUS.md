@@ -4,6 +4,38 @@ Updated 2026-11-22 (local). Read this first after resuming; then follow the cite
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
+## Static package 5.35 GB repeat gate failed at 250.781 MiB on job three
+
+The first two same-page saves from the actual static package passed:
+exact 5,350,648,699 B MP4 outputs in 58.712/37.884 s, memory
+193.102/246.801 MiB, post-job cleanup 67.840/59.391 MiB. The third
+hit **250.781 MiB** against the unchanged 250 MiB gate and was cancelled
+after roughly 1.37 GB of partial output. No third validation or
+fresh-session fourth run. Replayed 1,502 raw rows (1,000 conversion,
+zero missing). No replacement responses, retained media or scratch;
+all recorded process births cleared and protected original unchanged.
+
+One same-birth Chrome child (PID 25708) grew from 14.563 MiB at the last
+blank sample to 247.176 MiB at the actual peak: **232.613 MiB diagnostic
+growth**, included in the unchanged complete-tree acceptance calculation.
+It predates the blank baseline, so the old late-birth filter left its
+role unclassified. Future failure attribution uses exact birth identity
+and growth to include that case in the existing single census. Role and
+cause remain unverified; don't bypass the cap or replay unchanged.
+[Report](evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats.json),
+[CSV](evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats.csv),
+[HTML](evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats.html).
+
+## Corrected MKV served package: small real Chrome recovery passed
+
+The real local server delivered both engine files five times without
+replaced responses. Three exact small MP4s, independent packet/decoded
+content, cancellation at 11.9 MB, a rejected write and both recoveries
+passed. 158.953 MiB over blank and stable cleanup 44.477 MiB over loaded
+idle. Owned scratch removed, protected original unchanged. The separate
+5.35 GB gate on the same static package bytes is reported above.
+[Browser receipt](evidence/2026-11-22T07-47-59-120Z-mkv-hevc-header-core-production-static-small.json).
+
 ## Corrected MKV: fresh reproduction and real static delivery passed
 
 [Hosted run 44998996220](https://github.com/tanishqbaweja/fileconverter/actions/runs/44998996220)
@@ -18,9 +50,8 @@ headers. The normal build returned 404 for all three paths and served the
 same worker bytes. Both owned servers/copies were removed. The first
 private-package attempt failed because the license lacked a MIME type;
 the passing copy explicitly serves that license as text. No selected media,
-browser, default public bundle or registry change. Next: actual browser
-conversion through this served static layout (no asset interception), then
-full-scale repeats and release qualification.
+browser, default public bundle or registry change from the HTTP smoke.
+Actual small browser recovery on this layout is now recorded above.
 [Passing HTTP receipt](evidence/2026-11-22T07-43-18-367Z-mkv-private-static-delivery.json),
 [first attempt](evidence/2026-11-22T07-42-44-058Z-mkv-private-static-delivery.json).
 

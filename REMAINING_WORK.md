@@ -1,5 +1,21 @@
 # Remaining work audit
 
+2026-11-22 UTC M-03 / M-04 **actual served static 5.35 GB repeat gate
+failed on third same-page job**, not a packaging/load defect. First two
+independently validated exact outputs; third peak 250.781 MiB versus 250,
+safe cancellation, no clean fourth. A pre-blank unknown child grew
+232.613 MiB versus its last-blank reading; new growth-based diagnostic
+would target it, but role/cause cannot be recovered from this run. Retain
+full scope, normal services and original baseline. Don't retry unchanged;
+obtain role/ownership evidence before choosing a targeted memory change.
+Private only and no retained outputs. [Report](evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats.json).
+
+2026-11-22 UTC M-03 corrected MKV **small served layout/failure recovery
+verified**. No substituted responses, real exact outputs, cancellation,
+write rejection, full-tree/cleanup gates and both recoveries. This is a
+prerequisite for served static 5.35 GB 3+1, not public qualification.
+[Report](evidence/2026-11-22T07-47-59-120Z-mkv-hevc-header-core-production-static-small.json).
+
 2026-11-22 UTC M-03 / CI corrected engine **fresh native byte reproduction
 and private static HTTP delivery verified**. Fresh hosted code, config,
 license and ABI/memory matched all ten qualified artifacts; only compact

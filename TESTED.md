@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+2026-11-22 UTC corrected MKV **served-static 5.35 GB repeat FAIL**. Job
+1/2 exact 5,350,648,699 B outputs, independent SHA/structure/edit checks,
+58.712/37.884 s, 193.102/246.801 MiB. Job 3 exceeded unchanged 250 MiB
+at 250.781 MiB and cancelled at 1,367,337,019 B reported output; no
+validated third or cold fourth. Full raw replay 1,502 rows, 1,000
+conversion, zero unavailable. Both completed outputs and cancellation
+scratch removed, protected SHA and size unchanged. No response overrides.
+Unknown Chrome birth PID 25708 was present before blank and grew
+232.613 MiB from the last blank sample to peak; still fully included.
+Old late-born-only diagnostic skipped it; new exact-birth growth selector
+would pick it. No role attribution, baseline change or speed claim.
+[JSON](evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats.json),
+[CSV](evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats.csv),
+[HTML](evidence/2026-11-22T07-49-47-193Z-mkv-hevc-header-core-production-static-scale-5gb-repeats.html).
+
+2026-11-22 UTC corrected MKV **small served-static browser PASS**. Production
+worker, five module/Wasm fetches continued to actual loopback server with
+zero replaced responses. Three exact 11,894,121 B outputs and fresh
+decoded/clocks validation; real cancellation after 11,892,295 B, bounded
+write failure and both recoveries. 158.953 MiB whole-tree and 44.477 MiB
+stable cleanup. All outputs/scratch removed; protected original unchanged.
+No large-scale repeat, native-picker or public claim.
+[Report](evidence/2026-11-22T07-47-59-120Z-mkv-hevc-header-core-production-static-small.json).
+
 2026-11-22 UTC corrected MKV **fresh hosted no-Docker reproduction PASS**.
 Run 44998996220 at 4d4090d8 independently rebuilt all ten artifacts byte for
 byte, verified ABI and 384/1024 shared memory pages, staged only named
