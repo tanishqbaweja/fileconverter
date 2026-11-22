@@ -1,11 +1,21 @@
 # Remaining work audit
 
-2026-11-22 UTC M-03 / CI corrected MKV release delivery **CI gate added;
-hosted proof pending**. Tracked native source, pinned Emscripten and the
+2026-11-22 UTC M-03 / CI corrected engine **fresh native byte reproduction
+and private static HTTP delivery verified**. Fresh hosted code, config,
+license and ABI/memory matched all ten qualified artifacts; only compact
+receipt retained and owned scratch removed. Exact named assets served
+without interception in copied loopback package; absent in default build;
+identical public worker, no media, no deployed package. Next real
+served-layout browser validation, full-scale repeat and remaining public
+eligibility gates. [Native](evidence/2026-11-22-mkv-hevc-header-hosted-reproduction.json),
+[HTTP](evidence/2026-11-22T07-43-18-367Z-mkv-private-static-delivery.json).
+
+2026-11-22 UTC M-03 / CI corrected MKV release delivery **initial CI gate
+contract check** (fresh hosted result is above). Tracked native source, pinned Emscripten and the
 same recipe produce a new candidate for exact ten-artifact/ABI/memory
 comparison and scratch-only static packaging. No binary or media upload
-beyond the compact verification receipt. Need actual hosted result,
-served-layout browser qualification and remaining full-scale/release gates.
+beyond the compact verification receipt. Served-layout browser qualification
+and remaining full-scale/release gates are still open.
 
 2026-11-22 UTC P-08 **bounded BYOB fill investigated and rejected**.
 Four actual control/fill/fill/control 5.35 GB jobs, exact output/fidelity,

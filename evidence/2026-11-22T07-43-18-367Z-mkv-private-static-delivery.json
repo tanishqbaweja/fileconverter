@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "status": "passed-exact-private-engine-package-served-on-loopback-not-browser-qualification",
+  "headed": false,
+  "mediaInputs": 0,
+  "browserLaunched": false,
+  "originalOpened": false,
+  "published": false,
+  "freshNativeBuildClaimed": false,
+  "responseInterceptionUsed": false,
+  "failures": [],
+  "qualifiedBuild": {
+    "head": "0e2f2caa924413a1edc81c23c49c027dd952fec8",
+    "runId": "43691831594"
+  },
+  "defaultServerClosed": true,
+  "default": {
+    "privatePathsAbsent": true,
+    "worker": {
+      "status": "verified-exact-built-production-worker-served-with-security-headers",
+      "bytes": 464961,
+      "sha256": "e218af4edaceef0ff1963f59d00f9fc3eaf1e165c72fd1bdabef94f713fc02eb",
+      "maximumReadBytes": 16384,
+      "staticCodeOnly": true,
+      "browserWorkerResponseOverridden": false,
+      "applicationSourcesPatched": false
+    }
+  },
+  "defaultRuntimeRemoved": true,
+  "snapshot": {
+    "files": 147,
+    "bytes": 97441705
+  },
+  "private": {
+    "worker": {
+      "status": "verified-exact-built-production-worker-served-with-security-headers",
+      "bytes": 464961,
+      "sha256": "e218af4edaceef0ff1963f59d00f9fc3eaf1e165c72fd1bdabef94f713fc02eb",
+      "maximumReadBytes": 16384,
+      "staticCodeOnly": true,
+      "browserWorkerResponseOverridden": false,
+      "applicationSourcesPatched": false
+    },
+    "assets": [
+      {
+        "relative": "engines/remux-qualification/mkv-header-41c4a075.mjs",
+        "bytes": 39795,
+        "sha256": "a9d567d7005260176675ad70cac83f63b1b7d87024420491ad8f676ac413e8f8",
+        "maxRead": 16384,
+        "mime": "text/javascript; charset=utf-8",
+        "securityHeadersVerified": true
+      },
+      {
+        "relative": "engines/remux-qualification/mkv-header-41c4a075.wasm",
+        "bytes": 2402953,
+        "sha256": "41c4a075de285d0d906b2711c5e5420a401235ab89e1f185abe5d48a830a3eba",
+        "maxRead": 16384,
+        "mime": "application/wasm",
+        "securityHeadersVerified": true
+      },
+      {
+        "relative": "engines/remux-qualification/LICENSE.ffmpeg-lgpl3",
+        "bytes": 7651,
+        "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768",
+        "maxRead": 7651,
+        "mime": "text/plain; charset=utf-8",
+        "securityHeadersVerified": true
+      }
+    ]
+  },
+  "privateServerClosed": true,
+  "defaultBuildUnchanged": true,
+  "ownedRuntimeRemoved": true
+}

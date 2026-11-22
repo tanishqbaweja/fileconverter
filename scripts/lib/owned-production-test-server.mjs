@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn, execFile } from "node:child_process";
-import { readFile, writeFile } from "node:fs/promises";
+import { lstat, readFile, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { promisify } from "node:util";
@@ -16,8 +16,23 @@ async function identity(pid) {
   } catch (error) { if (error.code === "ENOENT") return null; throw error; }
 }
 /** Own one fresh server process/group. Never attach to/reuse an existing server. */
-export async function startOwnedProductionTestServer({ root, directory, env, port }) {
+export async function startOwnedProductionTestServer({ root, directory, env, port, useOwnedMkvPackage = false }) {
   assert.ok(Number.isInteger(port) && port > 1024 && port < 65536);
+  let config = "dist/server/wrangler.json";
+  if (useOwnedMkvPackage) {
+    assert.equal(path.dirname(directory), path.join(root, "work"));
+    assert.match(path.basename(directory), /^mkv-static-delivery-[a-zA-Z0-9]{6}$/);
+    assert.equal(await realpath(directory), directory);
+    config = path.join(directory, "site", "server", "wrangler.json");
+    assert.equal(await realpath(config), config);
+    const stat = await lstat(config);
+    assert.ok(stat.isFile() && !stat.isSymbolicLink());
+    const cfg = JSON.parse(await readFile(config, "utf8"));
+    assert.equal(cfg.dev.ip, "127.0.0.1");
+    assert.equal(cfg.main, "index.js");
+    assert.equal(cfg.assets.directory, "../client");
+    assert.equal(cfg.assets.run_worker_first, true);
+  }
   const { createServer } = await import("node:net"), probe = createServer();
   await new Promise((resolve, reject) => { probe.once("error", reject); probe.listen(port, "127.0.0.1", resolve); });
   await new Promise(resolve => probe.close(resolve));
@@ -25,7 +40,7 @@ export async function startOwnedProductionTestServer({ root, directory, env, por
   // subprocess preload as well as hiding the initial server process.
   const preload = `--import=${JSON.stringify(pathToFileURL(path.join(import.meta.dirname, "hidden-unit-subprocesses.mjs")).href)}`;
   const serverEnv = { ...(env ?? process.env), NODE_OPTIONS: [env?.NODE_OPTIONS ?? process.env.NODE_OPTIONS ?? "", preload].filter(Boolean).join(" ") };
-  const args = ["node_modules/wrangler/bin/wrangler.js", "dev", "--config", "dist/server/wrangler.json", "--port", String(port), "--persist-to", path.join(directory, "wrangler")];
+  const args = ["node_modules/wrangler/bin/wrangler.js", "dev", "--config", config, "--port", String(port), "--persist-to", path.join(directory, "wrangler")];
   const child = spawn(process.execPath, args,
     { cwd: root, env: serverEnv, windowsHide: true, detached: process.platform !== "win32", stdio: ["ignore", "pipe", "pipe"] });
   let log = "", spawnError; child.on("error", error => { spawnError = error; });

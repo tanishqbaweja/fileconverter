@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "scope": "Fresh hosted non-Docker compilation and private package layout; no browser, conversion, or publication.",
+  "hostedRun": {
+    "conclusion": "success",
+    "databaseId": 44998996220,
+    "headSha": "4d4090d82cf6c08f4e68be4001a7767e6b7a7520",
+    "job": {
+      "completedAt": "2026-11-22T07:43:16Z",
+      "conclusion": "success",
+      "databaseId": 137136131928,
+      "startedAt": "2026-11-22T07:36:22Z",
+      "steps": [
+        {
+          "completedAt": "2026-11-22T07:43:11Z",
+          "conclusion": "success",
+          "name": "Rebuild and compare all ten qualified artifacts",
+          "number": 8,
+          "startedAt": "2026-11-22T07:37:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-22T07:43:13Z",
+          "conclusion": "success",
+          "name": "Retain compact verification receipt only",
+          "number": 9,
+          "startedAt": "2026-11-22T07:43:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-22T07:43:13Z",
+          "conclusion": "success",
+          "name": "Remove owned SDK, newly compiled files and private static package",
+          "number": 10,
+          "startedAt": "2026-11-22T07:43:13Z",
+          "status": "completed"
+        }
+      ]
+    },
+    "status": "completed",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/44998996220",
+    "workflowName": "Verify corrected MKV engine reproduction"
+  },
+  "retainedArtifactInventory": {
+    "artifacts": [
+      {
+        "digest": "sha256:df31429c2310ecd8ab3b53cc3ab8e3547a60605f084de837155cfd7f8e22ccef",
+        "expired": false,
+        "id": 14744548893,
+        "name": "corrected-mkv-reproduction-receipt-44998996220",
+        "size_in_bytes": 1350
+      }
+    ],
+    "total_count": 1
+  },
+  "verifierLogReceipt": {
+    "schemaVersion": 1,
+    "status": "verified-fresh-exact-rebuild-and-private-package-layout",
+    "job": {
+      "GITHUB_RUN_ID": "44998996220",
+      "GITHUB_RUN_ATTEMPT": "1",
+      "GITHUB_JOB": "corrected-mkv-reproduction",
+      "GITHUB_SHA": "4d4090d82cf6c08f4e68be4001a7767e6b7a7520"
+    },
+    "previousQualifiedBuild": {
+      "head": "0e2f2caa924413a1edc81c23c49c027dd952fec8",
+      "runId": "43691831594"
+    },
+    "rebuiltArtifacts": {
+      "within-direct.mjs": {
+        "bytes": 39795,
+        "sha256": "a9d567d7005260176675ad70cac83f63b1b7d87024420491ad8f676ac413e8f8"
+      },
+      "within-direct.wasm": {
+        "bytes": 2402953,
+        "sha256": "41c4a075de285d0d906b2711c5e5420a401235ab89e1f185abe5d48a830a3eba"
+      },
+      "build-manifest.json": {
+        "bytes": 12614,
+        "sha256": "16723e3b5e8e7a515851e0023b54b02847461d159810651f64ca24044416f536"
+      },
+      "within_remux.c": {
+        "bytes": 129062,
+        "sha256": "5c0a8caa8f3efeb6a024aa6708694203a1529d1d099e9e5faababd5be05c4bb6"
+      },
+      "LICENSE.ffmpeg-lgpl3": {
+        "bytes": 7651,
+        "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+      },
+      "movenc.c": {
+        "bytes": 345610,
+        "sha256": "f927c6e1919a17186cade3b67565f4f418c3247b464e92f4f0a9eaeafdac1d6e"
+      },
+      "build-libraries.sh": {
+        "bytes": 3252,
+        "sha256": "49929353da80a2a42f49c5664ba3e9445b463a58a3dec2a4f22f9bc508a48857"
+      },
+      "config-components.h": {
+        "bytes": 75831,
+        "sha256": "c30d169bd302ebaecb9de56b7352de1153375d4cfb6d8f79d43fe69440b8a6bc"
+      },
+      "hevc-parser.c": {
+        "bytes": 12245,
+        "sha256": "9f8f39654688c25e02deb95793b7128fbb4b68e3073a392ac795a232154e3752"
+      },
+      "matroskadec.c": {
+        "bytes": 184909,
+        "sha256": "4aabbf70e250dbb3f3538abe27ae1e6030b336e794a055e846488437c9d4c1ee"
+      }
+    },
+    "wasmMemory": [
+      {
+        "imported": true,
+        "initialPages": 384,
+        "maximumPages": 1024,
+        "shared": true
+      }
+    ],
+    "abi": {
+      "symbol": "_within_remux",
+      "exportName": "Z",
+      "parameters": [
+        127
+      ],
+      "results": [
+        127
+      ],
+      "parameterCount": 1
+    },
+    "packaged": [
+      {
+        "relative": "engines/remux-qualification/mkv-header-41c4a075.mjs",
+        "bytes": 39795,
+        "sha256": "a9d567d7005260176675ad70cac83f63b1b7d87024420491ad8f676ac413e8f8"
+      },
+      {
+        "relative": "engines/remux-qualification/mkv-header-41c4a075.wasm",
+        "bytes": 2402953,
+        "sha256": "41c4a075de285d0d906b2711c5e5420a401235ab89e1f185abe5d48a830a3eba"
+      },
+      {
+        "relative": "engines/remux-qualification/LICENSE.ffmpeg-lgpl3",
+        "bytes": 7651,
+        "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+      }
+    ],
+    "publishedArtifactsUnchanged": true,
+    "browserRun": false,
+    "publicAcceptance": false,
+    "deployed": false,
+    "mediaInputs": 0
+  }
+}

@@ -4,15 +4,25 @@ Updated 2026-11-22 (local). Read this first after resuming; then follow the cite
 This is a navigation/checkpoint document, not a replacement for the complete
 specification or [requirement audit](REMAINING_WORK.md). The goal is NOT complete.
 
-## Corrected MKV reproducibility and private package gate added
+## Corrected MKV: fresh reproduction and real static delivery passed
 
-The branch CI workflow rebuilds the corrected core from tracked sources with
-the pinned non-Docker SDK. It compares all ten rebuilt artifacts, provenance,
-Wasm memory and ABI to the qualified build, then assembles the separately
-named loader/Wasm/license inside owned scratch. It uploads a compact receipt
-only and always runs owned cleanup. Local tests verify the gate and actual
-cached files; a fresh hosted rebuild remains to be confirmed. The default
-public asset tree and registry are unchanged; no deployment or browser claim.
+[Hosted run 44998996220](https://github.com/tanishqbaweja/fileconverter/actions/runs/44998996220)
+rebuilt the corrected engine on pinned Emscripten without Docker. All ten
+artifacts matched the earlier qualified bytes, as did Wasm memory and ABI.
+Verified private package layout, retained only one 1,350-byte receipt
+archive and passed hosted owned cleanup. [Hosted evidence](evidence/2026-11-22-mkv-hevc-header-hosted-reproduction.json).
+
+A separate local production-server smoke with no interception served the
+exact qualified loader/Wasm/license with the expected MIME and security
+headers. The normal build returned 404 for all three paths and served the
+same worker bytes. Both owned servers/copies were removed. The first
+private-package attempt failed because the license lacked a MIME type;
+the passing copy explicitly serves that license as text. No selected media,
+browser, default public bundle or registry change. Next: actual browser
+conversion through this served static layout (no asset interception), then
+full-scale repeats and release qualification.
+[Passing HTTP receipt](evidence/2026-11-22T07-43-18-367Z-mkv-private-static-delivery.json),
+[first attempt](evidence/2026-11-22T07-42-44-058Z-mkv-private-static-delivery.json).
 
 ## 5.35 GB matched read experiment: do not adopt the fill strategy
 

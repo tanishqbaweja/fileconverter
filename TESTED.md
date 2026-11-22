@@ -1,11 +1,24 @@
 # Tested conversion ledger
 
+2026-11-22 UTC corrected MKV **fresh hosted no-Docker reproduction PASS**.
+Run 44998996220 at 4d4090d8 independently rebuilt all ten artifacts byte for
+byte, verified ABI and 384/1024 shared memory pages, staged only named
+loader/Wasm/license privately. Successful cleanup, one 1,350-byte receipt
+archive, no media or deployment. Separate real local static delivery
+**PASS**: default 404s, package exact bytes/type/COOP/COEP/CORP/CSP/nosniff,
+same unmodified worker, no interception, both owned servers/copies removed.
+Initial missing license MIME rejection kept; fixed only the copied package.
+Not a served-layout browser-conversion or public qualification result.
+[Native](evidence/2026-11-22-mkv-hevc-header-hosted-reproduction.json),
+[HTTP](evidence/2026-11-22T07-43-18-367Z-mkv-private-static-delivery.json),
+[first HTTP attempt](evidence/2026-11-22T07-42-44-058Z-mkv-private-static-delivery.json).
+
 2026-11-22 UTC corrected MKV native reproducibility/package gate **local
 contract PASS**: 38 focused tests, scoped lint, workflow YAML and diff
 validation. Actual cached loader/Wasm/license and fixed private asset paths
-checked. Added separate hosted build against the ten authenticated references;
-a local contract PASS does not count as a fresh compiler or served-browser
-result. No media input, package publication or registry change.
+checked. The separate hosted rebuild is recorded above; the local contract
+test alone did not count as a fresh compiler or served-browser result.
+No media input, package publication or registry change.
 
 2026-11-22 UTC corrected MKV **matched 5.35 GB read-fill candidate REJECTED**.
 Instrumented order control/fill/fill/control; fresh normal Chrome 158 per

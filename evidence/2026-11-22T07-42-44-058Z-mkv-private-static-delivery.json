@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "status": "failed-not-acceptance",
+  "headed": false,
+  "mediaInputs": 0,
+  "browserLaunched": false,
+  "originalOpened": false,
+  "published": false,
+  "freshNativeBuildClaimed": false,
+  "responseInterceptionUsed": false,
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /^(?:text\\/plain|application\\/octet-stream)(?:;|$)/i. Input:\n\n''\n\n    at verifyStaticAsset (file:///H:/Github%20Repositories/fileconverter/scripts/verify-mkv-static-delivery.mjs:30:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Promise.all (index 2)\n    at async file:///H:/Github%20Repositories/fileconverter/scripts/verify-mkv-static-delivery.mjs:114:13\n    at async withServer (file:///H:/Github%20Repositories/fileconverter/scripts/verify-mkv-static-delivery.mjs:58:16)\n    at async file:///H:/Github%20Repositories/fileconverter/scripts/verify-mkv-static-delivery.mjs:112:21"
+  ],
+  "qualifiedBuild": {
+    "head": "0e2f2caa924413a1edc81c23c49c027dd952fec8",
+    "runId": "43691831594"
+  },
+  "defaultServerClosed": true,
+  "default": {
+    "privatePathsAbsent": true,
+    "worker": {
+      "status": "verified-exact-built-production-worker-served-with-security-headers",
+      "bytes": 464961,
+      "sha256": "e218af4edaceef0ff1963f59d00f9fc3eaf1e165c72fd1bdabef94f713fc02eb",
+      "maximumReadBytes": 16384,
+      "staticCodeOnly": true,
+      "browserWorkerResponseOverridden": false,
+      "applicationSourcesPatched": false
+    }
+  },
+  "defaultRuntimeRemoved": true,
+  "snapshot": {
+    "files": 147,
+    "bytes": 97441705
+  },
+  "privateServerClosed": true,
+  "ownedRuntimeRemoved": true
+}
